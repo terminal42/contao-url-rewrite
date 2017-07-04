@@ -1,0 +1,35 @@
+{
+    "name": "terminal42/contao-url-rewrite",
+    "description": "URL Rewrite bundle for Contao Open Source CMS",
+    "keywords": ["contao", "url", "rewrite", "redirect"],
+    "type": "contao-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "terminal42",
+            "homepage": "https://terminal42.ch"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "contao/core-bundle": "^4.4"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.0",
+        "friendsofphp/php-cs-fixer": "^2.2",
+        "phpunit/phpunit": "^6.0",
+        "satooshi/php-coveralls": "2.*@dev"
+    },
+    "conflict": {
+        "contao/manager-plugin": "<2.0 || >=3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Terminal42\\UrlRewriteBundle\\": "src",
+            "Terminal42\\UrlRewriteBundle\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin"
+    }
+}
