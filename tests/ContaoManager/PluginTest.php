@@ -1,6 +1,6 @@
 <?php
 
-namespace Terminal42\UrlRewriteBundle\Test\ContaoManager;
+namespace Terminal42\UrlRewriteBundle\Tests\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;

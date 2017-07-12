@@ -1,6 +1,6 @@
 <?php
 
-namespace Terminal42\UrlRewriteBundle\Test\Controller;
+namespace Terminal42\UrlRewriteBundle\Tests\Controller;
 
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\CoreBundle\Framework\ContaoFramework;

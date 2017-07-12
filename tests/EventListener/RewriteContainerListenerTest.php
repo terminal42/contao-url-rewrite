@@ -1,6 +1,6 @@
 <?php
 
-namespace Terminal42\UrlRewriteBundle\Test\EventListener;
+namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;

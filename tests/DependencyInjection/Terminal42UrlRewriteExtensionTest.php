@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Terminal42\UrlRewriteBundle\Test\DependencyInjection;
+namespace Terminal42\UrlRewriteBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
