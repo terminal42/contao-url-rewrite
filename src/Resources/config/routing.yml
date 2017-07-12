@@ -1,0 +1,3 @@
+terminal42_url_rewrite:
+    resource: .
+    type: terminal42_url_rewrite

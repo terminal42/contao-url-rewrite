@@ -4,3 +4,8 @@ services:
         arguments:
             - "@database_connection"
             - "@contao.framework"
+
+    terminal42_url_rewrite.rewrite_loader:
+        class: Terminal42\UrlRewriteBundle\Loader\UrlRewriteLoader
+        arguments:
+            - "@database_connection"
