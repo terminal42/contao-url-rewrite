@@ -40,7 +40,7 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
      */
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
     {
-        $config = '@AppBundle/Resources/config/routing.yml';
+        $config = '@Terminal42UrlRewriteBundle/Resources/config/routing.yml';
         $loader = $resolver->resolve($config, 'yaml');
 
         if ($loader instanceof YamlFileLoader) {
