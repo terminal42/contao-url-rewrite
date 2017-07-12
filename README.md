@@ -18,7 +18,7 @@ If you are running the Contao Managed Edition then the extension should work out
 you have to additionally register the routing configuration in the config files:  
 
 ```yaml
-// config/routing.yml
+# config/routing.yml
 terminal42_url_rewrite:
     resource: .
     type: terminal42_url_rewrite
