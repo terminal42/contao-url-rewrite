@@ -109,8 +109,7 @@ class UrlRewriteLoaderTest extends TestCase
     public function getRouteCollectionProvider()
     {
         return [
-            // Single route
-            [
+            'Single route' => [
                 [
                     'id' => 1,
                     'requestPath' => 'foo/bar'
@@ -125,8 +124,7 @@ class UrlRewriteLoaderTest extends TestCase
                 ],
             ],
 
-            // Multiple hosts
-            [
+            'Multiple hosts' => [
                 [
                     'id' => 2,
                     'requestPath' => 'foo/baz',
@@ -150,20 +148,17 @@ class UrlRewriteLoaderTest extends TestCase
                 ]
             ],
 
-            // Invalid #1
-            [
+            'Invalid #1' => [
                 ['id' => 3],
                 []
             ],
 
-            // Invalid #2
-            [
+            'Invalid #2' => [
                 ['requestPath' => 'invalid'],
                 []
             ],
 
-            // Invalid #3
-            [
+            'Invalid #3' => [
                 [],
                 []
             ],
