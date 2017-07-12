@@ -11,3 +11,15 @@ Install the bundle via Composer:
 ```
 composer require terminal42/contao-url-rewrite
 ```
+
+## Configuration
+
+If you are running the Contao Managed Edition then the extension should work out of the box. For all the other systems
+you have to additionally register the routing configuration in the config files:  
+
+```yaml
+// config/routing.yml
+terminal42_url_rewrite:
+    resource: .
+    type: terminal42_url_rewrite
+```
