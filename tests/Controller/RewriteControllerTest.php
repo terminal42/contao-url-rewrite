@@ -17,7 +17,7 @@ class RewriteControllerTest extends TestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(RewriteController::class, new RewriteController(
+        $this->assertInstanceOf(RewriteController::class, new RewriteController(
             $this->createMock(Connection::class),
             $this->createMock(ContaoFramework::class)
         ));
@@ -33,7 +33,7 @@ class RewriteControllerTest extends TestCase
         $request = new Request();
         $request->attributes->set('_url_rewrite', null);
 
-        static::expectException(RouteNotFoundException::class);
+        $this->expectException(RouteNotFoundException::class);
         $controller->indexAction($request);
     }
 
@@ -51,7 +51,7 @@ class RewriteControllerTest extends TestCase
         $request = new Request();
         $request->attributes->set('_url_rewrite', 1);
 
-        static::expectException(RouteNotFoundException::class);
+        $this->expectException(RouteNotFoundException::class);
         $controller->indexAction($request);
     }
 
@@ -75,9 +75,9 @@ class RewriteControllerTest extends TestCase
 
         $response = $controller->indexAction($request);
 
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertEquals('http://domain.tld/folder/page.html/foo/bar', $response->getTargetUrl());
-        static::assertEquals(301, $response->getStatusCode());
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertEquals('http://domain.tld/folder/page.html/foo/bar', $response->getTargetUrl());
+        $this->assertEquals(301, $response->getStatusCode());
     }
 
     public function testIndexActionGone()
@@ -98,9 +98,9 @@ class RewriteControllerTest extends TestCase
 
         $response = $controller->indexAction($request);
 
-        static::assertInstanceOf(Response::class, $response);
-        static::assertEquals(410, $response->getStatusCode());
-        static::assertEquals('Gone', $response->getContent());
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals(410, $response->getStatusCode());
+        $this->assertEquals('Gone', $response->getContent());
     }
 
     public function testIndexActionInternalServererror()
@@ -119,9 +119,9 @@ class RewriteControllerTest extends TestCase
 
         $response = $controller->indexAction($request);
 
-        static::assertInstanceOf(Response::class, $response);
-        static::assertEquals(500, $response->getStatusCode());
-        static::assertEquals('Internal Server Error', $response->getContent());
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals('Internal Server Error', $response->getContent());
     }
 
     private function createFrameworkMock()

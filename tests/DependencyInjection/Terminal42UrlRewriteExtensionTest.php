@@ -12,7 +12,7 @@ class Terminal42UrlRewriteExtensionTest extends TestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(Terminal42UrlRewriteExtension::class, new Terminal42UrlRewriteExtension());
+        $this->assertInstanceOf(Terminal42UrlRewriteExtension::class, new Terminal42UrlRewriteExtension());
     }
 
     public function testLoad()
@@ -21,7 +21,7 @@ class Terminal42UrlRewriteExtensionTest extends TestCase
         $extension = new Terminal42UrlRewriteExtension();
         $extension->load([], $container);
 
-        static::assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.rewrite_container'));
-        static::assertTrue($container->hasDefinition('terminal42_url_rewrite.rewrite_controller'));
+        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.rewrite_container'));
+        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.rewrite_controller'));
     }
 }

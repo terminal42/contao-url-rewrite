@@ -12,7 +12,7 @@ class Terminal42UrlRewriteBundleTest extends TestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(Terminal42UrlRewriteBundle::class, new Terminal42UrlRewriteBundle());
+        $this->assertInstanceOf(Terminal42UrlRewriteBundle::class, new Terminal42UrlRewriteBundle());
     }
 
     public function testBuild()
@@ -21,6 +21,6 @@ class Terminal42UrlRewriteBundleTest extends TestCase
         $bundle = new Terminal42UrlRewriteBundle();
         $bundle->build($container);
 
-        static::assertEquals($container, new ContainerBuilder());
+        $this->assertEquals($container, new ContainerBuilder());
     }
 }

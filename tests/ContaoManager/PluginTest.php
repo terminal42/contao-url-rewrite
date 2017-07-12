@@ -23,9 +23,9 @@ class PluginTest extends TestCase
     {
         $plugin = new Plugin();
 
-        static::assertInstanceOf(Plugin::class, $plugin);
-        static::assertInstanceOf(BundlePluginInterface::class, $plugin);
-        static::assertInstanceOf(RoutingPluginInterface::class, $plugin);
+        $this->assertInstanceOf(Plugin::class, $plugin);
+        $this->assertInstanceOf(BundlePluginInterface::class, $plugin);
+        $this->assertInstanceOf(RoutingPluginInterface::class, $plugin);
     }
 
     public function testGetBundles()
@@ -36,10 +36,10 @@ class PluginTest extends TestCase
         /** @var BundleConfig $config */
         $config = $bundles[0];
 
-        static::assertCount(1, $bundles);
-        static::assertInstanceOf(BundleConfig::class, $config);
-        static::assertEquals(Terminal42UrlRewriteBundle::class, $config->getName());
-        static::assertEquals([ContaoCoreBundle::class], $config->getLoadAfter());
+        $this->assertCount(1, $bundles);
+        $this->assertInstanceOf(BundleConfig::class, $config);
+        $this->assertEquals(Terminal42UrlRewriteBundle::class, $config->getName());
+        $this->assertEquals([ContaoCoreBundle::class], $config->getLoadAfter());
     }
 
     public function testGetRouteCollectionNoDatabaseConnection()
@@ -55,7 +55,7 @@ class PluginTest extends TestCase
 
         $plugin = new Plugin();
 
-        static::assertNull(null, $plugin->getRouteCollection(static::createMock(LoaderResolver::class), $kernel));
+        $this->assertNull(null, $plugin->getRouteCollection($this->createMock(LoaderResolver::class), $kernel));
     }
 
     public function testGetRouteCollectionNoDatabaseRecords()
@@ -75,7 +75,7 @@ class PluginTest extends TestCase
 
         $plugin = new Plugin();
 
-        static::assertNull(null, $plugin->getRouteCollection(static::createMock(LoaderResolver::class), $kernel));
+        $this->assertNull(null, $plugin->getRouteCollection($this->createMock(LoaderResolver::class), $kernel));
     }
 
     public function testGetRouteCollection()
@@ -115,32 +115,32 @@ class PluginTest extends TestCase
         ;
 
         $plugin = new Plugin();
-        $collection = $plugin->getRouteCollection(static::createMock(LoaderResolver::class), $kernel);
+        $collection = $plugin->getRouteCollection($this->createMock(LoaderResolver::class), $kernel);
         $routes = $collection->getIterator();
 
-        static::assertInstanceOf(RouteCollection::class, $collection);
-        static::assertCount(3, $routes);
+        $this->assertInstanceOf(RouteCollection::class, $collection);
+        $this->assertCount(3, $routes);
 
         /** @var Route $route */
         foreach ($routes as $key => $route) {
-            static::assertContains('GET', $route->getMethods());
-            static::assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
-            static::assertArrayHasKey('_url_rewrite', $route->getDefaults());
+            $this->assertContains('GET', $route->getMethods());
+            $this->assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
+            $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
 
             switch ($key) {
                 case 'url_rewrite_0':
-                    static::assertEquals('/foo/bar', $route->getPath());
+                    $this->assertEquals('/foo/bar', $route->getPath());
                     break;
                 case 'url_rewrite_1':
                 case 'url_rewrite_2':
-                    static::assertEquals('/foo/baz', $route->getPath());
-                    static::assertContains('http', $route->getSchemes());
-                    static::assertEquals(['foo' => '\d+', 'baz' => '\s+'], $route->getRequirements());
+                    $this->assertEquals('/foo/baz', $route->getPath());
+                    $this->assertContains('http', $route->getSchemes());
+                    $this->assertEquals(['foo' => '\d+', 'baz' => '\s+'], $route->getRequirements());
 
                     if ($key === 'url_rewrite_1') {
-                        static::assertEquals('domain1.tld', $route->getHost());
+                        $this->assertEquals('domain1.tld', $route->getHost());
                     } else {
-                        static::assertEquals('domain2.tld', $route->getHost());
+                        $this->assertEquals('domain2.tld', $route->getHost());
                     }
                     break;
             }
@@ -149,12 +149,12 @@ class PluginTest extends TestCase
 
     private function createKernelMock()
     {
-        $db = static::createMock(Connection::class);
+        $db = $this->createMock(Connection::class);
 
         $container = new Container();
         $container->set('database_connection', $db);
 
-        $kernel = static::createMock(Kernel::class);
+        $kernel = $this->createMock(Kernel::class);
         $kernel
             ->method('getContainer')
             ->willReturn($container)

@@ -57,7 +57,7 @@ class RewriteContainerListenerTest extends TestCase
 
     public function testInstantiation()
     {
-        static::assertInstanceOf(RewriteContainerListener::class, $this->listener);
+        $this->assertInstanceOf(RewriteContainerListener::class, $this->listener);
     }
 
     public function testOnRecordsModified()
@@ -65,7 +65,7 @@ class RewriteContainerListenerTest extends TestCase
         $this->fs->touch($this->cacheDir . '/CacheClassOld.php');
         $this->listener->onRecordsModified();
 
-        static::assertFalse($this->fs->exists($this->cacheDir.'/CacheClassOld.php'));
-        static::assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
+        $this->assertFalse($this->fs->exists($this->cacheDir.'/CacheClassOld.php'));
+        $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
     }
 }
