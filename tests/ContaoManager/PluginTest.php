@@ -78,7 +78,10 @@ class PluginTest extends TestCase
         $this->assertNull(null, $plugin->getRouteCollection($this->createMock(LoaderResolver::class), $kernel));
     }
 
-    public function testGetRouteCollection()
+    /**
+     * @dataProvider getRouteCollectionProvider
+     */
+    public function testGetRouteCollection($provided, $expected)
     {
         $kernel = $this->createKernelMock();
         $db = $kernel->getContainer()->get('database_connection');
@@ -90,11 +93,53 @@ class PluginTest extends TestCase
 
         $db
             ->method('fetchAll')
-            ->willReturn([
+            ->willReturn([$provided])
+        ;
+
+        $plugin = new Plugin();
+        $collection = $plugin->getRouteCollection($this->createMock(LoaderResolver::class), $kernel);
+        $routes = $collection->getIterator();
+
+        $this->assertInstanceOf(RouteCollection::class, $collection);
+        $this->assertCount(count($expected), $routes);
+
+        $index = 0;
+
+        /** @var Route $route */
+        foreach ($routes as $route) {
+            $this->assertContains('GET', $route->getMethods());
+            $this->assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
+            $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
+            $this->assertEquals($expected[$index]['path'], $route->getPath());
+            $this->assertEquals($expected[$index]['scheme'], $route->getSchemes());
+            $this->assertEquals($expected[$index]['requirements'], $route->getRequirements());
+            $this->assertEquals($expected[$index]['host'], $route->getHost());
+
+            $index++;
+        }
+    }
+
+    public function getRouteCollectionProvider()
+    {
+        return [
+            // Single route
+            [
                 [
                     'id' => 1,
-                    'requestPath' => 'foo/bar',
+                    'requestPath' => 'foo/bar'
                 ],
+                [
+                    [
+                        'path' => '/foo/bar',
+                        'scheme' => [],
+                        'requirements' => [],
+                        'host' => '',
+                    ],
+                ],
+            ],
+
+            // Multiple hosts
+            [
                 [
                     'id' => 2,
                     'requestPath' => 'foo/baz',
@@ -103,48 +148,39 @@ class PluginTest extends TestCase
                     'requestRequirements' => ['foo: \d+', 'baz: \s+'],
                 ],
                 [
-                    'id' => 3,
-                ],
-                [
-                    'requestPath' => 'invalid',
-                ],
-                [
-                    // empty
-                ],
-            ])
-        ;
+                    [
+                        'path' => '/foo/baz',
+                        'scheme' => ['http'],
+                        'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
+                        'host' => 'domain1.tld',
+                    ],
+                    [
+                        'path' => '/foo/baz',
+                        'scheme' => ['http'],
+                        'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
+                        'host' => 'domain2.tld',
+                    ],
+                ]
+            ],
 
-        $plugin = new Plugin();
-        $collection = $plugin->getRouteCollection($this->createMock(LoaderResolver::class), $kernel);
-        $routes = $collection->getIterator();
+            // Invalid #1
+            [
+                ['id' => 3],
+                []
+            ],
 
-        $this->assertInstanceOf(RouteCollection::class, $collection);
-        $this->assertCount(3, $routes);
+            // Invalid #2
+            [
+                ['requestPath' => 'invalid'],
+                []
+            ],
 
-        /** @var Route $route */
-        foreach ($routes as $key => $route) {
-            $this->assertContains('GET', $route->getMethods());
-            $this->assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
-            $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
-
-            switch ($key) {
-                case 'url_rewrite_0':
-                    $this->assertEquals('/foo/bar', $route->getPath());
-                    break;
-                case 'url_rewrite_1':
-                case 'url_rewrite_2':
-                    $this->assertEquals('/foo/baz', $route->getPath());
-                    $this->assertContains('http', $route->getSchemes());
-                    $this->assertEquals(['foo' => '\d+', 'baz' => '\s+'], $route->getRequirements());
-
-                    if ($key === 'url_rewrite_1') {
-                        $this->assertEquals('domain1.tld', $route->getHost());
-                    } else {
-                        $this->assertEquals('domain2.tld', $route->getHost());
-                    }
-                    break;
-            }
-        }
+            // Invalid #3
+            [
+                [],
+                []
+            ],
+        ];
     }
 
     private function createKernelMock()
