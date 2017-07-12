@@ -2,6 +2,7 @@
 
 namespace Terminal42\UrlRewriteBundle\Test\Controller;
 
+use Contao\CoreBundle\Framework\Adapter;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
@@ -10,8 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Terminal42\UrlRewriteBundle\Controller\RewriteController;
-use Terminal42\UrlRewriteBundle\Test\Fixtures\Environment;
-use Terminal42\UrlRewriteBundle\Test\Fixtures\InsertTags;
 
 class RewriteControllerTest extends TestCase
 {
@@ -126,16 +125,42 @@ class RewriteControllerTest extends TestCase
 
     private function createFrameworkMock()
     {
+        $environment = $this
+            ->getMockBuilder(Adapter::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock()
+        ;
+
+        $environment
+            ->method('get')
+            ->willReturn('http://domain.tld/folder/')
+        ;
+
+        $insertTags = $this
+            ->getMockBuilder(Adapter::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['replace'])
+            ->getMock()
+        ;
+
+        $insertTags
+            ->method('replace')
+            ->willReturnCallback(function ($buffer) {
+                return str_replace('{{link_url::1}}', 'page.html', $buffer);
+            })
+        ;
+
         $framework = $this->createMock(ContaoFramework::class);
 
         $framework
             ->method('getAdapter')
-            ->willReturn(new Environment())
+            ->willReturn($environment)
         ;
 
         $framework
             ->method('createInstance')
-            ->willReturn(new InsertTags())
+            ->willReturn($insertTags)
         ;
 
         return $framework;
