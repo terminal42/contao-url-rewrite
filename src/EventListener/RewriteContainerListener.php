@@ -66,6 +66,11 @@ class RewriteContainerListener
             $file = $this->cacheDir.DIRECTORY_SEPARATOR.$class.'.php';
 
             if ($this->fs->exists($file)) {
+                // Clear the OPcache
+                if (function_exists('opcache_invalidate')) {
+                    opcache_invalidate($file, true);
+                }
+
                 $this->fs->remove($file);
             }
         }
