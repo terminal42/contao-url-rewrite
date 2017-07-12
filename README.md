@@ -19,7 +19,6 @@ you have to additionally register the routing configuration in the config files:
 
 ```yaml
 # config/routing.yml
-terminal42_url_rewrite:
-    resource: .
-    type: terminal42_url_rewrite
+imports:
+  - { resource: '@Terminal42UrlRewriteBundle/Resources/config/routing.yml' }
 ```
