@@ -3,12 +3,10 @@
 namespace Terminal42\UrlRewriteBundle\Test\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
-use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
-use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -153,16 +151,8 @@ class PluginTest extends TestCase
     {
         $db = static::createMock(Connection::class);
 
-        $framework = static::createMock(ContaoFramework::class);
-
-        $framework
-            ->method('getAdapter')
-            ->willReturn(new StringUtil())
-        ;
-
         $container = new Container();
         $container->set('database_connection', $db);
-        $container->set('contao.framework', $framework);
 
         $kernel = static::createMock(Kernel::class);
         $kernel
