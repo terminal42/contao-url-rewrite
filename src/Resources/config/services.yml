@@ -6,6 +6,8 @@ services:
             - "@contao.framework"
 
     terminal42_url_rewrite.rewrite_loader:
-        class: Terminal42\UrlRewriteBundle\Loader\UrlRewriteLoader
+        class: Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader
         arguments:
             - "@database_connection"
+        tags:
+            - { name: routing.loader }
