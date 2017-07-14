@@ -54,29 +54,55 @@ class RewriteControllerTest extends TestCase
         $controller->indexAction($request);
     }
 
-    public function testIndexActionRedirect()
+    /**
+     * @dataProvider indexActionRedirectDataProvider
+     */
+    public function testIndexActionRedirect($provided, $expected)
     {
         $db = $this->createMock(Connection::class);
 
         $db
             ->method('fetchAssoc')
-            ->willReturn([
-                'responseUri' => '{{link_url::{bar}}}/foo///{baz}',
-                'responseCode' => 301,
-            ])
+            ->willReturn($provided[0])
         ;
 
         $controller = new RewriteController($db, $this->createFrameworkMock());
 
         $request = new Request();
         $request->attributes->set('_url_rewrite', 1);
-        $request->attributes->set('_route_params', ['bar' => 1, 'baz' => 'bar']);
+        $request->attributes->set('_route_params', $provided[1]);
 
         $response = $controller->indexAction($request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals('http://domain.tld/folder/page.html/foo/bar', $response->getTargetUrl());
-        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals($expected[0], $response->getTargetUrl());
+        $this->assertEquals($expected[1], $response->getStatusCode());
+    }
+
+    public function indexActionRedirectDataProvider()
+    {
+        return [
+            'Insert tags' => [
+                [
+                    ['responseUri' => '{{link_url::{bar}}}/foo///{baz}', 'responseCode' => 301],
+                    ['bar' => 1, 'baz' => 'bar'],
+                ],
+                [
+                    'http://domain.tld/page.html/foo/bar',
+                    301
+                ],
+            ],
+            'Absolute ' => [
+                [
+                    ['responseUri' => 'foo///{baz}', 'responseCode' => 302],
+                    ['baz' => 'bar'],
+                ],
+                [
+                    'http://domain.tld/foo/bar',
+                    302
+                ],
+            ],
+        ];
     }
 
     public function testIndexActionGone()
@@ -102,7 +128,7 @@ class RewriteControllerTest extends TestCase
         $this->assertEquals('Gone', $response->getContent());
     }
 
-    public function testIndexActionInternalServererror()
+    public function testIndexActionInternalServerError()
     {
         $db = $this->createMock(Connection::class);
 
@@ -134,7 +160,7 @@ class RewriteControllerTest extends TestCase
 
         $environment
             ->method('get')
-            ->willReturn('http://domain.tld/folder/')
+            ->willReturn('http://domain.tld/')
         ;
 
         $insertTags = $this
@@ -147,7 +173,7 @@ class RewriteControllerTest extends TestCase
         $insertTags
             ->method('replace')
             ->willReturnCallback(function ($buffer) {
-                return str_replace('{{link_url::1}}', 'page.html', $buffer);
+                return str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer);
             })
         ;
 

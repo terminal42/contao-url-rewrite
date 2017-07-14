@@ -110,14 +110,16 @@ class RewriteController
             /** @var InsertTags $insertTags */
             $insertTags = $this->framework->createInstance(InsertTags::class);
 
+            // Make sure to generate the absolute URLs for insert tags
+            $uri = str_replace('}}', '|absolute}}', $uri);
             $uri = $insertTags->replace($uri);
         }
 
-        // Replace the multiple slashes
-        $uri = preg_replace('@//+@', '/', $uri);
+        // Replace the multiple slashes except the ones for protocol
+        $uri = preg_replace('@(?<!http:|https:)/+@', '/', $uri);
 
-        // Make the URL absolute
-        if (!preg_match('@https?://@', $uri)) {
+        // Make the URL absolute if it's not yet already
+        if (!preg_match('@^https?://@', $uri)) {
             $this->framework->initialize();
             $uri = $this->framework->getAdapter(Environment::class)->get('base').ltrim($uri, '/');
         }

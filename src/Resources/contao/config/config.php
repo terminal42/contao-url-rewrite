@@ -11,3 +11,8 @@
 $GLOBALS['BE_MOD']['system']['url_rewrites'] = [
     'tables' => ['tl_url_rewrite'],
 ];
+
+/**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['insertTagFlags'][] = [];

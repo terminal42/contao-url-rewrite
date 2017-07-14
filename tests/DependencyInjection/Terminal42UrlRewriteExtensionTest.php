@@ -21,6 +21,7 @@ class Terminal42UrlRewriteExtensionTest extends TestCase
         $extension = new Terminal42UrlRewriteExtension();
         $extension->load([], $container);
 
+        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.insert_tags'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.rewrite_container'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.rewrite_controller'));
     }
