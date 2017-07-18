@@ -84,7 +84,7 @@ class RewriteControllerTest extends TestCase
         return [
             'Insert tags' => [
                 [
-                    ['responseUri' => '{{link_url::{bar}}}/foo///{baz}', 'responseCode' => 301],
+                    ['responseUri' => '{{link_url::{bar}|absolute}}/foo///{baz}', 'responseCode' => 301],
                     ['bar' => 1, 'baz' => 'bar'],
                 ],
                 [

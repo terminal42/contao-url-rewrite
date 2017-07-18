@@ -2,6 +2,8 @@
 
 namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
+use Contao\CoreBundle\Framework\Adapter;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
@@ -31,6 +33,27 @@ class RewriteContainerListenerTest extends TestCase
         $this->fs = new Filesystem();
         $this->fs->mkdir($this->cacheDir);
 
+        $insertTags = $this
+            ->getMockBuilder(Adapter::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['replace'])
+            ->getMock()
+        ;
+
+        $insertTags
+            ->method('replace')
+            ->willReturnCallback(function ($param) {
+                return $param;
+            })
+        ;
+
+        $framework = $this->createMock(ContaoFramework::class);
+
+        $framework
+            ->method('createInstance')
+            ->willReturn($insertTags)
+        ;
+
         $router = $this->createMock(Router::class);
 
         $router
@@ -47,7 +70,7 @@ class RewriteContainerListenerTest extends TestCase
             )
         ;
 
-        $this->listener = new RewriteContainerListener($router, $this->cacheDir);
+        $this->listener = new RewriteContainerListener($framework, $router, $this->cacheDir);
     }
 
     protected function tearDown()
@@ -67,5 +90,20 @@ class RewriteContainerListenerTest extends TestCase
 
         $this->assertFalse($this->fs->exists($this->cacheDir.'/CacheClassOld.php'));
         $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
+    }
+
+    public function testOnResponseUriSaveError()
+    {
+        $GLOBALS['TL_LANG'] = ['tl_url_rewrite' => ['error.responseUriAbsolute' => 'foobar']];
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('foobar');
+
+        $this->listener->onResponseUriSave('foobar');
+    }
+
+    public function testOnResponseUriSave()
+    {
+        $this->assertSame('http://domain.tld', $this->listener->onResponseUriSave('http://domain.tld'));
     }
 }

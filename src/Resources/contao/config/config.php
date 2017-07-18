@@ -15,4 +15,4 @@ $GLOBALS['BE_MOD']['system']['url_rewrites'] = [
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['insertTagFlags'][] = [];
+$GLOBALS['TL_HOOKS']['insertTagFlags'][] = ['terminal42_url_rewrite.listener.insert_tags', 'onInsertTagFlags'];

@@ -110,8 +110,6 @@ class RewriteController
             /** @var InsertTags $insertTags */
             $insertTags = $this->framework->createInstance(InsertTags::class);
 
-            // Make sure to generate the absolute URLs for insert tags
-            $uri = str_replace('}}', '|absolute}}', $uri);
             $uri = $insertTags->replace($uri);
         }
 

@@ -14,7 +14,7 @@ $GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'] = ['Hosts restriction', 'H
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestPath'] = ['Path restriction', 'Here you can enter the path to match.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements'] = ['Extra requirements', 'Here you can add extra requirements for the match.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['responseCode'] = ['Response code', 'Here you can select the response status code.'];
-$GLOBALS['TL_LANG']['tl_url_rewrite']['responseUri'] = ['Response URI', 'Here you can enter the response URI. You can use the insert tags and route attributes as wildcards (e.g. /foo/{bar})'];
+$GLOBALS['TL_LANG']['tl_url_rewrite']['responseUri'] = ['Response URI', 'Here you can enter the response URI. You can use the insert tags and route attributes as wildcards (e.g. /foo/{bar}). To generate the absolute URLs using insert tags you can use the absolute flag (e.g. {{link_url::123|absolute}}).'];
 
 /*
  * Legends
@@ -31,3 +31,8 @@ $GLOBALS['TL_LANG']['tl_url_rewrite']['show'] = ['Rewrite details', 'Show the de
 $GLOBALS['TL_LANG']['tl_url_rewrite']['edit'] = ['Edit rewrite', 'Edit rewrite ID %s'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['copy'] = ['Duplicate rewrite', 'Duplicate rewrite ID %s'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['delete'] = ['Delete rewrite', 'Delete rewrite ID %s'];
+
+/*
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_url_rewrite']['error.responseUriAbsolute'] = 'The response URI must be an absolute path!';
