@@ -98,7 +98,9 @@ class RewriteContainerListener
             if ($this->fs->exists($file)) {
                 // Clear the OPcache
                 if (function_exists('opcache_invalidate')) {
+                    // @codeCoverageIgnoreStart
                     opcache_invalidate($file, true);
+                    // @codeCoverageIgnoreEnd
                 }
 
                 $this->fs->remove($file);

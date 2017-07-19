@@ -73,6 +73,18 @@ class InsertTagsListener
     }
 
     /**
+     * Return true if the class exists
+     *
+     * @param string $class
+     *
+     * @return bool
+     */
+    public function classExists(string $class): bool
+    {
+        return class_exists($class, false);
+    }
+
+    /**
      * Generate the article URL
      *
      * @param string $articleId
@@ -103,7 +115,7 @@ class InsertTagsListener
      */
     private function generateEventUrl(string $eventId)
     {
-        if (!class_exists('Contao\CalendarEventsModel', false)) {
+        if (!$this->classExists('Contao\CalendarEventsModel')) {
             return false;
         }
 
@@ -143,7 +155,7 @@ class InsertTagsListener
      */
     private function generateFaqUrl(string $faqId)
     {
-        if (!class_exists('Contao\FaqModel', false)) {
+        if (!$this->classExists('Contao\FaqModel')) {
             return false;
         }
 
@@ -235,7 +247,7 @@ class InsertTagsListener
      */
     private function generateNewsUrl(string $newsId)
     {
-        if (!class_exists('Contao\NewsModel', false)) {
+        if (!$this->classExists('Contao\NewsModel')) {
             return false;
         }
 
