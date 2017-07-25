@@ -43,15 +43,18 @@ class UrlRewriteLoader extends Loader
         }
 
         $this->loaded = true;
+        $collection = new RouteCollection();
 
-        if (!$this->db->isConnected()) {
-            return null;
+        try {
+            $rewrites = $this->db->fetchAll('SELECT * FROM tl_url_rewrite');
+        } catch (PDOException $e) {
+            return $collection;
+        } catch (TableNotFoundException $e) {
+            return $collection;
         }
 
-        $rewrites = $this->db->fetchAll('SELECT * FROM tl_url_rewrite');
-
         if (0 === count($rewrites)) {
-            return null;
+            return $collection;
         }
 
         $count = 0;
