@@ -68,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
+                'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['show'],
@@ -80,8 +80,10 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
 
     // Palettes
     'palettes' => [
-        '__selector__' => ['responseCode'],
-        'default' => '{name_legend},name;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode',
+        '__selector__' => ['type', 'responseCode'],
+        'default' => '{name_legend},name,type',
+        'basic' => '{name_legend},name,type;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode',
+        'expert' => '{name_legend},name,type;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode',
     ],
 
     // Subpalettes
@@ -105,8 +107,19 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => ['type' => 'string', 'length' => 255],
+        ],
+        'type' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['type'],
+            'default' => 'basic',
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'options' => ['basic', 'expert'],
+            'reference' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['typeRef'],
+            'eval' => ['submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
+            'sql' => ['type' => 'string', 'length' => 255],
         ],
         'requestHosts' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'],
@@ -130,6 +143,13 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'inputType' => 'keyValueWizard',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'clr'],
             'sql' => ['type' => 'blob'],
+        ],
+        'requestCondition' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestCondition'],
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'clr'],
+            'sql' => ['type' => 'string'],
         ],
         'responseCode' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['responseCode'],

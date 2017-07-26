@@ -114,12 +114,21 @@ class UrlRewriteLoader extends Loader
      */
     private function createRoute(array $config, string $host = null): ?Route
     {
-        if (!isset($config['id'], $config['requestPath'])) {
+        if (!isset($config['id'], $config['type'], $config['requestPath'])) {
             return null;
         }
 
-        $route = new Route($config['requestPath']);
-        $route->setMethods('GET');
+        switch ($config['type']) {
+            case 'basic':
+                $route = $this->createBasicRoute($config);
+                break;
+            case 'expert':
+                $route = $this->createExpertRoute($config);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Unsupported config type: %s', $config['type']));
+        }
+
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');
         $route->setDefault('_url_rewrite', $config['id']);
 
@@ -127,6 +136,21 @@ class UrlRewriteLoader extends Loader
         if (null !== $host) {
             $route->setHost($host);
         }
+
+        return $route;
+    }
+
+    /**
+     * Create the basic route
+     *
+     * @param array $config
+     *
+     * @return Route
+     */
+    private function createBasicRoute(array $config): Route
+    {
+        $route = new Route($config['requestPath']);
+        $route->setMethods('GET');
 
         // Set the requirements
         if (isset($config['requestRequirements'])) {
@@ -142,6 +166,21 @@ class UrlRewriteLoader extends Loader
                 }
             }
         }
+
+        return $route;
+    }
+
+    /**
+     * Create the expert route
+     *
+     * @param array $config
+     *
+     * @return Route
+     */
+    private function createExpertRoute(array $config): Route
+    {
+        $route = new Route($config['requestPath']);
+        $route->setCondition($config['requestCondition']);
 
         return $route;
     }

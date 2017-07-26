@@ -69,11 +69,6 @@ class UrlRewriteLoaderTest extends TestCase
         $db = $this->createMock(Connection::class);
 
         $db
-            ->method('isConnected')
-            ->willReturn(true)
-        ;
-
-        $db
             ->method('fetchAll')
             ->willReturn([])
         ;
@@ -85,17 +80,29 @@ class UrlRewriteLoaderTest extends TestCase
         $this->assertCount(0, $collection->getIterator());
     }
 
+    public function testLoadUnsupportedConfigType()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $db = $this->createMock(Connection::class);
+
+        $db
+            ->method('fetchAll')
+            ->willReturn([
+                ['id' => 1, 'type' => 'foobar', 'requestPath' => 'foobar']
+            ])
+        ;
+
+        $loader = new UrlRewriteLoader($db);
+        $loader->load('');
+    }
+
     /**
      * @dataProvider getRouteCollectionProvider
      */
     public function testLoad($provided, $expected)
     {
         $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('isConnected')
-            ->willReturn(true)
-        ;
 
         $db
             ->method('fetchAll')
@@ -113,12 +120,13 @@ class UrlRewriteLoaderTest extends TestCase
 
         /** @var Route $route */
         foreach ($routes as $route) {
-            $this->assertContains('GET', $route->getMethods());
             $this->assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
             $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
+            $this->assertEquals($expected[$index]['methods'], $route->getMethods());
             $this->assertEquals($expected[$index]['path'], $route->getPath());
             $this->assertEquals($expected[$index]['requirements'], $route->getRequirements());
             $this->assertEquals($expected[$index]['host'], $route->getHost());
+            $this->assertEquals($expected[$index]['condition'], $route->getCondition());
 
             $index++;
         }
@@ -127,23 +135,27 @@ class UrlRewriteLoaderTest extends TestCase
     public function getRouteCollectionProvider()
     {
         return [
-            'Single route' => [
+            'Basic – single route' => [
                 [
                     'id' => 1,
+                    'type' => 'basic',
                     'requestPath' => 'foo/bar'
                 ],
                 [
                     [
                         'path' => '/foo/bar',
+                        'methods' => ['GET'],
                         'requirements' => [],
                         'host' => '',
+                        'condition' => '',
                     ],
                 ],
             ],
 
-            'Multiple hosts' => [
+            'Basic – multiple hosts' => [
                 [
-                    'id' => 2,
+                    'id' => 1,
+                    'type' => 'basic',
                     'requestPath' => 'foo/baz',
                     'requestHosts' => ['domain1.tld', 'domain2.tld'],
                     'requestRequirements' => [
@@ -154,19 +166,67 @@ class UrlRewriteLoaderTest extends TestCase
                 [
                     [
                         'path' => '/foo/baz',
+                        'methods' => ['GET'],
                         'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
                         'host' => 'domain1.tld',
+                        'condition' => '',
                     ],
                     [
                         'path' => '/foo/baz',
+                        'methods' => ['GET'],
                         'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
                         'host' => 'domain2.tld',
+                        'condition' => '',
+                    ],
+                ]
+            ],
+
+            'Expert – single route' => [
+                [
+                    'id' => 1,
+                    'type' => 'expert',
+                    'requestPath' => 'foo/bar',
+                    'requestCondition' => 'context.getMethod() in [\'GET\']',
+                ],
+                [
+                    [
+                        'path' => '/foo/bar',
+                        'methods' => [],
+                        'requirements' => [],
+                        'host' => '',
+                        'condition' => 'context.getMethod() in [\'GET\']',
+                    ],
+                ],
+            ],
+
+            'Expert – multiple hosts' => [
+                [
+                    'id' => 1,
+                    'type' => 'expert',
+                    'requestPath' => 'foo/baz',
+                    'requestHosts' => ['domain1.tld', 'domain2.tld'],
+                    'requestCondition' => 'context.getMethod() in [\'GET\']',
+                ],
+                [
+                    [
+                        'path' => '/foo/baz',
+                        'methods' => [],
+                        'requirements' => [],
+                        'host' => 'domain1.tld',
+                        'condition' => 'context.getMethod() in [\'GET\']',
+                    ],
+                    [
+                        'path' => '/foo/baz',
+                        'methods' => [],
+                        'requirements' => [],
+                        'host' => 'domain2.tld',
+                        'condition' => 'context.getMethod() in [\'GET\']',
                     ],
                 ]
             ],
 
             'Invalid #1' => [
-                ['id' => 3],
+                ['id' => 1],
                 []
             ],
 
