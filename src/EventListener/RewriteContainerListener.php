@@ -87,6 +87,31 @@ class RewriteContainerListener
     }
 
     /**
+     * On generate the label
+     *
+     * @param array $row
+     *
+     * @return string
+     */
+    public function onGenerateLabel(array $row): string
+    {
+        $request = $row['requestPath'];
+
+        if ((int) $row['responseCode'] === 410) {
+            $response = $row['responseCode'];
+        } else {
+            $response = sprintf('%s, %s', $row['responseUri'], $row['responseCode']);
+        }
+
+        return sprintf(
+            '%s <span style="padding-left:3px;color:#b3b3b3;">[%s &rarr; %s]</span>',
+            $row['name'],
+            $request,
+            $response
+        );
+    }
+
+    /**
      * Clear the router cache.
      */
     private function clearRouterCache(): void

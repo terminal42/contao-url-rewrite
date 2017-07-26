@@ -106,4 +106,35 @@ class RewriteContainerListenerTest extends TestCase
     {
         $this->assertSame('http://domain.tld', $this->listener->onResponseUriSave('http://domain.tld'));
     }
+
+    /**
+     * @dataProvider onGenerateLabelDataProvider
+     */
+    public function testOnGenerateLabel($provided, $expected)
+    {
+        $this->assertSame($expected, $this->listener->onGenerateLabel($provided));
+    }
+
+    public function onGenerateLabelDataProvider()
+    {
+        return [
+            301 => [
+                [
+                    'name' => 'Foobar',
+                    'requestPath' => 'foo/bar',
+                    'responseUri' => 'http://domain.tld/baz/{bar}',
+                    'responseCode' => 301,
+                ],
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301]</span>',
+            ],
+            410 => [
+                [
+                    'name' => 'Foobar',
+                    'requestPath' => 'foo/bar',
+                    'responseCode' => 410,
+                ],
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;">[foo/bar &rarr; 410]</span>',
+            ]
+        ];
+    }
 }

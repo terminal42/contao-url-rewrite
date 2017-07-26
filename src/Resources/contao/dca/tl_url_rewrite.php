@@ -43,6 +43,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
         'label' => [
             'fields' => ['name'],
             'format' => '%s',
+            'label_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'onGenerateLabel'],
         ],
         'global_operations' => [
             'all' => [
