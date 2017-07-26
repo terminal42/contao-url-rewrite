@@ -66,13 +66,13 @@ class RewriteController
 
         $responseCode = (int) $config['responseCode'];
 
-        if ($responseCode === 410) {
-            return new Response('Gone', $responseCode);
+        if (410 === $responseCode) {
+            return new Response(Response::$statusTexts[$responseCode], $responseCode);
         } elseif (null !== ($uri = $this->generateUri($request, $config))) {
             return new RedirectResponse($uri, $responseCode);
         }
 
-        return new Response('Internal Server Error', 500);
+        return new Response(Response::$statusTexts[500], 500);
     }
 
     /**
