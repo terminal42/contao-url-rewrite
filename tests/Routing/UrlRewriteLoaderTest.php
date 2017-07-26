@@ -117,7 +117,6 @@ class UrlRewriteLoaderTest extends TestCase
             $this->assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
             $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
             $this->assertEquals($expected[$index]['path'], $route->getPath());
-            $this->assertEquals($expected[$index]['scheme'], $route->getSchemes());
             $this->assertEquals($expected[$index]['requirements'], $route->getRequirements());
             $this->assertEquals($expected[$index]['host'], $route->getHost());
 
@@ -136,7 +135,6 @@ class UrlRewriteLoaderTest extends TestCase
                 [
                     [
                         'path' => '/foo/bar',
-                        'scheme' => [],
                         'requirements' => [],
                         'host' => '',
                     ],
@@ -148,7 +146,6 @@ class UrlRewriteLoaderTest extends TestCase
                     'id' => 2,
                     'requestPath' => 'foo/baz',
                     'requestHosts' => ['domain1.tld', 'domain2.tld'],
-                    'requestScheme' => 'http',
                     'requestRequirements' => [
                         ['key' => 'foo', 'value' => '\d+'],
                         ['key' => 'baz', 'value' => '\s+']
@@ -157,13 +154,11 @@ class UrlRewriteLoaderTest extends TestCase
                 [
                     [
                         'path' => '/foo/baz',
-                        'scheme' => ['http'],
                         'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
                         'host' => 'domain1.tld',
                     ],
                     [
                         'path' => '/foo/baz',
-                        'scheme' => ['http'],
                         'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
                         'host' => 'domain2.tld',
                     ],

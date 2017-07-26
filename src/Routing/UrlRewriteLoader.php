@@ -128,11 +128,6 @@ class UrlRewriteLoader extends Loader
             $route->setHost($host);
         }
 
-        // Set the scheme
-        if (isset($config['requestScheme'])) {
-            $route->setSchemes($config['requestScheme']);
-        }
-
         // Set the requirements
         if (isset($config['requestRequirements'])) {
             /** @var array $requirements */

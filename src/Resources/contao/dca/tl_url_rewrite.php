@@ -80,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
     // Palettes
     'palettes' => [
         '__selector__' => ['responseCode'],
-        'default' => '{name_legend},name;{request_legend},requestScheme,requestHosts,requestPath,requestRequirements;{response_legend},responseCode',
+        'default' => '{name_legend},name;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode',
     ],
 
     // Subpalettes
@@ -106,15 +106,6 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255],
             'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'requestScheme' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestScheme'],
-            'exclude' => true,
-            'filter' => true,
-            'inputType' => 'select',
-            'options' => ['http', 'https'],
-            'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => ['type' => 'string', 'length' => 5],
         ],
         'requestHosts' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'],
