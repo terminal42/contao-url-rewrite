@@ -6,6 +6,7 @@ namespace Terminal42\UrlRewriteBundle\Routing;
 
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -36,7 +37,7 @@ class UrlRewriteLoader extends Loader
     /**
      * @inheritDoc
      */
-    public function load($resource, $type = null): ?RouteCollection
+    public function load($resource, $type = null): RouteCollection
     {
         if (true === $this->loaded) {
             throw new \RuntimeException('Do not add the "terminal42 url rewrite" loader twice');
@@ -47,9 +48,7 @@ class UrlRewriteLoader extends Loader
 
         try {
             $rewrites = $this->db->fetchAll('SELECT * FROM tl_url_rewrite');
-        } catch (PDOException $e) {
-            return $collection;
-        } catch (TableNotFoundException $e) {
+        } catch (\PDOException | TableNotFoundException $e) {
             return $collection;
         }
 
@@ -58,7 +57,6 @@ class UrlRewriteLoader extends Loader
         }
 
         $count = 0;
-        $collection = new RouteCollection();
 
         foreach ($rewrites as $rewrite) {
             /** @var Route $route */
