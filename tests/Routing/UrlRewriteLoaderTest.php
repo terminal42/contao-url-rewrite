@@ -33,18 +33,35 @@ class UrlRewriteLoaderTest extends TestCase
         $loader->load('');
     }
 
-    public function testLoadNoDatabaseConnection()
+    public function testLoadDatabaseCaughtException()
     {
         $db = $this->createMock(Connection::class);
 
         $db
-            ->method('isConnected')
-            ->willReturn(null)
+            ->method('fetchAll')
+            ->willThrowException(new \PDOException())
         ;
 
         $loader = new UrlRewriteLoader($db);
+        $collection = $loader->load('');
 
-        $this->assertNull(null, $loader->load(''));
+        $this->assertInstanceOf(RouteCollection::class, $collection);
+        $this->assertCount(0, $collection->getIterator());
+    }
+
+    public function testLoadDatabaseUncaughtException()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $db = $this->createMock(Connection::class);
+
+        $db
+            ->method('fetchAll')
+            ->willThrowException(new \RuntimeException())
+        ;
+
+        $loader = new UrlRewriteLoader($db);
+        $loader->load('');
     }
 
     public function testLoadNoDatabaseRecords()
@@ -62,8 +79,10 @@ class UrlRewriteLoaderTest extends TestCase
         ;
 
         $loader = new UrlRewriteLoader($db);
+        $collection = $loader->load('');
 
-        $this->assertNull(null, $loader->load(''));
+        $this->assertInstanceOf(RouteCollection::class, $collection);
+        $this->assertCount(0, $collection->getIterator());
     }
 
     /**
