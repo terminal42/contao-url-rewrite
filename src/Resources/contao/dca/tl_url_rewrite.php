@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
         'requestRequirements' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements'],
             'exclude' => true,
-            'inputType' => 'listWizard',
+            'inputType' => 'keyValueWizard',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'clr'],
             'sql' => ['type' => 'blob'],
         ],

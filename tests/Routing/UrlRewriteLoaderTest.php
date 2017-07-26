@@ -149,7 +149,10 @@ class UrlRewriteLoaderTest extends TestCase
                     'requestPath' => 'foo/baz',
                     'requestHosts' => ['domain1.tld', 'domain2.tld'],
                     'requestScheme' => 'http',
-                    'requestRequirements' => ['foo: \d+', 'baz: \s+'],
+                    'requestRequirements' => [
+                        ['key' => 'foo', 'value' => '\d+'],
+                        ['key' => 'baz', 'value' => '\s+']
+                    ],
                 ],
                 [
                     [

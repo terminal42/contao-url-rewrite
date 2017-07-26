@@ -136,12 +136,14 @@ class UrlRewriteLoader extends Loader
         // Set the requirements
         if (isset($config['requestRequirements'])) {
             /** @var array $requirements */
-            $requirements = array_unique(array_filter(StringUtil::deserialize($config['requestRequirements'], true)));
+            $requirements = StringUtil::deserialize($config['requestRequirements'], true);
+            $requirements = array_filter($requirements, function ($item) {
+                return $item['key'] !== '' && $item['value'] !== '';
+            });
 
             if (count($requirements) > 0) {
                 foreach ($requirements as $requirement) {
-                    list($key, $regex) = StringUtil::trimsplit(':', $requirement);
-                    $route->setRequirement($key, $regex);
+                    $route->setRequirement($requirement['key'], $requirement['value']);
                 }
             }
         }
