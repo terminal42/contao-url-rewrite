@@ -165,7 +165,6 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
 
                 return $options;
             },
-            'reference' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['responseCode'],
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'integer', 'unsigned' => true],
         ],
