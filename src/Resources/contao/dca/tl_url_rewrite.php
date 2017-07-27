@@ -157,8 +157,14 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options' => [301, 302, 303, 307, 410],
-            'reference' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['responseCode'],
+            'options_callback' => function() {
+                $options = [];
+                foreach ([301, 302, 303, 307, 410] as $code) {
+                    $options[$code] = $code . ' ' . \Symfony\Component\HttpFoundation\Response::$statusTexts[$code];
+                }
+
+                return $options;
+            },
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'integer', 'unsigned' => true],
         ],
