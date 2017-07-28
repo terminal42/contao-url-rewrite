@@ -10,19 +10,12 @@
 
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
-use Contao\InsertTags;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 
 class RewriteContainerListener
 {
-    /**
-     * @var ContaoFrameworkInterface
-     */
-    private $framework;
-
     /**
      * @var Router
      */
@@ -41,18 +34,16 @@ class RewriteContainerListener
     /**
      * RewriteContainerListener constructor.
      *
-     * @param ContaoFrameworkInterface $framework
-     * @param Router                   $router
-     * @param string                   $cacheDir
-     * @param Filesystem               $fs
+     * @param Router     $router
+     * @param string     $cacheDir
+     * @param Filesystem $fs
      */
-    public function __construct(ContaoFrameworkInterface $framework, Router $router, string $cacheDir, Filesystem $fs = null)
+    public function __construct(Router $router, string $cacheDir, Filesystem $fs = null)
     {
         if ($fs === null) {
             $fs = new Filesystem();
         }
 
-        $this->framework = $framework;
         $this->router = $router;
         $this->cacheDir = $cacheDir;
         $this->fs = $fs;
@@ -64,27 +55,6 @@ class RewriteContainerListener
     public function onRecordsModified(): void
     {
         $this->clearRouterCache();
-    }
-
-    /**
-     * On response URI save.
-     *
-     * @param string $value
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return string
-     */
-    public function onResponseUriSave($value)
-    {
-        /** @var InsertTags $insertTags */
-        $insertTags = $this->framework->createInstance(InsertTags::class);
-
-        if (!preg_match('@^https?://@', $insertTags->replace($value))) {
-            throw new \InvalidArgumentException($GLOBALS['TL_LANG']['tl_url_rewrite']['error.responseUriAbsolute']);
-        }
-
-        return $value;
     }
 
     /**

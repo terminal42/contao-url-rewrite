@@ -36,7 +36,6 @@ $GLOBALS['TL_LANG']['tl_url_rewrite']['delete'] = ['Delete rewrite', 'Delete rew
 /*
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_url_rewrite']['error.responseUriAbsolute'] = 'The response URI must be an absolute path!';
 $GLOBALS['TL_LANG']['tl_url_rewrite']['typeRef'] = [
     'basic' => ['Basic', 'Allows to define the request matching using the basic routing features.'],
     'expert' => ['Expert', 'Allows to define the request condition using the <a href="https://symfony.com/doc/current/components/expression_language.html" target="_blank">Expression Language</a>. For more informations please <a href="https://symfony.com/doc/current/routing/conditions.html" target="_blank">visit this link</a>.'],
