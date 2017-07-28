@@ -71,6 +71,7 @@ class RewriteControllerTest extends TestCase
         $request = new Request();
         $request->attributes->set('_url_rewrite', 1);
         $request->attributes->set('_route_params', $provided[1]);
+        $request->query->add($provided[2]);
 
         $response = $controller->indexAction($request);
 
@@ -84,21 +85,23 @@ class RewriteControllerTest extends TestCase
         return [
             'Insert tags' => [
                 [
-                    ['responseUri' => '{{link_url::{bar}|absolute}}/foo///{baz}', 'responseCode' => 301],
+                    ['responseUri' => '{{link_url::{bar}|absolute}}/foo///{baz}/{quux}', 'responseCode' => 301],
                     ['bar' => 1, 'baz' => 'bar'],
+                    ['quux' => 'quuz']
                 ],
                 [
-                    'http://domain.tld/page.html/foo/bar',
+                    'http://domain.tld/page.html/foo/bar/quuz',
                     301
                 ],
             ],
             'Absolute ' => [
                 [
-                    ['responseUri' => 'foo///{baz}', 'responseCode' => 302],
+                    ['responseUri' => 'foo///{baz}/{quux}', 'responseCode' => 302],
                     ['baz' => 'bar'],
+                    ['quux' => 'quuz']
                 ],
                 [
-                    'http://domain.tld/foo/bar',
+                    'http://domain.tld/foo/bar/quuz',
                     302
                 ],
             ],
