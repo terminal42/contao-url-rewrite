@@ -9,7 +9,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_url_rewrite']['name'] = ['Internal name', 'Please enter the rewrite internal name (visible only in backend).'];
-$GLOBALS['TL_LANG']['tl_url_rewrite']['type'] = ['Type', 'Here you can choose enter the type.'];
+$GLOBALS['TL_LANG']['tl_url_rewrite']['type'] = ['Type', 'Here you can choose the type.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'] = ['Hosts restriction', 'Here you can restrict the match to certain hosts.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestPath'] = ['Path restriction', 'Here you can enter the path to match.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements'] = ['Extra requirements', 'Here you can add extra requirements for the match.'];

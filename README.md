@@ -28,6 +28,7 @@ imports:
 1. Find address on Google Maps:
 
 ```
+Type: basic
 Path restriction: find/{address}
 Response code: 303 See Other
 Response URI: https://www.google.com/maps?q={address}
@@ -35,9 +36,10 @@ Response URI: https://www.google.com/maps?q={address}
 Result: domain.tld/find/Switzerland → https://www.google.com/maps?q=Switzerland
 ```
 
-2. Redirect to the news entry:
+2. Redirect to a specific news entry:
 
 ```
+Type: basic
 Path restriction: news/{news}
 Requirements: [news => \d+]
 Response code: 301 Moved Permanently
@@ -50,8 +52,9 @@ Result: domain.tld/news/foobar → 404 Page Not Found
 3. Rewrite legacy URLs with query string:
 
 ```
+Type: expert
 Path restriction: home.php
-Request condition: context.getMethod() in ['GET'] and request.query.has('page')
+Request condition: context.getMethod() == 'GET' and request.query.has('page')
 Response code: 301 Moved Permanently
 Response URI: {{link_url::{page}|absolute}}
 ---
