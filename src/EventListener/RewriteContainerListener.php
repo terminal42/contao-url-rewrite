@@ -14,6 +14,7 @@ use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\InsertTags;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Response;
 
 class RewriteContainerListener
 {
@@ -109,6 +110,22 @@ class RewriteContainerListener
             $request,
             $response
         );
+    }
+
+    /**
+     * Get the response codes
+     *
+     * @return array
+     */
+    public function getResponseCodes(): array
+    {
+        $options = [];
+
+        foreach ([301, 302, 303, 307, 410] as $code) {
+            $options[$code] = $code . ' ' . Response::$statusTexts[$code];
+        }
+
+        return $options;
     }
 
     /**

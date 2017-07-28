@@ -137,4 +137,17 @@ class RewriteContainerListenerTest extends TestCase
             ]
         ];
     }
+
+    public function testOnGetResponseCodes()
+    {
+        $expected = [
+            301 => '301 Moved Permanently',
+            302 => '302 Found',
+            303 => '303 See Other',
+            307 => '307 Temporary Redirect',
+            410 => '410 Gone',
+        ];
+
+        $this->assertSame($expected, $this->listener->getResponseCodes());
+    }
 }
