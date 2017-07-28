@@ -11,7 +11,6 @@
 namespace Terminal42\UrlRewriteBundle\Controller;
 
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
-use Contao\Environment;
 use Contao\InsertTags;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -100,8 +99,7 @@ class RewriteController
 
         // Make the URL absolute if it's not yet already
         if (!preg_match('@^https?://@', $uri)) {
-            $this->framework->initialize();
-            $uri = $this->framework->getAdapter(Environment::class)->get('base').ltrim($uri, '/');
+            $uri = $request->getSchemeAndHttpHost() . $request->getBasePath() . '/' . ltrim($uri, '/');
         }
 
         return $uri;
