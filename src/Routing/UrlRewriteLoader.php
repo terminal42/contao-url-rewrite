@@ -135,7 +135,7 @@ class UrlRewriteLoader extends Loader
                 $route = $this->createExpertRoute($config);
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Unsupported config type: %s', $config['type']));
+                throw new \InvalidArgumentException(sprintf('Unsupported database record config type: %s', $config['type']));
         }
 
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');
