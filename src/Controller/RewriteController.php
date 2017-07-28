@@ -99,7 +99,7 @@ class RewriteController
 
         // Make the URL absolute if it's not yet already
         if (!preg_match('@^https?://@', $uri)) {
-            $uri = $request->getSchemeAndHttpHost() . $request->getBasePath() . '/' . ltrim($uri, '/');
+            $uri = $request->getSchemeAndHttpHost().$request->getBasePath().'/'.ltrim($uri, '/');
         }
 
         return $uri;
