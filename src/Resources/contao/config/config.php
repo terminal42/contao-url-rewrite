@@ -12,7 +12,7 @@ $GLOBALS['BE_MOD']['system']['url_rewrites'] = [
     'tables' => ['tl_url_rewrite'],
 ];
 
-/**
+/*
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['insertTagFlags'][] = ['terminal42_url_rewrite.listener.insert_tags', 'onInsertTagFlags'];

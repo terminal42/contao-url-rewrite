@@ -1,6 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Routing;
 
@@ -20,6 +28,7 @@ class UrlRewriteLoader extends Loader
 
     /**
      * Has been already loaded?
+     *
      * @var bool
      */
     private $loaded = false;
@@ -35,7 +44,7 @@ class UrlRewriteLoader extends Loader
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function load($resource, $type = null): RouteCollection
     {
@@ -62,7 +71,7 @@ class UrlRewriteLoader extends Loader
             /** @var Route $route */
             foreach ($this->generateRoutes($rewrite) as $route) {
                 if ($route !== null) {
-                    $collection->add('url_rewrite_' . $count++, $route);
+                    $collection->add('url_rewrite_'.$count++, $route);
                 }
             }
         }
@@ -71,7 +80,7 @@ class UrlRewriteLoader extends Loader
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function supports($resource, $type = null): bool
     {
@@ -141,7 +150,7 @@ class UrlRewriteLoader extends Loader
     }
 
     /**
-     * Create the basic route
+     * Create the basic route.
      *
      * @param array $config
      *
@@ -171,7 +180,7 @@ class UrlRewriteLoader extends Loader
     }
 
     /**
-     * Create the expert route
+     * Create the expert route.
      *
      * @param array $config
      *

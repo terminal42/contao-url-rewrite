@@ -42,9 +42,9 @@ class RewriteContainerListener
      * RewriteContainerListener constructor.
      *
      * @param ContaoFrameworkInterface $framework
-     * @param Router     $router
-     * @param string     $cacheDir
-     * @param Filesystem $fs
+     * @param Router                   $router
+     * @param string                   $cacheDir
+     * @param Filesystem               $fs
      */
     public function __construct(ContaoFrameworkInterface $framework, Router $router, string $cacheDir, Filesystem $fs = null)
     {
@@ -71,9 +71,9 @@ class RewriteContainerListener
      *
      * @param string $value
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function onResponseUriSave($value)
     {
@@ -88,7 +88,7 @@ class RewriteContainerListener
     }
 
     /**
-     * On generate the label
+     * On generate the label.
      *
      * @param array $row
      *
@@ -113,7 +113,7 @@ class RewriteContainerListener
     }
 
     /**
-     * Get the response codes
+     * Get the response codes.
      *
      * @return array
      */
@@ -122,7 +122,7 @@ class RewriteContainerListener
         $options = [];
 
         foreach ([301, 302, 303, 307, 410] as $code) {
-            $options[$code] = $code . ' ' . Response::$statusTexts[$code];
+            $options[$code] = $code.' '.Response::$statusTexts[$code];
         }
 
         return $options;

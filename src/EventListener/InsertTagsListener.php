@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
@@ -38,7 +38,7 @@ class InsertTagsListener
     }
 
     /**
-     * On insert tag flags
+     * On insert tag flags.
      *
      * @param string $flag
      * @param string $tag
@@ -73,7 +73,7 @@ class InsertTagsListener
     }
 
     /**
-     * Return true if the class exists
+     * Return true if the class exists.
      *
      * @param string $class
      *
@@ -85,7 +85,7 @@ class InsertTagsListener
     }
 
     /**
-     * Generate the article URL
+     * Generate the article URL.
      *
      * @param string $articleId
      *
@@ -102,12 +102,12 @@ class InsertTagsListener
             return false;
         }
 
-        /** @var PageModel $page */
-        return $page->getAbsoluteUrl('/articles/' . ($article->alias ?: $article->id));
+        /* @var PageModel $page */
+        return $page->getAbsoluteUrl('/articles/'.($article->alias ?: $article->id));
     }
 
     /**
-     * Generate the event URL
+     * Generate the event URL.
      *
      * @param string $eventId
      *
@@ -142,12 +142,12 @@ class InsertTagsListener
         /** @var Config $config */
         $config = $this->framework->getAdapter(Config::class);
 
-        /** @var PageModel $page */
+        /* @var PageModel $page */
         return $page->getAbsoluteUrl(($config->get('useAutoItem') ? '/' : '/events/').($event->alias ?: $event->id));
     }
 
     /**
-     * Generate the FAQ URL
+     * Generate the FAQ URL.
      *
      * @param string $faqId
      *
@@ -172,18 +172,18 @@ class InsertTagsListener
         /** @var Config $config */
         $config = $this->framework->getAdapter(Config::class);
 
-        /** @var PageModel $page */
+        /* @var PageModel $page */
         return $page->getAbsoluteUrl(($config->get('useAutoItem') ? '/' : '/items/').($faq->alias ?: $faq->id));
     }
 
     /**
-     * Generate the file URL
+     * Generate the file URL.
      *
      * @param string $file
      *
-     * @return bool|string
-     *
      * @throws \RuntimeException
+     *
+     * @return bool|string
      */
     private function generateFileUrl(string $file)
     {
@@ -197,14 +197,14 @@ class InsertTagsListener
         }
 
         if (Validator::isInsecurePath($file)) {
-            throw new \RuntimeException('Invalid path ' . $file);
+            throw new \RuntimeException('Invalid path '.$file);
         }
 
-        return $this->framework->getAdapter(Environment::class)->get('base') . ltrim($file, '/');
+        return $this->framework->getAdapter(Environment::class)->get('base').ltrim($file, '/');
     }
 
     /**
-     * Generate the link URL
+     * Generate the link URL.
      *
      * @param string $pageId
      *
@@ -239,7 +239,7 @@ class InsertTagsListener
     }
 
     /**
-     * Generate the news URL
+     * Generate the news URL.
      *
      * @param string $newsId
      *
@@ -274,7 +274,7 @@ class InsertTagsListener
         /** @var Config $config */
         $config = $this->framework->getAdapter(Config::class);
 
-        /** @var PageModel $page */
+        /* @var PageModel $page */
         return $page->getAbsoluteUrl(($config->get('useAutoItem') ? '/' : '/items/').($news->alias ?: $news->id));
     }
 }

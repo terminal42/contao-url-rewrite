@@ -108,10 +108,10 @@ class RewriteController
     }
 
     /**
-     * Replace the wildcards
+     * Replace the wildcards.
      *
      * @param Request $request
-     * @param string $uri
+     * @param string  $uri
      *
      * @return string
      */
@@ -133,7 +133,7 @@ class RewriteController
     }
 
     /**
-     * Replace the insert tags
+     * Replace the insert tags.
      *
      * @param string $uri
      *
