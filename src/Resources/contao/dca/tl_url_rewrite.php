@@ -82,8 +82,8 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
     'palettes' => [
         '__selector__' => ['type', 'responseCode'],
         'default' => '{name_legend},name,type',
-        'basic' => '{name_legend},name,type;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode',
-        'expert' => '{name_legend},name,type;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode',
+        'basic' => '{name_legend},name,type;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode;{examples_legend},examples',
+        'expert' => '{name_legend},name,type;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode;{examples_legend},examples',
     ],
 
     // Subpalettes
@@ -175,6 +175,9 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
                 'tl_class' => 'clr wizard',
             ],
             'sql' => ['type' => 'string'],
+        ],
+        'examples' => [
+            'input_field_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'generateExamples'],
         ],
     ],
 ];

@@ -23,6 +23,7 @@ $GLOBALS['TL_LANG']['tl_url_rewrite']['responseUri'] = ['Response URI', 'Here yo
 $GLOBALS['TL_LANG']['tl_url_rewrite']['name_legend'] = 'Rewrite name';
 $GLOBALS['TL_LANG']['tl_url_rewrite']['request_legend'] = 'Request matching';
 $GLOBALS['TL_LANG']['tl_url_rewrite']['response_legend'] = 'Response processing';
+$GLOBALS['TL_LANG']['tl_url_rewrite']['examples_legend'] = 'Examples';
 
 /*
  * Buttons
@@ -39,4 +40,32 @@ $GLOBALS['TL_LANG']['tl_url_rewrite']['delete'] = ['Delete rewrite', 'Delete rew
 $GLOBALS['TL_LANG']['tl_url_rewrite']['typeRef'] = [
     'basic' => ['Basic', 'Allows to define the request matching using the basic routing features.'],
     'expert' => ['Expert', 'Allows to define the request condition using the <a href="https://symfony.com/doc/current/components/expression_language.html" target="_blank">Expression Language</a>. For more informations please <a href="https://symfony.com/doc/current/routing/conditions.html" target="_blank">visit this link</a>.'],
+];
+
+/**
+ * Examples
+ */
+$GLOBALS['TL_LANG']['tl_url_rewrite']['examples'] = [
+    ['Find address on Google Maps:', 'Type: basic
+Path restriction: find/{address}
+Response code: 303 See Other
+Response URI: https://www.google.com/maps?q={address}
+---
+Result: domain.tld/find/Switzerland → https://www.google.com/maps?q=Switzerland'],
+    ['Redirect to a specific news entry:', 'Type: basic
+Path restriction: news/{news}
+Requirements: [news => \d+]
+Response code: 301 Moved Permanently
+Response URI: {{news_url::{news}|absolute}}
+---
+Result: domain.tld/news/123 → domain.tld/news-reader/foobar-123.html
+Result: domain.tld/news/foobar → 404 Page Not Found
+'],
+    ['Rewrite legacy URLs with query string:', 'Type: expert
+Path restriction: home.php
+Request condition: context.getMethod() == \'GET\' and request.query.has(\'page\')
+Response code: 301 Moved Permanently
+Response URI: {{link_url::{page}|absolute}}
+---
+Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html'],
 ];

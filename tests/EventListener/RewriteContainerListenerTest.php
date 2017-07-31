@@ -100,6 +100,22 @@ class RewriteContainerListenerTest extends TestCase
         ];
     }
 
+    public function testOnGenerateExamples()
+    {
+        $GLOBALS['TL_LANG'] = [
+            'tl_url_rewrite' => [
+                'examples' => [
+                    ['foo', 'bar']
+                ]
+            ],
+        ];
+
+        $buffer = $this->listener->generateExamples();
+
+        $this->assertStringStartsWith('<div class="widget long">', $buffer);
+        $this->assertStringEndsWith('</div>', $buffer);
+    }
+
     public function testOnGetResponseCodes()
     {
         $expected = [
