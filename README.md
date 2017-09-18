@@ -1,5 +1,9 @@
 # URL Rewrite bundle for Contao Open Source CMS
 
+
+[![](https://img.shields.io/travis/terminal42/contao-url-rewrite/master.svg?style=flat-square)](https://travis-ci.org/terminal42/contao-url-rewrite/)
+[![](https://img.shields.io/coveralls/terminal42/contao-url-rewrite/master.svg?style=flat-square)](https://coveralls.io/github/terminal42/contao-url-rewrite)
+
 The extension provides a new backend module for Contao that allows to set various URL rewrites. Behind the scenes
 the rules are added as routes to the internal application router which allows to use all the features provided
 by the Symfony Routing component.
