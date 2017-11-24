@@ -21,7 +21,7 @@ class BundleConfigProvider implements ConfigProviderInterface
      *
      * @param array $entries
      */
-    public function __construct(array $entries)
+    public function __construct(array $entries = [])
     {
         $this->entries = $entries;
     }
@@ -76,7 +76,7 @@ class BundleConfigProvider implements ConfigProviderInterface
      */
     private function createConfig(int $id, array $data): ?RewriteConfig
     {
-        if (!isset($data['type'], $data['request'], $data['request']['path'], $data['response'], $data['response']['code'])) {
+        if (!isset($data['request'], $data['request']['path'], $data['response'], $data['response']['code'])) {
             return null;
         }
 

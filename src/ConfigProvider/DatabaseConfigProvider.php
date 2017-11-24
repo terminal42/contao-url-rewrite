@@ -17,7 +17,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     /**
      * @var string
      */
-    private $key = 'bundle';
+    private $key = 'database';
 
     /**
      * DatabaseConfigProvider constructor.
@@ -59,7 +59,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
      */
     public function findAll(): array
     {
-        try{
+        try {
             $records = $this->connection->fetchAll('SELECT * FROM tl_url_rewrite');
         } catch (\PDOException | TableNotFoundException $e) {
             return [];
@@ -103,10 +103,10 @@ class DatabaseConfigProvider implements ConfigProviderInterface
         switch ($data['type']) {
             // Basic type
             case 'basic':
-                if (isset($config['requestRequirements'])) {
+                if (isset($data['requestRequirements'])) {
                     $requirements = [];
 
-                    foreach (StringUtil::deserialize($config['requestRequirements'], true) as $requirement) {
+                    foreach (StringUtil::deserialize($data['requestRequirements'], true) as $requirement) {
                         if ($requirement['key'] !== '' && $requirement['value'] !== '') {
                             $requirements[$requirement['key']] = $requirement['value'];
                         }
@@ -117,7 +117,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
                 break;
             // Expert type
             case 'expert':
-                $config->setRequestCondition($config['requestCondition']);
+                $config->setRequestCondition($data['requestCondition']);
                 break;
             default:
                 throw new \RuntimeException(sprintf('Unsupported database record config type: %s', $data['type']));

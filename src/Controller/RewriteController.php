@@ -54,7 +54,7 @@ class RewriteController
      */
     public function indexAction(Request $request): Response
     {
-        if (!$request->attributes->has('_url_rewrite') || !($rewriteId = $request->attributes->getInt('_url_rewrite'))) {
+        if (!$request->attributes->has('_url_rewrite') || !($rewriteId = $request->attributes->get('_url_rewrite'))) {
             throw new RouteNotFoundException('There _url_rewrite attribute is missing');
         }
 

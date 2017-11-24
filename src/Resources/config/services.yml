@@ -2,13 +2,13 @@ services:
     terminal42_url_rewrite.rewrite_controller:
         class: Terminal42\UrlRewriteBundle\Controller\RewriteController
         arguments:
-            - "@terminal42_url_rewrite.provider.database"
+            - "@terminal42_url_rewrite.provider.chain"
             - "@contao.framework"
 
     terminal42_url_rewrite.rewrite_loader:
         class: Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader
         arguments:
-            - "@terminal42_url_rewrite.provider.database"
+            - "@terminal42_url_rewrite.provider.chain"
         tags:
             - { name: routing.loader }
 
