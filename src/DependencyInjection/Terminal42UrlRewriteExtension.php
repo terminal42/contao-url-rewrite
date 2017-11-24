@@ -14,18 +14,26 @@ namespace Terminal42\UrlRewriteBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class Terminal42UrlRewriteExtension extends Extension
+class Terminal42UrlRewriteExtension extends ConfigurableExtension
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function load(array $configs, ContainerBuilder $container): void
+    protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('listener.yml');
         $loader->load('services.yml');
+
+        // Set the "backend management" parameter
+        $container->setParameter('terminal42_url_rewrite.backend_management', $mergedConfig['backend_management']);
+
+        // Set the entries as argument for bundle config provider
+        if (isset($mergedConfig['entries']) && $container->hasDefinition('terminal42_url_rewrite.provider.bundle')) {
+            $container->getDefinition('terminal42_url_rewrite.provider.bundle')->setArguments([$mergedConfig['entries']]);
+        }
     }
 }
