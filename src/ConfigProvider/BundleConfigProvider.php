@@ -76,7 +76,7 @@ class BundleConfigProvider implements ConfigProviderInterface
      */
     private function createConfig(int $id, array $data): ?RewriteConfig
     {
-        if (!isset($data['request'], $data['request']['path'], $data['response'], $data['response']['code'])) {
+        if (!isset($data['request']['path'], $data['response']['code'])) {
             return null;
         }
 
