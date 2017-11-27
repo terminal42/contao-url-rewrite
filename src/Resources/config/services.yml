@@ -16,7 +16,7 @@ services:
         class: Terminal42\UrlRewriteBundle\ConfigProvider\BundleConfigProvider
         public: false
         tags:
-            - { name: terminal42_url_rewrite.config_provider }
+            - { name: terminal42_url_rewrite.config_provider, priority: 10 }
 
     terminal42_url_rewrite.provider.chain:
         class: Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider
@@ -28,4 +28,4 @@ services:
         arguments:
             - "@database_connection"
         tags:
-            - { name: terminal42_url_rewrite.config_provider }
+            - { name: terminal42_url_rewrite.config_provider, priority: 0 }

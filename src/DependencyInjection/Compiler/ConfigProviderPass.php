@@ -40,9 +40,21 @@ class ConfigProviderPass implements CompilerPassInterface
         }
 
         $definition = $container->findDefinition($this->chain);
-        
+        $providers = [];
+
+        // Get the config providers in the relevant order by priority
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $tags) {
-            $definition->addMethodCall('addProvider', [new Reference($id)]);
+            $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
+            $providers[$priority][] = new Reference($id);
+        }
+
+        krsort($providers);
+
+        // Add the providers to the service
+        foreach ($providers as $v) {
+            foreach ($v as $vv) {
+                $definition->addMethodCall('addProvider', [$vv]);
+            }
         }
     }
 }
