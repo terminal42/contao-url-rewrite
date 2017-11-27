@@ -100,7 +100,7 @@ class RewriteContainerListener
     }
 
     /**
-     * Generate the examples
+     * Generate the examples.
      *
      * @return string
      */

@@ -42,7 +42,7 @@ $GLOBALS['TL_LANG']['tl_url_rewrite']['typeRef'] = [
     'expert' => ['komplex', 'Erlaubt die Anfrage-Zuordnung auf Basis der Symfony <a href="https://symfony.com/doc/current/components/expression_language.html" target="_blank">Expression Language</a>. Für weitere Informationen <a href="https://symfony.com/doc/current/routing/conditions.html" target="_blank">besuchen Sie bitte diese Seite</a>.'],
 ];
 
-/**
+/*
  * Examples
  */
 $GLOBALS['TL_LANG']['tl_url_rewrite']['examples'] = [

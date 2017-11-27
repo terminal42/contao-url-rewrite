@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
+
 namespace Terminal42\UrlRewriteBundle\ConfigProvider;
 
 use Contao\StringUtil;
@@ -30,7 +38,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function find(string $id): ?RewriteConfig
     {
@@ -55,7 +63,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findAll(): array
     {
@@ -81,7 +89,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Create the config
+     * Create the config.
      *
      * @param array $data
      *
@@ -93,7 +101,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
             return null;
         }
 
-        $config = new RewriteConfig($this->key . ':' . $data['id'], $data['requestPath'], (int) $data['responseCode']);
+        $config = new RewriteConfig($this->key.':'.$data['id'], $data['requestPath'], (int) $data['responseCode']);
 
         // Hosts
         if (isset($data['requestHosts'])) {

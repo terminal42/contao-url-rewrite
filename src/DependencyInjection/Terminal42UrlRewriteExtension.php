@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 class Terminal42UrlRewriteExtension extends ConfigurableExtension
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {

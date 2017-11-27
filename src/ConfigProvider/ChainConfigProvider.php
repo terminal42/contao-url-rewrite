@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
+
 namespace Terminal42\UrlRewriteBundle\ConfigProvider;
 
 use Terminal42\UrlRewriteBundle\RewriteConfig;
@@ -12,7 +20,7 @@ class ChainConfigProvider implements ConfigProviderInterface
     private $providers = [];
 
     /**
-     * Add the config provider
+     * Add the config provider.
      *
      * @param ConfigProviderInterface $provider
      */
@@ -22,7 +30,7 @@ class ChainConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function find(string $id): ?RewriteConfig
     {
@@ -37,7 +45,7 @@ class ChainConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findAll(): array
     {
