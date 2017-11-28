@@ -10,7 +10,7 @@
 
 namespace Terminal42\UrlRewriteBundle\ConfigProvider;
 
-use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 interface ConfigProviderInterface
 {
@@ -19,9 +19,9 @@ interface ConfigProviderInterface
      *
      * @param string $id
      *
-     * @return RewriteConfig|null
+     * @return RewriteConfigInterface|null
      */
-    public function find(string $id): ?RewriteConfig;
+    public function find(string $id): ?RewriteConfigInterface;
 
     /**
      * Find all configs.

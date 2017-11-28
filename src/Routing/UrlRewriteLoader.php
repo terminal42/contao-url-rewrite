@@ -16,7 +16,7 @@ use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
-use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class UrlRewriteLoader extends Loader
 {
@@ -61,7 +61,7 @@ class UrlRewriteLoader extends Loader
 
         $count = 0;
 
-        /** @var RewriteConfig $config */
+        /** @var RewriteConfigInterface $config */
         foreach ($configs as $config) {
             /** @var Route $route */
             foreach ($this->generateRoutes($config) as $route) {
@@ -85,11 +85,11 @@ class UrlRewriteLoader extends Loader
     /**
      * Generate the routes.
      *
-     * @param RewriteConfig $config
+     * @param RewriteConfigInterface $config
      *
      * @return \Generator
      */
-    private function generateRoutes(RewriteConfig $config): \Generator
+    private function generateRoutes(RewriteConfigInterface $config): \Generator
     {
         $hosts = $config->getRequestHosts();
 
@@ -105,12 +105,12 @@ class UrlRewriteLoader extends Loader
     /**
      * Create the route object.
      *
-     * @param RewriteConfig $config
+     * @param RewriteConfigInterface $config
      * @param string|null   $host
      *
      * @return Route|null
      */
-    private function createRoute(RewriteConfig $config, string $host = null): ?Route
+    private function createRoute(RewriteConfigInterface $config, string $host = null): ?Route
     {
         $route = new Route($config->getRequestPath());
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');

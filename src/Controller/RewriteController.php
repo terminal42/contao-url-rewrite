@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
-use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteController
 {
@@ -79,11 +79,11 @@ class RewriteController
      * Generate the URI.
      *
      * @param Request       $request
-     * @param RewriteConfig $config
+     * @param RewriteConfigInterface $config
      *
      * @return string|null
      */
-    private function generateUri(Request $request, RewriteConfig $config): ?string
+    private function generateUri(Request $request, RewriteConfigInterface $config): ?string
     {
         if (($uri = $config->getResponseUri()) === null) {
             return null;

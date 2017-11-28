@@ -14,6 +14,7 @@ use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class DatabaseConfigProvider implements ConfigProviderInterface
 {
@@ -40,7 +41,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function find(string $id): ?RewriteConfig
+    public function find(string $id): ?RewriteConfigInterface
     {
         list($key, $id) = explode(':', $id);
 

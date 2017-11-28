@@ -12,7 +12,7 @@ namespace Terminal42\UrlRewriteBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -59,7 +59,7 @@ class Configuration implements ConfigurationInterface
                                         ->info('The response code.')
                                         ->defaultValue(301)
                                         ->validate()
-                                        ->ifNotInArray(RewriteConfig::VALID_RESPONSE_CODES)
+                                        ->ifNotInArray(RewriteConfigInterface::VALID_RESPONSE_CODES)
                                             ->thenInvalid('Invalid response code %s.')
                                         ->end()
                                     ->end()

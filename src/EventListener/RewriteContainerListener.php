@@ -13,7 +13,7 @@ namespace Terminal42\UrlRewriteBundle\EventListener;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
-use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteContainerListener
 {
@@ -92,7 +92,7 @@ class RewriteContainerListener
     {
         $options = [];
 
-        foreach (RewriteConfig::VALID_RESPONSE_CODES as $code) {
+        foreach (RewriteConfigInterface::VALID_RESPONSE_CODES as $code) {
             $options[$code] = $code.' '.Response::$statusTexts[$code];
         }
 

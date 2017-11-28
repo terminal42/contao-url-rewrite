@@ -10,7 +10,7 @@
 
 namespace Terminal42\UrlRewriteBundle\ConfigProvider;
 
-use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class ChainConfigProvider implements ConfigProviderInterface
 {
@@ -32,7 +32,7 @@ class ChainConfigProvider implements ConfigProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function find(string $id): ?RewriteConfig
+    public function find(string $id): ?RewriteConfigInterface
     {
         /** @var ConfigProviderInterface $provider */
         foreach ($this->providers as $provider) {

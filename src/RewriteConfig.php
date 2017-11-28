@@ -10,10 +10,8 @@
 
 namespace Terminal42\UrlRewriteBundle;
 
-class RewriteConfig
+class RewriteConfig implements RewriteConfigInterface
 {
-    const VALID_RESPONSE_CODES = [301, 302, 303, 307, 410];
-
     /**
      * @var string
      */

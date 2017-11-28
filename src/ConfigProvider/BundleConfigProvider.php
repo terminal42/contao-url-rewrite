@@ -11,6 +11,7 @@
 namespace Terminal42\UrlRewriteBundle\ConfigProvider;
 
 use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class BundleConfigProvider implements ConfigProviderInterface
 {
@@ -37,7 +38,7 @@ class BundleConfigProvider implements ConfigProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function find(string $id): ?RewriteConfig
+    public function find(string $id): ?RewriteConfigInterface
     {
         list($key, $id) = explode(':', $id);
 
