@@ -11,11 +11,14 @@
 namespace Terminal42\UrlRewriteBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class ConfigProviderPass implements CompilerPassInterface
 {
+    use PriorityTaggedServiceTrait;
+
     /**
      * @var string
      */
@@ -48,20 +51,10 @@ class ConfigProviderPass implements CompilerPassInterface
         }
 
         $definition = $container->findDefinition($this->chain);
-        $providers = [];
 
-        // Get the config providers in the relevant order by priority
-        foreach ($container->findTaggedServiceIds($this->tag) as $id => $tags) {
-            $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
-            $providers[$priority][] = new Reference($id);
-        }
-
-        krsort($providers);
-
-        // Add the providers to the service
-        foreach ($providers as $v) {
-            foreach ($v as $vv) {
-                $definition->addMethodCall('addProvider', [$vv]);
+        foreach ($this->findAndSortTaggedServices($this->tag, $container) as $services) {
+            foreach ($services as $service) {
+                $definition->addMethodCall('addProvider', [$service]);
             }
         }
     }
