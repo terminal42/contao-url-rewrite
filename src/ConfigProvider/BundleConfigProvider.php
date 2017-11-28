@@ -21,11 +21,6 @@ class BundleConfigProvider implements ConfigProviderInterface
     private $entries = [];
 
     /**
-     * @var string
-     */
-    private $key = 'bundle';
-
-    /**
      * BundleConfigProvider constructor.
      *
      * @param array $entries
@@ -40,14 +35,6 @@ class BundleConfigProvider implements ConfigProviderInterface
      */
     public function find(string $id): ?RewriteConfigInterface
     {
-        list($key, $id) = explode(':', $id);
-
-        // Return if the key is not supported
-        if ($key !== $this->key) {
-            return null;
-        }
-
-        // Return if the entry does not exist
         if (!array_key_exists($id, $this->entries)) {
             return null;
         }
@@ -67,7 +54,7 @@ class BundleConfigProvider implements ConfigProviderInterface
         $configs = [];
 
         foreach ($this->entries as $id => $entry) {
-            if (($config = $this->createConfig($id, $entry)) !== null) {
+            if (($config = $this->createConfig((string) $id, $entry)) !== null) {
                 $configs[] = $config;
             }
         }
@@ -78,18 +65,18 @@ class BundleConfigProvider implements ConfigProviderInterface
     /**
      * Create the config.
      *
-     * @param int   $id
-     * @param array $data
+     * @param string $id
+     * @param array  $data
      *
      * @return null|RewriteConfig
      */
-    private function createConfig(int $id, array $data): ?RewriteConfig
+    private function createConfig(string $id, array $data): ?RewriteConfig
     {
         if (!isset($data['request']['path'], $data['response']['code'])) {
             return null;
         }
 
-        $config = new RewriteConfig($this->key.':'.$id, $data['request']['path'], (int) $data['response']['code']);
+        $config = new RewriteConfig($id, $data['request']['path'], (int) $data['response']['code']);
 
         // Request hosts
         if (isset($data['request']['hosts'])) {

@@ -70,6 +70,14 @@ class RewriteConfig implements RewriteConfigInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setIdentifier(string $identifier): void
+    {
+        $this->identifier = $identifier;
+    }
+
+    /**
      * @return string
      */
     public function getRequestPath(): string

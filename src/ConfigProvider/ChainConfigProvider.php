@@ -34,9 +34,11 @@ class ChainConfigProvider implements ConfigProviderInterface
      */
     public function find(string $id): ?RewriteConfigInterface
     {
+        list($class, $id) = explode(':', $id);
+
         /** @var ConfigProviderInterface $provider */
         foreach ($this->providers as $provider) {
-            if (($config = $provider->find($id)) !== null) {
+            if ($class === $this->getProviderIdentifier($provider) && ($config = $provider->find($id)) !== null) {
                 return $config;
             }
         }
@@ -53,9 +55,28 @@ class ChainConfigProvider implements ConfigProviderInterface
 
         /** @var ConfigProviderInterface $provider */
         foreach ($this->providers as $provider) {
-            $configs = array_merge($configs, $provider->findAll());
+            $providerConfigs = $provider->findAll();
+
+            /** @var RewriteConfigInterface $config */
+            foreach ($providerConfigs as $config) {
+                $config->setIdentifier($this->getProviderIdentifier($provider) . ':' . $config->getIdentifier());
+            }
+
+            $configs = array_merge($configs, $providerConfigs);
         }
 
         return $configs;
+    }
+
+    /**
+     * Get the provider identifier
+     *
+     * @param ConfigProviderInterface $provider
+     *
+     * @return string
+     */
+    private function getProviderIdentifier(ConfigProviderInterface $provider): string
+    {
+        return get_class($provider);
     }
 }

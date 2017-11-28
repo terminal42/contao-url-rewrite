@@ -55,7 +55,7 @@ class ConfigProviderPass implements CompilerPassInterface
         $services = $this->findAndSortTaggedServices($this->tag, $container);
 
         // If there's only one service or chain service is not present alias the first service
-        if ((count($services) === 1 && count($services[0]) === 1) || !$container->has($this->chain)) {
+        if ((count($services) === 1 && count($services[0]) === 1) || !$container->hasDefinition($this->chain)) {
             $container->setAlias($this->alias, (string) $services[0]);
 
             return;
@@ -64,10 +64,8 @@ class ConfigProviderPass implements CompilerPassInterface
         $definition = $container->findDefinition($this->chain);
 
         // Add providers to the chain
-        foreach ($services as $providers) {
-            foreach ($providers as $provider) {
-                $definition->addMethodCall('addProvider', [$provider]);
-            }
+        foreach ($services as $service) {
+            $definition->addMethodCall('addProvider', [$service]);
         }
     }
 }

@@ -20,6 +20,11 @@ interface RewriteConfigInterface
     public function getIdentifier(): string;
 
     /**
+     * @param string $identifier
+     */
+    public function setIdentifier(string $identifier): void;
+
+    /**
      * @return string
      */
     public function getRequestPath(): string;

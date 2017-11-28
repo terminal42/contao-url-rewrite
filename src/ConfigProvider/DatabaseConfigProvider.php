@@ -24,11 +24,6 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     private $connection;
 
     /**
-     * @var string
-     */
-    private $key = 'database';
-
-    /**
      * DatabaseConfigProvider constructor.
      *
      * @param Connection $connection
@@ -43,13 +38,6 @@ class DatabaseConfigProvider implements ConfigProviderInterface
      */
     public function find(string $id): ?RewriteConfigInterface
     {
-        list($key, $id) = explode(':', $id);
-
-        // Return if the key is not supported
-        if ($key !== $this->key) {
-            return null;
-        }
-
         try {
             $data = $this->connection->fetchAssoc('SELECT * FROM tl_url_rewrite WHERE id=?', [$id]);
         } catch (\PDOException | TableNotFoundException $e) {
@@ -102,11 +90,16 @@ class DatabaseConfigProvider implements ConfigProviderInterface
             return null;
         }
 
-        $config = new RewriteConfig($this->key.':'.$data['id'], $data['requestPath'], (int) $data['responseCode']);
+        $config = new RewriteConfig((string) $data['id'], $data['requestPath'], (int) $data['responseCode']);
 
         // Hosts
         if (isset($data['requestHosts'])) {
             $config->setRequestHosts(StringUtil::deserialize($data['requestHosts'], true));
+        }
+
+        // Response URI
+        if (isset($data['responseUri'])) {
+            $config->setResponseUri($data['responseUri']);
         }
 
         switch ($data['type']) {
