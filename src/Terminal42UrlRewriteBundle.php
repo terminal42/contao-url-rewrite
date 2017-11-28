@@ -23,6 +23,10 @@ class Terminal42UrlRewriteBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new ConfigProviderPass('terminal42_url_rewrite.provider.chain', 'terminal42_url_rewrite.config_provider'));
+        $container->addCompilerPass(new ConfigProviderPass(
+            'terminal42_url_rewrite.provider',
+            'terminal42_url_rewrite.provider.chain',
+            'terminal42_url_rewrite.provider'
+        ));
     }
 }

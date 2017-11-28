@@ -13,11 +13,15 @@ namespace Terminal42\UrlRewriteBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 class ConfigProviderPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
+
+    /**
+     * @var string
+     */
+    private $alias;
 
     /**
      * @var string
@@ -32,11 +36,13 @@ class ConfigProviderPass implements CompilerPassInterface
     /**
      * ConfigProviderPass constructor.
      *
+     * @param string $alias
      * @param string $chain
-     * @param string $tag
+     * @param        $tag
      */
-    public function __construct($chain, $tag)
+    public function __construct($alias, $chain, $tag)
     {
+        $this->alias = $alias;
         $this->chain = $chain;
         $this->tag = $tag;
     }
@@ -46,15 +52,21 @@ class ConfigProviderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has($this->chain)) {
+        $services = $this->findAndSortTaggedServices($this->tag, $container);
+
+        // If there's only one service or chain service is not present alias the first service
+        if ((count($services) === 1 && count($services[0]) === 1) || !$container->has($this->chain)) {
+            $container->setAlias($this->alias, (string) $services[0]);
+
             return;
         }
 
         $definition = $container->findDefinition($this->chain);
 
-        foreach ($this->findAndSortTaggedServices($this->tag, $container) as $services) {
-            foreach ($services as $service) {
-                $definition->addMethodCall('addProvider', [$service]);
+        // Add providers to the chain
+        foreach ($services as $providers) {
+            foreach ($providers as $provider) {
+                $definition->addMethodCall('addProvider', [$provider]);
             }
         }
     }

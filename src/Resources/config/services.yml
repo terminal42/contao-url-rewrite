@@ -2,21 +2,24 @@ services:
     terminal42_url_rewrite.rewrite_controller:
         class: Terminal42\UrlRewriteBundle\Controller\RewriteController
         arguments:
-            - "@terminal42_url_rewrite.provider.chain"
+            - "@terminal42_url_rewrite.provider"
             - "@contao.framework"
 
     terminal42_url_rewrite.rewrite_loader:
         class: Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader
         arguments:
-            - "@terminal42_url_rewrite.provider.chain"
+            - "@terminal42_url_rewrite.provider"
         tags:
             - { name: routing.loader }
+
+    terminal42_url_rewrite.provider:
+        alias: terminal42_url_rewrite.provider.chain
 
     terminal42_url_rewrite.provider.bundle:
         class: Terminal42\UrlRewriteBundle\ConfigProvider\BundleConfigProvider
         public: false
         tags:
-            - { name: terminal42_url_rewrite.config_provider, priority: 64 }
+            - { name: terminal42_url_rewrite.provider, priority: 64 }
 
     terminal42_url_rewrite.provider.chain:
         class: Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider
@@ -28,4 +31,4 @@ services:
         arguments:
             - "@database_connection"
         tags:
-            - { name: terminal42_url_rewrite.config_provider, priority: 32 }
+            - { name: terminal42_url_rewrite.provider, priority: 32 }
