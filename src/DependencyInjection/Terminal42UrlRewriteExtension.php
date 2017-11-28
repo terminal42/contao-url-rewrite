@@ -28,8 +28,15 @@ class Terminal42UrlRewriteExtension extends ConfigurableExtension
         $loader->load('listener.yml');
         $loader->load('services.yml');
 
+        $hasBackendManagement = (bool) $mergedConfig['backend_management'];
+
         // Set the "backend management" parameter
-        $container->setParameter('terminal42_url_rewrite.backend_management', (bool) $mergedConfig['backend_management']);
+        $container->setParameter('terminal42_url_rewrite.backend_management', $hasBackendManagement);
+
+        // Remove the database provider if backend management is not available
+        if (!$hasBackendManagement) {
+            $container->removeDefinition('terminal42_url_rewrite.provider.database');
+        }
 
         // Set the entries as argument for bundle config provider
         if (isset($mergedConfig['entries']) && $container->hasDefinition('terminal42_url_rewrite.provider.bundle')) {
