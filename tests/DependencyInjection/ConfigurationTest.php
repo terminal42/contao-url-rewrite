@@ -62,7 +62,7 @@ class ConfigurationTest extends TestCase
             ],
         ];
 
-        static::assertSame($expected, $config);
+        $this->assertSame($expected, $config);
     }
 
     public function testInvalidConfig()

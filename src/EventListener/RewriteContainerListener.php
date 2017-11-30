@@ -67,8 +67,6 @@ class RewriteContainerListener
      */
     public function onGenerateLabel(array $row): string
     {
-        $request = $row['requestPath'];
-
         if ((int) $row['responseCode'] === 410) {
             $response = $row['responseCode'];
         } else {
@@ -78,7 +76,7 @@ class RewriteContainerListener
         return sprintf(
             '%s <span style="padding-left:3px;color:#b3b3b3;">[%s &rarr; %s]</span>',
             $row['name'],
-            $request,
+            $row['requestPath'],
             $response
         );
     }

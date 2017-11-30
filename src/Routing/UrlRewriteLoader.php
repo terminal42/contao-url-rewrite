@@ -112,6 +112,10 @@ class UrlRewriteLoader extends Loader
      */
     private function createRoute(RewriteConfigInterface $config, string $host = null): ?Route
     {
+        if (!$config->getRequestPath()) {
+            return null;
+        }
+
         $route = new Route($config->getRequestPath());
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');
         $route->setDefault('_url_rewrite', $config->getIdentifier());

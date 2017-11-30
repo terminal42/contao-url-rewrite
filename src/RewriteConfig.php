@@ -106,7 +106,7 @@ class RewriteConfig implements RewriteConfigInterface
      */
     public function setRequestHosts(array $requestHosts): void
     {
-        $this->requestHosts = array_unique(array_filter($requestHosts));
+        $this->requestHosts = array_values(array_unique(array_filter($requestHosts)));
     }
 
     /**

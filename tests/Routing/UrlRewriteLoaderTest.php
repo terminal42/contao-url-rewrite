@@ -1,23 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\UrlRewriteBundle\Tests\ContaoManager;
 
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
+use Terminal42\UrlRewriteBundle\RewriteConfig;
 use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
 class UrlRewriteLoaderTest extends TestCase
 {
     public function testInstantiation()
     {
-        $this->assertInstanceOf(UrlRewriteLoader::class, new UrlRewriteLoader($this->createMock(Connection::class)));
+        $this->assertInstanceOf(UrlRewriteLoader::class, new UrlRewriteLoader($this->mockConfigProvider()));
     }
 
     public function testSupports()
     {
-        $loader = new UrlRewriteLoader($this->createMock(Connection::class));
+        $loader = new UrlRewriteLoader($this->mockConfigProvider());
 
         $this->assertTrue($loader->supports('', 'terminal42_url_rewrite'));
         $this->assertFalse($loader->supports('', 'foobar'));
@@ -28,73 +31,18 @@ class UrlRewriteLoaderTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $loader = new UrlRewriteLoader($this->createMock(Connection::class));
+        $loader = new UrlRewriteLoader($this->mockConfigProvider());
         $loader->load('');
         $loader->load('');
     }
 
-    public function testLoadDatabaseCaughtException()
+    public function testNoRoutes()
     {
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAll')
-            ->willThrowException(new \PDOException())
-        ;
-
-        $loader = new UrlRewriteLoader($db);
+        $loader = new UrlRewriteLoader($this->mockConfigProvider());
         $collection = $loader->load('');
 
         $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(0, $collection->getIterator());
-    }
-
-    public function testLoadDatabaseUncaughtException()
-    {
-        $this->expectException(\RuntimeException::class);
-
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAll')
-            ->willThrowException(new \RuntimeException())
-        ;
-
-        $loader = new UrlRewriteLoader($db);
-        $loader->load('');
-    }
-
-    public function testLoadNoDatabaseRecords()
-    {
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAll')
-            ->willReturn([])
-        ;
-
-        $loader = new UrlRewriteLoader($db);
-        $collection = $loader->load('');
-
-        $this->assertInstanceOf(RouteCollection::class, $collection);
-        $this->assertCount(0, $collection->getIterator());
-    }
-
-    public function testLoadUnsupportedConfigType()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAll')
-            ->willReturn([
-                ['id' => 1, 'type' => 'foobar', 'requestPath' => 'foobar']
-            ])
-        ;
-
-        $loader = new UrlRewriteLoader($db);
-        $loader->load('');
     }
 
     /**
@@ -102,14 +50,8 @@ class UrlRewriteLoaderTest extends TestCase
      */
     public function testLoad($provided, $expected)
     {
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAll')
-            ->willReturn([$provided])
-        ;
-
-        $loader = new UrlRewriteLoader($db);
+        $provider = $this->mockConfigProvider([$provided]);
+        $loader = new UrlRewriteLoader($provider);
         $collection = $loader->load('');
         $routes = $collection->getIterator();
 
@@ -134,13 +76,22 @@ class UrlRewriteLoaderTest extends TestCase
 
     public function getRouteCollectionProvider()
     {
+        $config1 = new RewriteConfig('1', 'foo/bar');
+
+        $config2 = new RewriteConfig('2', 'foo/baz');
+        $config2->setRequestHosts(['domain1.tld', 'domain2.tld']);
+        $config2->setRequestRequirements(['foo' => '\d+', 'baz' => '\s+']);
+
+        $config3 = new RewriteConfig('3', 'foo/bar');
+        $config3->setRequestCondition('context.getMethod() in [\'GET\']');
+
+        $config4 = new RewriteConfig('4', 'foo/baz');
+        $config4->setRequestHosts(['domain1.tld', 'domain2.tld']);
+        $config4->setRequestCondition('context.getMethod() in [\'GET\']');
+
         return [
             'Basic – single route' => [
-                [
-                    'id' => 1,
-                    'type' => 'basic',
-                    'requestPath' => 'foo/bar'
-                ],
+                $config1,
                 [
                     [
                         'path' => '/foo/bar',
@@ -153,16 +104,7 @@ class UrlRewriteLoaderTest extends TestCase
             ],
 
             'Basic – multiple hosts' => [
-                [
-                    'id' => 1,
-                    'type' => 'basic',
-                    'requestPath' => 'foo/baz',
-                    'requestHosts' => ['domain1.tld', 'domain2.tld'],
-                    'requestRequirements' => [
-                        ['key' => 'foo', 'value' => '\d+'],
-                        ['key' => 'baz', 'value' => '\s+']
-                    ],
-                ],
+                $config2,
                 [
                     [
                         'path' => '/foo/baz',
@@ -182,12 +124,7 @@ class UrlRewriteLoaderTest extends TestCase
             ],
 
             'Expert – single route' => [
-                [
-                    'id' => 1,
-                    'type' => 'expert',
-                    'requestPath' => 'foo/bar',
-                    'requestCondition' => 'context.getMethod() in [\'GET\']',
-                ],
+                $config3,
                 [
                     [
                         'path' => '/foo/bar',
@@ -200,13 +137,7 @@ class UrlRewriteLoaderTest extends TestCase
             ],
 
             'Expert – multiple hosts' => [
-                [
-                    'id' => 1,
-                    'type' => 'expert',
-                    'requestPath' => 'foo/baz',
-                    'requestHosts' => ['domain1.tld', 'domain2.tld'],
-                    'requestCondition' => 'context.getMethod() in [\'GET\']',
-                ],
+                $config4,
                 [
                     [
                         'path' => '/foo/baz',
@@ -225,20 +156,27 @@ class UrlRewriteLoaderTest extends TestCase
                 ]
             ],
 
-            'Invalid #1' => [
-                ['id' => 1],
-                []
-            ],
-
-            'Invalid #2' => [
-                ['requestPath' => 'invalid'],
-                []
-            ],
-
-            'Invalid #3' => [
-                [],
+            'Invalid' => [
+                new RewriteConfig('1', ''),
                 []
             ],
         ];
+    }
+
+    /**
+     * @param array $configs
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|ConfigProviderInterface
+     */
+    private function mockConfigProvider(array $configs = [])
+    {
+        $provider = $this->createMock(ConfigProviderInterface::class);
+
+        $provider
+            ->method('findAll')
+            ->willReturn($configs)
+        ;
+
+        return $provider;
     }
 }

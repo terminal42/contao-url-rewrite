@@ -1,35 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\UrlRewriteBundle\Tests\Controller;
 
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\CoreBundle\Framework\ContaoFramework;
-use Doctrine\DBAL\Connection;
+use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
 use Terminal42\UrlRewriteBundle\Controller\RewriteController;
+use Terminal42\UrlRewriteBundle\RewriteConfig;
 
 class RewriteControllerTest extends TestCase
 {
     public function testInstantiation()
     {
         $this->assertInstanceOf(RewriteController::class, new RewriteController(
-            $this->createMock(Connection::class),
-            $this->createMock(ContaoFramework::class)
+            $this->mockConfigProvider(),
+            $this->mockContaoFramework()
         ));
     }
 
     public function testIndexActionNoUrlRewriteAttribute()
     {
-        $controller = new RewriteController(
-            $this->createMock(Connection::class),
-            $this->createMock(ContaoFramework::class)
-        );
-
-        $request = $this->createRequest(null);
+        $controller = new RewriteController($this->mockConfigProvider(), $this->mockContaoFramework());
+        $request = $this->mockRequest(null);
 
         $this->expectException(RouteNotFoundException::class);
         $controller->indexAction($request);
@@ -37,15 +37,9 @@ class RewriteControllerTest extends TestCase
 
     public function testIndexActionNoUrlRewriteRecord()
     {
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAssoc')
-            ->willReturn(false)
-        ;
-
-        $controller = new RewriteController($db, $this->createMock(ContaoFramework::class));
-        $request = $this->createRequest(1);
+        $provider = $this->mockConfigProvider();
+        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $request = $this->mockRequest(1);
 
         $this->expectException(RouteNotFoundException::class);
         $controller->indexAction($request);
@@ -56,15 +50,9 @@ class RewriteControllerTest extends TestCase
      */
     public function testIndexActionRedirect($provided, $expected)
     {
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAssoc')
-            ->willReturn($provided[0])
-        ;
-
-        $controller = new RewriteController($db, $this->createFrameworkMock());
-        $request = $this->createRequest(1, $provided[1], $provided[2]);
+        $provider = $this->mockConfigProvider($provided[0]);
+        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $request = $this->mockRequest(1, $provided[1], $provided[2]);
         $response = $controller->indexAction($request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -74,10 +62,16 @@ class RewriteControllerTest extends TestCase
 
     public function indexActionRedirectDataProvider()
     {
+        $config1 = new RewriteConfig('1', 'foobar');
+        $config1->setResponseUri('{{link_url::{bar}|absolute}}/foo///{baz}/{quux}');
+
+        $config2 = new RewriteConfig('2', 'foobar', 302);
+        $config2->setResponseUri('foo///{baz}/{quux}');
+
         return [
             'Insert tags' => [
                 [
-                    ['responseUri' => '{{link_url::{bar}|absolute}}/foo///{baz}/{quux}', 'responseCode' => 301],
+                    $config1,
                     ['bar' => 1, 'baz' => 'bar'],
                     ['quux' => 'quuz']
                 ],
@@ -88,7 +82,7 @@ class RewriteControllerTest extends TestCase
             ],
             'Absolute ' => [
                 [
-                    ['responseUri' => 'foo///{baz}/{quux}', 'responseCode' => 302],
+                    $config2,
                     ['baz' => 'bar'],
                     ['quux' => 'quuz']
                 ],
@@ -102,17 +96,9 @@ class RewriteControllerTest extends TestCase
 
     public function testIndexActionGone()
     {
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAssoc')
-            ->willReturn([
-                'responseCode' => 410,
-            ])
-        ;
-
-        $controller = new RewriteController($db, $this->createFrameworkMock());
-        $request = $this->createRequest(1);
+        $provider = $this->mockConfigProvider(new RewriteConfig('1', 'foobar', 410));
+        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
         $this->assertInstanceOf(Response::class, $response);
@@ -122,16 +108,9 @@ class RewriteControllerTest extends TestCase
 
     public function testIndexActionInternalServerError()
     {
-        $db = $this->createMock(Connection::class);
-
-        $db
-            ->method('fetchAssoc')
-            ->willReturn(['responseCode' => 301])
-        ;
-
-        $controller = new RewriteController($db, $this->createFrameworkMock());
-
-        $request = $this->createRequest(1);
+        $provider = $this->mockConfigProvider(new RewriteConfig('1', 'foobar'));
+        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
         $this->assertInstanceOf(Response::class, $response);
@@ -139,7 +118,10 @@ class RewriteControllerTest extends TestCase
         $this->assertEquals('Internal Server Error', $response->getContent());
     }
 
-    private function createFrameworkMock()
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|ContaoFrameworkInterface
+     */
+    private function mockContaoFramework()
     {
         $insertTags = $this
             ->getMockBuilder(Adapter::class)
@@ -165,17 +147,27 @@ class RewriteControllerTest extends TestCase
         return $framework;
     }
 
-    private function createRequest($urlRewrite, $routeParams = [], $query = [])
+    /**
+     * @param mixed $urlRewrite
+     * @param array $routeParams
+     * @param array $query
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|Request
+     */
+    private function mockRequest($urlRewrite = null, $routeParams = [], $query = [])
     {
+        $attributes = ['_route_params' => $routeParams];
+
+        if (null !== $urlRewrite) {
+            $attributes['_url_rewrite'] = $urlRewrite;
+        }
+
         $request = $this
             ->getMockBuilder(Request::class)
             ->setConstructorArgs([
                 $query,
                 [],
-                [
-                    '_url_rewrite' => $urlRewrite,
-                    '_route_params' => $routeParams,
-                ]
+                $attributes
             ])
             ->setMethods(['getSchemeAndHttpHost', 'getBasePath'])
             ->getMock()
@@ -192,5 +184,22 @@ class RewriteControllerTest extends TestCase
         ;
         
         return $request;
+    }
+
+    /**
+     * @param RewriteConfig|null $config
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|ConfigProviderInterface
+     */
+    private function mockConfigProvider(RewriteConfig $config = null)
+    {
+        $provider = $this->createMock(ConfigProviderInterface::class);
+
+        $provider
+            ->method('find')
+            ->willReturn($config)
+        ;
+
+        return $provider;
     }
 }

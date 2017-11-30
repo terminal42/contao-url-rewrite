@@ -119,8 +119,11 @@ class DatabaseConfigProvider implements ConfigProviderInterface
                 break;
             // Expert type
             case 'expert':
-                $config->setRequestCondition($data['requestCondition']);
+                if (isset($data['requestCondition'])) {
+                    $config->setRequestCondition($data['requestCondition']);
+                }
                 break;
+            // Unsupported type
             default:
                 throw new \RuntimeException(sprintf('Unsupported database record config type: %s', $data['type']));
         }
