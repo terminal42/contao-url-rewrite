@@ -12,18 +12,19 @@ namespace Terminal42\UrlRewriteBundle\Controller;
 
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\InsertTags;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteController
 {
     /**
-     * @var Connection
+     * @var ConfigProviderInterface
      */
-    private $db;
+    private $configProvider;
 
     /**
      * @var ContaoFrameworkInterface
@@ -33,12 +34,12 @@ class RewriteController
     /**
      * RewriteController constructor.
      *
-     * @param Connection               $db
+     * @param ConfigProviderInterface  $configProvider
      * @param ContaoFrameworkInterface $framework
      */
-    public function __construct(Connection $db, ContaoFrameworkInterface $framework)
+    public function __construct(ConfigProviderInterface $configProvider, ContaoFrameworkInterface $framework)
     {
-        $this->db = $db;
+        $this->configProvider = $configProvider;
         $this->framework = $framework;
     }
 
@@ -53,17 +54,18 @@ class RewriteController
      */
     public function indexAction(Request $request): Response
     {
-        if (!$request->attributes->has('_url_rewrite') || !($rewriteId = $request->attributes->getInt('_url_rewrite'))) {
-            throw new RouteNotFoundException('There _url_rewrite attribute is missing');
+        if (!$request->attributes->has('_url_rewrite')) {
+            throw new RouteNotFoundException('The _url_rewrite attribute is missing');
         }
 
-        $config = $this->db->fetchAssoc('SELECT * FROM tl_url_rewrite WHERE id=?', [$rewriteId]);
+        $rewriteId = $request->attributes->get('_url_rewrite');
+        $config = $this->configProvider->find($rewriteId);
 
-        if (false === $config || !isset($config['responseCode'])) {
+        if (null === $config) {
             throw new RouteNotFoundException(sprintf('URL rewrite config ID %s does not exist', $rewriteId));
         }
 
-        $responseCode = (int) $config['responseCode'];
+        $responseCode = $config->getResponseCode();
 
         if (410 === $responseCode) {
             return new Response(Response::$statusTexts[$responseCode], $responseCode);
@@ -77,20 +79,17 @@ class RewriteController
     /**
      * Generate the URI.
      *
-     * @param Request $request
-     * @param array   $config
+     * @param Request       $request
+     * @param RewriteConfigInterface $config
      *
      * @return string|null
      */
-    private function generateUri(Request $request, array $config): ?string
+    private function generateUri(Request $request, RewriteConfigInterface $config): ?string
     {
-        if (!isset($config['responseUri'])) {
+        if (($uri = $config->getResponseUri()) === null) {
             return null;
         }
 
-        $uri = $config['responseUri'];
-
-        // Parse the URI
         $uri = $this->replaceWildcards($request, $uri);
         $uri = $this->replaceInsertTags($uri);
 

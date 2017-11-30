@@ -1,0 +1,18 @@
+terminal42_url_rewrite:
+    backend_management: true
+    entries:
+        -
+            request: { path: 'find/{address}' }
+            response: { code: 303, uri: 'https://www.google.com/maps?q={address}' }
+
+        -
+            request: { path: 'news/{news}', requirements: {news: '\d+'} }
+            response: { code: 301, uri: '{{news_url::{news}|absolute}}' }
+
+        -
+            request:
+                path: 'home.php'
+                hosts: ['localhost']
+                condition: "context.getMethod() == 'GET' and request.query.has('page')"
+            response:
+                uri: '{{link_url::{page}|absolute}}'

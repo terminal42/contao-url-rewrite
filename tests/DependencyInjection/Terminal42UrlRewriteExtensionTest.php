@@ -15,11 +15,28 @@ class Terminal42UrlRewriteExtensionTest extends TestCase
         $this->assertInstanceOf(Terminal42UrlRewriteExtension::class, new Terminal42UrlRewriteExtension());
     }
 
-    public function testLoad()
+    public function testLoadWithBackendManagement()
     {
         $container = new ContainerBuilder();
         $extension = new Terminal42UrlRewriteExtension();
-        $extension->load([], $container);
+        $extension->load(['terminal42_url_rewrite' => ['backend_management' => true]], $container);
+
+        $this->assertTrue($container->getParameter('terminal42_url_rewrite.backend_management'));
+        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.provider.database'));
+
+        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.insert_tags'));
+        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.rewrite_container'));
+        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.rewrite_controller'));
+    }
+
+    public function testLoadWithoutBackendManagement()
+    {
+        $container = new ContainerBuilder();
+        $extension = new Terminal42UrlRewriteExtension();
+        $extension->load(['terminal42_url_rewrite' => ['backend_management' => false]], $container);
+
+        $this->assertFalse($container->getParameter('terminal42_url_rewrite.backend_management'));
+        $this->assertFalse($container->hasDefinition('terminal42_url_rewrite.provider.database'));
 
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.insert_tags'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.rewrite_container'));
