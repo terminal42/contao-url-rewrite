@@ -12,19 +12,18 @@ declare(strict_types=1);
 
 namespace Terminal42\UrlRewriteBundle\Routing;
 
-use Contao\StringUtil;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class UrlRewriteLoader extends Loader
 {
     /**
-     * @var Connection
+     * @var ConfigProviderInterface
      */
-    private $db;
+    private $configProvider;
 
     /**
      * Has been already loaded?
@@ -36,11 +35,11 @@ class UrlRewriteLoader extends Loader
     /**
      * UrlRewriteLoader constructor.
      *
-     * @param Connection $db
+     * @param ConfigProviderInterface $configProvider
      */
-    public function __construct(Connection $db)
+    public function __construct(ConfigProviderInterface $configProvider)
     {
-        $this->db = $db;
+        $this->configProvider = $configProvider;
     }
 
     /**
@@ -54,22 +53,18 @@ class UrlRewriteLoader extends Loader
 
         $this->loaded = true;
         $collection = new RouteCollection();
+        $configs = $this->configProvider->findAll();
 
-        try {
-            $rewrites = $this->db->fetchAll('SELECT * FROM tl_url_rewrite');
-        } catch (\PDOException | TableNotFoundException $e) {
-            return $collection;
-        }
-
-        if (0 === count($rewrites)) {
+        if (0 === count($configs)) {
             return $collection;
         }
 
         $count = 0;
 
-        foreach ($rewrites as $rewrite) {
+        /** @var RewriteConfigInterface $config */
+        foreach ($configs as $config) {
             /** @var Route $route */
-            foreach ($this->generateRoutes($rewrite) as $route) {
+            foreach ($this->generateRoutes($config) as $route) {
                 if ($route !== null) {
                     $collection->add('url_rewrite_'.$count++, $route);
                 }
@@ -90,19 +85,13 @@ class UrlRewriteLoader extends Loader
     /**
      * Generate the routes.
      *
-     * @param array $config
+     * @param RewriteConfigInterface $config
      *
      * @return \Generator
      */
-    private function generateRoutes(array $config): \Generator
+    private function generateRoutes(RewriteConfigInterface $config): \Generator
     {
-        $hosts = [];
-
-        // Parse the hosts from config
-        if (isset($config['requestHosts'])) {
-            /** @var array $hosts */
-            $hosts = array_unique(array_filter(StringUtil::deserialize($config['requestHosts'], true)));
-        }
+        $hosts = $config->getRequestHosts();
 
         if (count($hosts) > 0) {
             foreach ($hosts as $host) {
@@ -116,80 +105,33 @@ class UrlRewriteLoader extends Loader
     /**
      * Create the route object.
      *
-     * @param array       $config
-     * @param string|null $host
+     * @param RewriteConfigInterface $config
+     * @param string|null   $host
      *
      * @return Route|null
      */
-    private function createRoute(array $config, string $host = null): ?Route
+    private function createRoute(RewriteConfigInterface $config, string $host = null): ?Route
     {
-        if (!isset($config['id'], $config['type'], $config['requestPath'])) {
+        if (!$config->getRequestPath()) {
             return null;
         }
 
-        switch ($config['type']) {
-            case 'basic':
-                $route = $this->createBasicRoute($config);
-                break;
-            case 'expert':
-                $route = $this->createExpertRoute($config);
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('Unsupported database record config type: %s', $config['type']));
-        }
-
+        $route = new Route($config->getRequestPath());
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');
-        $route->setDefault('_url_rewrite', $config['id']);
+        $route->setDefault('_url_rewrite', $config->getIdentifier());
+        $route->setRequirements($config->getRequestRequirements());
+
+        // Set the condition
+        if (($condition = $config->getRequestCondition()) !== null) {
+            $route->setCondition($condition);
+        } else {
+            $route->setMethods('GET');
+        }
 
         // Set the host
         if (null !== $host) {
             $route->setHost($host);
         }
-
-        return $route;
-    }
-
-    /**
-     * Create the basic route.
-     *
-     * @param array $config
-     *
-     * @return Route
-     */
-    private function createBasicRoute(array $config): Route
-    {
-        $route = new Route($config['requestPath']);
-        $route->setMethods('GET');
-
-        // Set the requirements
-        if (isset($config['requestRequirements'])) {
-            /** @var array $requirements */
-            $requirements = StringUtil::deserialize($config['requestRequirements'], true);
-            $requirements = array_filter($requirements, function ($item) {
-                return $item['key'] !== '' && $item['value'] !== '';
-            });
-
-            if (count($requirements) > 0) {
-                foreach ($requirements as $requirement) {
-                    $route->setRequirement($requirement['key'], $requirement['value']);
-                }
-            }
-        }
-
-        return $route;
-    }
-
-    /**
-     * Create the expert route.
-     *
-     * @param array $config
-     *
-     * @return Route
-     */
-    private function createExpertRoute(array $config): Route
-    {
-        $route = new Route($config['requestPath']);
-        $route->setCondition($config['requestCondition']);
 
         return $route;
     }

@@ -1,0 +1,5 @@
+terminal42_url_rewrite:
+    entries:
+        -
+            request: { path: 'find/{address}' }
+            response: { code: 404, uri: 'https://www.google.com/maps?q={address}' }

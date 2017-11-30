@@ -181,3 +181,10 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
         ],
     ],
 ];
+
+/*
+ * Remove the DCA if not allowed
+ */
+if (!\System::getContainer()->getParameter('terminal42_url_rewrite.backend_management')) {
+    unset($GLOBALS['TL_DCA']['tl_url_rewrite']);
+}

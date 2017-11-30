@@ -4,9 +4,13 @@
 [![](https://img.shields.io/travis/terminal42/contao-url-rewrite/master.svg?style=flat-square)](https://travis-ci.org/terminal42/contao-url-rewrite/)
 [![](https://img.shields.io/coveralls/terminal42/contao-url-rewrite/master.svg?style=flat-square)](https://coveralls.io/github/terminal42/contao-url-rewrite)
 
-The extension provides a new backend module for Contao that allows to set various URL rewrites. Behind the scenes
-the rules are added as routes to the internal application router which allows to use all the features provided
-by the Symfony Routing component.
+The extension provides a new way for Contao to set various URL rewrites. The available config providers are:
+
+- Bundle config provider – the entries are taken from `config.yml` file
+- Database provider – the entries are taken from backend module
+
+Behind the scenes the rules are added as routes to the internal application router which allows to use all the features 
+provided by the Symfony Routing component.
 
 ## Installation
 
@@ -17,6 +21,38 @@ composer require terminal42/contao-url-rewrite
 ```
 
 ## Configuration
+
+### Bundle configuration
+
+The bundle configuration is optional. Here you can define the entries and disable the backend management module.
+
+```yaml
+# config/config.yml
+terminal42_url_rewrite:
+    backend_management: false # Disable backend management of entries (true by default)
+    entries: # Optional entries
+        -
+            request: { path: 'find/{address}' }
+            response: { code: 303, uri: 'https://www.google.com/maps?q={address}' }
+
+        -
+            request:
+                path: 'news/{news}'
+                requirements: {news: '\d+'}
+            response: 
+                code: 301 
+                uri: '{{news_url::{news}|absolute}}'
+
+        -
+            request:
+                path: 'home.php'
+                hosts: ['localhost']
+                condition: "context.getMethod() == 'GET' and request.query.has('page')"
+            response:
+                uri: '{{link_url::{page}|absolute}}'
+```
+
+### Running under non Contao managed edition 
 
 If you are running the Contao Managed Edition then the extension should work out of the box. For all the other systems
 you have to additionally register the routing configuration in the config files:  
@@ -63,6 +99,21 @@ Response code: 301 Moved Permanently
 Response URI: {{link_url::{page}|absolute}}
 ---
 Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html
+```
+
+## Create a custom config provider
+
+In addition to the existing providers you can create your own class that provides the rewrite configurations.
+The new service must extend the [Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface](src/ConfigProvider/ConfigProviderInterface.php) 
+interface and be registered with the appropriate tag: 
+
+```yaml
+services:
+    app.my_rewrite_provider:
+        class: AppBundle\RewriteProvider\MyRewriteProvider
+        public: false
+        tags:
+            - { name: terminal42_url_rewrite.provider, priority: 128 }
 ```
 
 ## Resources

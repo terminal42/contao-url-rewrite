@@ -13,6 +13,7 @@ namespace Terminal42\UrlRewriteBundle\EventListener;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteContainerListener
 {
@@ -66,8 +67,6 @@ class RewriteContainerListener
      */
     public function onGenerateLabel(array $row): string
     {
-        $request = $row['requestPath'];
-
         if ((int) $row['responseCode'] === 410) {
             $response = $row['responseCode'];
         } else {
@@ -77,7 +76,7 @@ class RewriteContainerListener
         return sprintf(
             '%s <span style="padding-left:3px;color:#b3b3b3;">[%s &rarr; %s]</span>',
             $row['name'],
-            $request,
+            $row['requestPath'],
             $response
         );
     }
@@ -91,7 +90,7 @@ class RewriteContainerListener
     {
         $options = [];
 
-        foreach ([301, 302, 303, 307, 410] as $code) {
+        foreach (RewriteConfigInterface::VALID_RESPONSE_CODES as $code) {
             $options[$code] = $code.' '.Response::$statusTexts[$code];
         }
 
@@ -99,7 +98,7 @@ class RewriteContainerListener
     }
 
     /**
-     * Generate the examples
+     * Generate the examples.
      *
      * @return string
      */
