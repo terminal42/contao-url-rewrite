@@ -29,7 +29,7 @@ The bundle configuration is optional. Here you can define the entries and disabl
 ```yaml
 # config/config.yml
 terminal42_url_rewrite:
-    backend_management: false # Enable backend management of entries (true by default)
+    backend_management: false # Disable backend management of entries (true by default)
     entries: # Optional entries
         -
             request: { path: 'find/{address}' }
