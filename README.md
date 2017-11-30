@@ -104,7 +104,7 @@ Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html
 ## Create a custom config provider
 
 In addition to the existing providers you can create your own class that provides the rewrite configurations.
-The new service must extend the [Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface](src/ConfigProvider/ConfigProviderInterface.php) 
+The new service must implement the [Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface](src/ConfigProvider/ConfigProviderInterface.php) 
 interface and be registered with the appropriate tag: 
 
 ```yaml
