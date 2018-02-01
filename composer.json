@@ -29,8 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Terminal42\\UrlRewriteBundle\\": "src",
-            "Terminal42\\UrlRewriteBundle\\Tests\\": "tests"
+            "Terminal42\\UrlRewriteBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Terminal42\\UrlRewriteBundle\\Tests\\": "tests/"
         }
     },
     "extra": {
