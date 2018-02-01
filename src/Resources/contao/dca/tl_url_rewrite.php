@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => ['type' => 'string', 'length' => 255],
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
         ],
         'type' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['type'],
@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'options' => ['basic', 'expert'],
             'reference' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['typeRef'],
             'eval' => ['submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
-            'sql' => ['type' => 'string', 'length' => 255],
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
         ],
         'requestHosts' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'],
@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'filter' => true,
             'inputType' => 'listWizard',
             'eval' => ['tl_class' => 'clr'],
-            'sql' => ['type' => 'blob'],
+            'sql' => ['type' => 'blob', 'notnull' => false],
         ],
         'requestPath' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestPath'],
@@ -135,21 +135,21 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'tl_class' => 'long clr'],
-            'sql' => ['type' => 'string'],
+            'sql' => ['type' => 'string', 'default' => ''],
         ],
         'requestRequirements' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements'],
             'exclude' => true,
             'inputType' => 'keyValueWizard',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'blob'],
+            'sql' => ['type' => 'blob', 'notnull' => false],
         ],
         'requestCondition' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestCondition'],
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'string'],
+            'sql' => ['type' => 'string', 'default' => ''],
         ],
         'responseCode' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['responseCode'],
@@ -174,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
                 'filesOnly' => true,
                 'tl_class' => 'clr wizard',
             ],
-            'sql' => ['type' => 'string'],
+            'sql' => ['type' => 'string', 'default' => ''],
         ],
         'examples' => [
             'input_field_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'generateExamples'],
