@@ -39,7 +39,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     public function find(string $id): ?RewriteConfigInterface
     {
         try {
-            $data = $this->connection->fetchAssoc('SELECT * FROM tl_url_rewrite WHERE id=?', [$id]);
+            $data = $this->connection->fetchAssoc('SELECT * FROM tl_url_rewrite WHERE id=? AND inactive=?', [$id, 0]);
         } catch (\PDOException | TableNotFoundException $e) {
             return null;
         }
@@ -57,7 +57,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     public function findAll(): array
     {
         try {
-            $records = $this->connection->fetchAll('SELECT * FROM tl_url_rewrite');
+            $records = $this->connection->fetchAll('SELECT * FROM tl_url_rewrite WHERE inactive=?', [0]);
         } catch (\PDOException | TableNotFoundException $e) {
             return [];
         }
