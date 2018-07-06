@@ -59,6 +59,20 @@ class RewriteContainerListener
     }
 
     /**
+     * On inactive save callback.
+     *
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    public function onInactiveSaveCallback($value)
+    {
+        $this->clearRouterCache();
+
+        return $value;
+    }
+
+    /**
      * On generate the label.
      *
      * @param array $row

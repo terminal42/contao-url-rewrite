@@ -69,6 +69,11 @@ class RewriteContainerListenerTest extends TestCase
         $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
     }
 
+    public function testOnInactiveSaveCallback()
+    {
+        $this->assertSame(1, $this->listener->onInactiveSaveCallback(1));
+    }
+
     /**
      * @dataProvider onGenerateLabelDataProvider
      */

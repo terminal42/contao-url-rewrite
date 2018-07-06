@@ -139,6 +139,9 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
             'sql' => ['type' => 'boolean', 'default' => 0],
+            'save_callback' => [
+                ['terminal42_url_rewrite.listener.rewrite_container', 'onInactiveSaveCallback'],
+            ],
         ],
         'requestHosts' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'],
