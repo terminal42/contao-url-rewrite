@@ -174,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
                 'filesOnly' => true,
                 'tl_class' => 'clr wizard',
             ],
-            'sql' => ['type' => 'string', 'default' => ''],
+            'sql' => ['type' => 'text', 'notnull' => false],
         ],
         'examples' => [
             'input_field_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'generateExamples'],
