@@ -26,6 +26,8 @@ composer require terminal42/contao-url-rewrite
 
 The bundle configuration is optional. Here you can define the entries and disable the backend management module.
 
+**Note:** if you want to use the `%` character, make sure it is properly escaped by doubling it `%%`.
+
 ```yaml
 # config/config.yml
 terminal42_url_rewrite:
