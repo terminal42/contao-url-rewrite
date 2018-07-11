@@ -12,6 +12,7 @@ namespace Terminal42\UrlRewriteBundle\ConfigProvider;
 
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\InvalidFieldNameException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
 use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
@@ -40,7 +41,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     {
         try {
             $data = $this->connection->fetchAssoc('SELECT * FROM tl_url_rewrite WHERE id=? AND inactive=?', [$id, 0]);
-        } catch (\PDOException | TableNotFoundException $e) {
+        } catch (\PDOException | TableNotFoundException | InvalidFieldNameException $e) {
             return null;
         }
 
@@ -58,7 +59,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     {
         try {
             $records = $this->connection->fetchAll('SELECT * FROM tl_url_rewrite WHERE inactive=?', [0]);
-        } catch (\PDOException | TableNotFoundException $e) {
+        } catch (\PDOException | TableNotFoundException | InvalidFieldNameException $e) {
             return [];
         }
 
