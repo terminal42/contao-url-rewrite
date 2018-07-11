@@ -92,7 +92,7 @@ class RewriteContainerListenerTest extends TestCase
                     'responseUri' => 'http://domain.tld/baz/{bar}',
                     'responseCode' => 301,
                 ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301]</span>',
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301]</span>',
             ],
             410 => [
                 [
@@ -100,7 +100,7 @@ class RewriteContainerListenerTest extends TestCase
                     'requestPath' => 'foo/bar',
                     'responseCode' => 410,
                 ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;">[foo/bar &rarr; 410]</span>',
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410]</span>',
             ]
         ];
     }
