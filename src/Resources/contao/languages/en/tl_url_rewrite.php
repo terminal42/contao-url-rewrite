@@ -10,6 +10,7 @@
 
 $GLOBALS['TL_LANG']['tl_url_rewrite']['name'] = ['Internal name', 'Please enter the rewrite internal name (visible only in backend).'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['type'] = ['Type', 'Here you can choose the type.'];
+$GLOBALS['TL_LANG']['tl_url_rewrite']['inactive'] = ['Deactivate the rule', 'Deactivate the rewrite rule. It will not be loaded into the router configuration.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'] = ['Hosts restriction', 'Here you can restrict the rule to certain hosts.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestPath'] = ['Path restriction', 'Here you can enter the path to match.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements'] = ['Extra requirements', 'Here you can add extra requirements for the match.'];
@@ -33,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_url_rewrite']['show'] = ['Rule details', 'Show the detai
 $GLOBALS['TL_LANG']['tl_url_rewrite']['edit'] = ['Edit rule', 'Edit rewrite rule ID %s'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['copy'] = ['Duplicate rule', 'Duplicate rewrite rule ID %s'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['delete'] = ['Delete rule', 'Delete rewrite rule ID %s'];
+$GLOBALS['TL_LANG']['tl_url_rewrite']['toggle'] = ['Activate/deactivate rule', 'Activate/deactivate rewrite rule ID %s'];
 
 /*
  * Reference

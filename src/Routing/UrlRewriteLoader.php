@@ -116,7 +116,7 @@ class UrlRewriteLoader extends Loader
             return null;
         }
 
-        $route = new Route($config->getRequestPath());
+        $route = new Route(rawurldecode($config->getRequestPath()));
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');
         $route->setDefault('_url_rewrite', $config->getIdentifier());
         $route->setRequirements($config->getRequestRequirements());
