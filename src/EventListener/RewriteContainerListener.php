@@ -88,7 +88,7 @@ class RewriteContainerListener
         }
 
         return sprintf(
-            '%s <span style="padding-left:3px;color:#b3b3b3;">[%s &rarr; %s]</span>',
+            '%s <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[%s &rarr; %s]</span>',
             $row['name'],
             $row['requestPath'],
             $response
