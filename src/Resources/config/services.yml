@@ -1,6 +1,7 @@
 services:
     terminal42_url_rewrite.rewrite_controller:
         class: Terminal42\UrlRewriteBundle\Controller\RewriteController
+        public: true
         arguments:
             - "@terminal42_url_rewrite.provider"
             - "@contao.framework"
