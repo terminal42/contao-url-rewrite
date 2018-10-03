@@ -64,6 +64,7 @@ class UrlRewriteLoaderTest extends TestCase
         foreach ($routes as $route) {
             $this->assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
             $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
+            $this->assertTrue($route->getOption('utf8'));
             $this->assertEquals($expected[$index]['methods'], $route->getMethods());
             $this->assertEquals($expected[$index]['path'], $route->getPath());
             $this->assertEquals($expected[$index]['requirements'], $route->getRequirements());

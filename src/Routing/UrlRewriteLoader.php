@@ -119,6 +119,7 @@ class UrlRewriteLoader extends Loader
         $route = new Route(rawurldecode($config->getRequestPath()));
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');
         $route->setDefault('_url_rewrite', $config->getIdentifier());
+        $route->setOption('utf8', true);
         $route->setRequirements($config->getRequestRequirements());
 
         // Set the condition
