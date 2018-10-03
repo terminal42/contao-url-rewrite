@@ -55,7 +55,7 @@ class ConfigProviderPass implements CompilerPassInterface
         $services = $this->findAndSortTaggedServices($this->tag, $container);
 
         // If there's only one service or chain service is not present alias the first service
-        if ((count($services) === 1 && count($services[0]) === 1) || !$container->hasDefinition($this->chain)) {
+        if (count($services) === 1 || !$container->hasDefinition($this->chain)) {
             $container->setAlias($this->alias, (string) $services[0]);
 
             return;
