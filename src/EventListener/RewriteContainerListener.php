@@ -10,15 +10,15 @@
 
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteContainerListener
 {
     /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
@@ -28,26 +28,15 @@ class RewriteContainerListener
     private $cacheDir;
 
     /**
-     * @var Filesystem
-     */
-    private $fs;
-
-    /**
      * RewriteContainerListener constructor.
      *
-     * @param Router     $router
-     * @param string     $cacheDir
-     * @param Filesystem $fs
+     * @param RouterInterface $router
+     * @param string          $cacheDir
      */
-    public function __construct(Router $router, string $cacheDir, Filesystem $fs = null)
+    public function __construct(RouterInterface $router, string $cacheDir)
     {
-        if ($fs === null) {
-            $fs = new Filesystem();
-        }
-
         $this->router = $router;
         $this->cacheDir = $cacheDir;
-        $this->fs = $fs;
     }
 
     /**
@@ -137,22 +126,22 @@ class RewriteContainerListener
      */
     private function clearRouterCache(): void
     {
-        foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
-            $class = $this->router->getOption($option);
-            $file = $this->cacheDir.DIRECTORY_SEPARATOR.$class.'.php';
-
-            if ($this->fs->exists($file)) {
-                // Clear the OPcache
-                if (function_exists('opcache_invalidate')) {
-                    // @codeCoverageIgnoreStart
-                    opcache_invalidate($file, true);
-                    // @codeCoverageIgnoreEnd
-                }
-
-                $this->fs->remove($file);
-            }
+        if ($this->router instanceof WarmableInterface) {
+            $this->router->warmUp($this->cacheDir);
         }
 
-        $this->router->warmUp($this->cacheDir);
+        // Clear the Zend OPcache
+        if (function_exists('opcache_reset')) {
+            // @codeCoverageIgnoreStart
+            opcache_reset();
+            // @codeCoverageIgnoreEnd
+        }
+
+        // Clear the APC OPcache
+        if (function_exists('apc_clear_cache')) {
+            // @codeCoverageIgnoreStart
+            apc_clear_cache('opcode');
+            // @codeCoverageIgnoreEnd
+        }
     }
 }
