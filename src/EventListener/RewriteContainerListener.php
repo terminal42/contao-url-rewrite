@@ -10,8 +10,10 @@
 
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
@@ -28,15 +30,26 @@ class RewriteContainerListener
     private $cacheDir;
 
     /**
+     * @var Filesystem
+     */
+    private $fs;
+
+    /**
      * RewriteContainerListener constructor.
      *
      * @param RouterInterface $router
      * @param string          $cacheDir
+     * @param Filesystem      $fs
      */
-    public function __construct(RouterInterface $router, string $cacheDir)
+    public function __construct(RouterInterface $router, string $cacheDir, Filesystem $fs = null)
     {
+        if ($fs === null) {
+            $fs = new Filesystem();
+        }
+
         $this->router = $router;
         $this->cacheDir = $cacheDir;
+        $this->fs = $fs;
     }
 
     /**
@@ -126,6 +139,17 @@ class RewriteContainerListener
      */
     private function clearRouterCache(): void
     {
+        if ($this->router instanceof Router) {
+            foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
+                $class = $this->router->getOption($option);
+                $file = $this->cacheDir.DIRECTORY_SEPARATOR.$class.'.php';
+
+                if ($this->fs->exists($file)) {
+                    $this->fs->remove($file);
+                }
+            }
+        }
+
         if ($this->router instanceof WarmableInterface) {
             $this->router->warmUp($this->cacheDir);
         }
