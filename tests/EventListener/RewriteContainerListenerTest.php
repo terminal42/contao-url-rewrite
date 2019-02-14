@@ -34,6 +34,11 @@ class RewriteContainerListenerTest extends TestCase
         $router = $this->createMock(Router::class);
 
         $router
+            ->method('getOption')
+            ->willReturn('CacheClassOld')
+        ;
+
+        $router
             ->method('warmUp')
             ->willReturnCallback(
                 function () {
@@ -57,8 +62,10 @@ class RewriteContainerListenerTest extends TestCase
 
     public function testOnRecordsModified()
     {
+        $this->fs->touch($this->cacheDir . '/CacheClassOld.php');
         $this->listener->onRecordsModified();
 
+        $this->assertFalse($this->fs->exists($this->cacheDir.'/CacheClassOld.php'));
         $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
     }
 
