@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'mode' => 2,
             'fields' => ['name'],
             'flag' => 1,
-            'panelLayout' => 'filter;search,limit',
+            'panelLayout' => 'sort,filter;search,limit',
         ],
         'label' => [
             'fields' => ['name'],
