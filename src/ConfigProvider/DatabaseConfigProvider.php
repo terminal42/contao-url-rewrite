@@ -59,7 +59,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     public function findAll(): array
     {
         try {
-            $records = $this->connection->fetchAll('SELECT * FROM tl_url_rewrite WHERE inactive=?', [0]);
+            $records = $this->connection->fetchAll('SELECT * FROM tl_url_rewrite WHERE inactive=? ORDER BY priority DESC', [0]);
         } catch (\PDOException | ConnectionException | TableNotFoundException | InvalidFieldNameException $e) {
             return [];
         }
