@@ -10,7 +10,9 @@
 
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
+use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\DataContainer;
+use Contao\Input;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
@@ -36,14 +38,24 @@ class RewriteContainerListener
     private $fs;
 
     /**
+     * @var ContaoFrameworkInterface
+     */
+    private $framework;
+
+    /**
      * RewriteContainerListener constructor.
      *
-     * @param RouterInterface $router
-     * @param string          $cacheDir
-     * @param Filesystem      $fs
+     * @param RouterInterface          $router
+     * @param string                   $cacheDir
+     * @param Filesystem               $fs
+     * @param ContaoFrameworkInterface $framework
      */
-    public function __construct(RouterInterface $router, string $cacheDir, Filesystem $fs = null)
-    {
+    public function __construct(
+        RouterInterface $router,
+        string $cacheDir,
+        Filesystem $fs = null,
+        ContaoFrameworkInterface $framework
+    ) {
         if ($fs === null) {
             $fs = new Filesystem();
         }
@@ -51,6 +63,7 @@ class RewriteContainerListener
         $this->router = $router;
         $this->cacheDir = $cacheDir;
         $this->fs = $fs;
+        $this->framework = $framework;
     }
 
     /**
@@ -86,7 +99,8 @@ class RewriteContainerListener
     public function onNameSaveCallback($value, DataContainer $dataContainer)
     {
         if ($value == '') {
-            $value = $dataContainer->activeRecord->requestPath;
+            $inputAdapter = $this->framework->getAdapter(Input::class);
+            $value = $inputAdapter->post('requestPath') ?: $dataContainer->activeRecord->requestPath;
         }
 
         if ($value == '') {
