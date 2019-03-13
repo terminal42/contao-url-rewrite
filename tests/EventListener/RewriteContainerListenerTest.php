@@ -2,6 +2,8 @@
 
 namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
+use Contao\DataContainer;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
@@ -73,6 +75,28 @@ class RewriteContainerListenerTest extends TestCase
     {
         $this->assertSame(1, $this->listener->onInactiveSaveCallback(1));
         $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
+    }
+
+    public function testOnNameSaveCallback()
+    {
+        $dataContainer = $this->createMock(DataContainer::class);
+        $dataContainer->method('__get')->with('activeRecord')->willReturn((object) [ 'requestPath' => 'Bar']);
+
+        $this->assertSame('Foo', $this->listener->onNameSaveCallback('Foo', $dataContainer));
+        $this->assertSame('Bar', $this->listener->onNameSaveCallback('', $dataContainer));
+    }
+
+    public function testOnNameSaveCallbackThrowingException()
+    {
+        $GLOBALS['TL_LANG']['ERR']['mandatory'] = '';
+
+        $dataContainer = $this->createMock(DataContainer::class);
+        $dataContainer->method('__get')
+            ->withConsecutive(['activeRecord'], ['field'])
+            ->willReturnOnConsecutiveCalls((object) [ 'requestPath' => ''], 'field');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->listener->onNameSaveCallback('', $dataContainer);
     }
 
     /**
