@@ -10,6 +10,7 @@
 
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
+use Contao\DataContainer;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
@@ -70,6 +71,29 @@ class RewriteContainerListener
     public function onInactiveSaveCallback($value)
     {
         $this->clearRouterCache();
+
+        return $value;
+    }
+
+    /**
+     * On name save callback.
+     *
+     * @param mixed $value
+     * @param DataContainer $dataContainer
+     *
+     * @return mixed
+     */
+    public function onNameSaveCallback($value, DataContainer $dataContainer)
+    {
+        if ($value == '') {
+            $value = $dataContainer->activeRecord->requestPath;
+        }
+
+        if ($value == '') {
+            throw new \InvalidArgumentException(
+                sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $dataContainer->field)
+            );
+        }
 
         return $value;
     }
