@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -38,7 +38,7 @@ class ChainConfigProvider implements ConfigProviderInterface
 
         /** @var ConfigProviderInterface $provider */
         foreach ($this->providers as $provider) {
-            if ($class === $this->getProviderIdentifier($provider) && ($config = $provider->find($id)) !== null) {
+            if ($class === $this->getProviderIdentifier($provider) && null !== ($config = $provider->find($id))) {
                 return $config;
             }
         }
@@ -59,7 +59,7 @@ class ChainConfigProvider implements ConfigProviderInterface
 
             /** @var RewriteConfigInterface $config */
             foreach ($providerConfigs as $config) {
-                $config->setIdentifier($this->getProviderIdentifier($provider) . ':' . $config->getIdentifier());
+                $config->setIdentifier($this->getProviderIdentifier($provider).':'.$config->getIdentifier());
             }
 
             $configs = array_merge($configs, $providerConfigs);
@@ -69,7 +69,7 @@ class ChainConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Get the provider identifier
+     * Get the provider identifier.
      *
      * @param ConfigProviderInterface $provider
      *
@@ -77,6 +77,6 @@ class ChainConfigProvider implements ConfigProviderInterface
      */
     private function getProviderIdentifier(ConfigProviderInterface $provider): string
     {
-        return get_class($provider);
+        return \get_class($provider);
     }
 }

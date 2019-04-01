@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -57,7 +57,7 @@ class RewriteContainerListener
         Filesystem $fs = null,
         ContaoFrameworkInterface $framework
     ) {
-        if ($fs === null) {
+        if (null === $fs) {
             $fs = new Filesystem();
         }
 
@@ -122,7 +122,7 @@ class RewriteContainerListener
      */
     public function onGenerateLabel(array $row): string
     {
-        if ((int) $row['responseCode'] === 410) {
+        if (410 === (int) $row['responseCode']) {
             $response = $row['responseCode'];
         } else {
             $response = sprintf('%s, %s', $row['responseUri'], $row['responseCode']);
@@ -199,14 +199,14 @@ class RewriteContainerListener
         }
 
         // Clear the Zend OPcache
-        if (function_exists('opcache_reset')) {
+        if (\function_exists('opcache_reset')) {
             // @codeCoverageIgnoreStart
             opcache_reset();
             // @codeCoverageIgnoreEnd
         }
 
         // Clear the APC OPcache
-        if (function_exists('apc_clear_cache')) {
+        if (\function_exists('apc_clear_cache')) {
             // @codeCoverageIgnoreStart
             apc_clear_cache('opcode');
             // @codeCoverageIgnoreEnd
@@ -217,7 +217,7 @@ class RewriteContainerListener
     {
         foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
             $class = $router->getOption($option);
-            $file = $this->cacheDir.DIRECTORY_SEPARATOR.$class.'.php';
+            $file = $this->cacheDir.\DIRECTORY_SEPARATOR.$class.'.php';
 
             if ($this->fs->exists($file)) {
                 $this->fs->remove($file);

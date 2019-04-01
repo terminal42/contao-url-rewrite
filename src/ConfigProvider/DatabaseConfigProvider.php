@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -64,14 +64,14 @@ class DatabaseConfigProvider implements ConfigProviderInterface
             return [];
         }
 
-        if (count($records) === 0) {
+        if (0 === \count($records)) {
             return [];
         }
 
         $configs = [];
 
         foreach ($records as $record) {
-            if (($config = $this->createConfig($record)) !== null) {
+            if (null !== ($config = $this->createConfig($record))) {
                 $configs[] = $config;
             }
         }
@@ -84,7 +84,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
      *
      * @param array $data
      *
-     * @return null|RewriteConfig
+     * @return RewriteConfig|null
      */
     private function createConfig(array $data): ?RewriteConfig
     {
@@ -111,7 +111,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
                     $requirements = [];
 
                     foreach (StringUtil::deserialize($data['requestRequirements'], true) as $requirement) {
-                        if ($requirement['key'] !== '' && $requirement['value'] !== '') {
+                        if ('' !== $requirement['key'] && '' !== $requirement['value']) {
                             $requirements[$requirement['key']] = $requirement['value'];
                         }
                     }

@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -70,7 +70,7 @@ class RewriteConfig implements RewriteConfigInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setIdentifier(string $identifier): void
     {
@@ -126,7 +126,7 @@ class RewriteConfig implements RewriteConfigInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getRequestCondition(): ?string
     {
@@ -134,7 +134,7 @@ class RewriteConfig implements RewriteConfigInterface
     }
 
     /**
-     * @param null|string $requestCondition
+     * @param string|null $requestCondition
      */
     public function setRequestCondition(string $requestCondition): void
     {
@@ -164,7 +164,7 @@ class RewriteConfig implements RewriteConfigInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getResponseUri(): ?string
     {
@@ -172,7 +172,7 @@ class RewriteConfig implements RewriteConfigInterface
     }
 
     /**
-     * @param null|string $responseUri
+     * @param string|null $responseUri
      */
     public function setResponseUri(string $responseUri): void
     {

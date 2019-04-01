@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -35,7 +35,7 @@ class BundleConfigProvider implements ConfigProviderInterface
      */
     public function find(string $id): ?RewriteConfigInterface
     {
-        if (!array_key_exists($id, $this->entries)) {
+        if (!\array_key_exists($id, $this->entries)) {
             return null;
         }
 
@@ -47,14 +47,14 @@ class BundleConfigProvider implements ConfigProviderInterface
      */
     public function findAll(): array
     {
-        if (count($this->entries) === 0) {
+        if (0 === \count($this->entries)) {
             return [];
         }
 
         $configs = [];
 
         foreach ($this->entries as $id => $entry) {
-            if (($config = $this->createConfig((string) $id, $entry)) !== null) {
+            if (null !== ($config = $this->createConfig((string) $id, $entry))) {
                 $configs[] = $config;
             }
         }
@@ -68,7 +68,7 @@ class BundleConfigProvider implements ConfigProviderInterface
      * @param string $id
      * @param array  $data
      *
-     * @return null|RewriteConfig
+     * @return RewriteConfig|null
      */
     private function createConfig(string $id, array $data): ?RewriteConfig
     {
