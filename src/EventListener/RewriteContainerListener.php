@@ -10,7 +10,7 @@
 
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\DataContainer;
 use Contao\Input;
 use Symfony\Cmf\Component\Routing\ChainRouterInterface;
@@ -34,28 +34,20 @@ class RewriteContainerListener
     private $cacheDir;
 
     /**
-     * @var Filesystem
-     */
-    private $fs;
-
-    /**
-     * @var ContaoFrameworkInterface
+     * @var ContaoFramework
      */
     private $framework;
 
     /**
-     * RewriteContainerListener constructor.
-     *
-     * @param RouterInterface          $router
-     * @param string                   $cacheDir
-     * @param Filesystem               $fs
-     * @param ContaoFrameworkInterface $framework
+     * @var Filesystem
      */
+    private $fs;
+
     public function __construct(
         RouterInterface $router,
         string $cacheDir,
-        Filesystem $fs = null,
-        ContaoFrameworkInterface $framework
+        ContaoFramework $framework,
+        Filesystem $fs = null
     ) {
         if (null === $fs) {
             $fs = new Filesystem();
@@ -92,19 +84,19 @@ class RewriteContainerListener
     /**
      * On name save callback.
      *
-     * @param mixed $value
+     * @param mixed         $value
      * @param DataContainer $dataContainer
      *
      * @return mixed
      */
     public function onNameSaveCallback($value, DataContainer $dataContainer)
     {
-        if ($value == '') {
+        if ('' === $value) {
             $inputAdapter = $this->framework->getAdapter(Input::class);
             $value = $inputAdapter->post('requestPath') ?: $dataContainer->activeRecord->requestPath;
         }
 
-        if ($value == '') {
+        if ('' === $value) {
             throw new \InvalidArgumentException(
                 sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $dataContainer->field)
             );

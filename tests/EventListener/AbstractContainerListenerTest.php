@@ -8,13 +8,11 @@ use Contao\Input;
 use Contao\TestCase\ContaoTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener;
 
-abstract class AbstractContainerListenerTest extends TestCase
+abstract class AbstractContainerListenerTest extends ContaoTestCase
 {
     /**
      * @var RewriteContainerListener
