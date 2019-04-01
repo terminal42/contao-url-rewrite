@@ -2,12 +2,17 @@
 
 namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
-use PHPUnit\Framework\TestCase;
+use Contao\CoreBundle\Framework\Adapter;
+use Contao\DataContainer;
+use Contao\Input;
+use Contao\TestCase\ContaoTestCase;
+use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
 use Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener;
 
-class RewriteContainerListenerTest extends TestCase
+class RewriteContainerListenerTest extends ContaoTestCase
 {
     /**
      * @var RewriteContainerListener
@@ -23,6 +28,11 @@ class RewriteContainerListenerTest extends TestCase
      * @var string
      */
     private $cacheDir;
+
+    /**
+     * @var Input|Adapter|MockObject
+     */
+    private $inputAdapter;
 
     protected function setUp()
     {
@@ -47,7 +57,10 @@ class RewriteContainerListenerTest extends TestCase
             )
         ;
 
-        $this->listener = new RewriteContainerListener($router, $this->cacheDir);
+        $this->inputAdapter = $this->mockAdapter(['post']);
+        $framework = $this->mockContaoFramework([Input::class => $this->inputAdapter]);
+
+        $this->listener = new RewriteContainerListener($router, $this->cacheDir, $this->fs, $framework);
     }
 
     protected function tearDown()
@@ -73,6 +86,31 @@ class RewriteContainerListenerTest extends TestCase
     {
         $this->assertSame(1, $this->listener->onInactiveSaveCallback(1));
         $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
+    }
+
+    public function testOnNameSaveCallback()
+    {
+        $dataContainer = $this->createMock(DataContainer::class);
+        $dataContainer->method('__get')->with('activeRecord')->willReturn((object) [ 'requestPath' => 'Bar']);
+
+        $this->assertSame('Foo', $this->listener->onNameSaveCallback('Foo', $dataContainer));
+        $this->assertSame('Bar', $this->listener->onNameSaveCallback('', $dataContainer));
+
+        $this->inputAdapter->method('post')->willReturn('Baz');
+        $this->assertSame('Baz', $this->listener->onNameSaveCallback('', $dataContainer));
+    }
+
+    public function testOnNameSaveCallbackThrowingException()
+    {
+        $GLOBALS['TL_LANG']['ERR']['mandatory'] = '';
+
+        $dataContainer = $this->createMock(DataContainer::class);
+        $dataContainer->method('__get')
+            ->withConsecutive(['activeRecord'], ['field'])
+            ->willReturnOnConsecutiveCalls((object) [ 'requestPath' => ''], 'field');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->listener->onNameSaveCallback('', $dataContainer);
     }
 
     /**

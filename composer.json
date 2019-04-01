@@ -21,6 +21,7 @@
         "contao/calendar-bundle": "^4.4",
         "contao/faq-bundle": "^4.4",
         "contao/news-bundle": "^4.4",
+        "contao/test-case": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.2",
         "phpunit/phpunit": "^6.0",
         "satooshi/php-coveralls": "2.*@dev"

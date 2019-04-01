@@ -11,3 +11,5 @@ services:
         arguments:
             - "@router"
             - "%kernel.cache_dir%"
+            - "@filesystem"
+            - "@contao.framework"
