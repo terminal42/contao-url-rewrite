@@ -10,24 +10,31 @@ use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener;
 
-class RewriteContainerListenerTest extends ContaoTestCase
+abstract class AbstractContainerListenerTest extends TestCase
 {
     /**
      * @var RewriteContainerListener
      */
-    private $listener;
+    protected $listener;
 
     /**
      * @var Filesystem
      */
-    private $fs;
+    protected $fs;
 
     /**
      * @var string
      */
-    private $cacheDir;
+    protected $cacheDir;
+
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
 
     /**
      * @var Input|Adapter|MockObject
@@ -41,27 +48,15 @@ class RewriteContainerListenerTest extends ContaoTestCase
         $this->fs = new Filesystem();
         $this->fs->mkdir($this->cacheDir);
 
-        $router = $this->createMock(Router::class);
-
-        $router
-            ->method('getOption')
-            ->willReturn('CacheClassOld')
-        ;
-
-        $router
-            ->method('warmUp')
-            ->willReturnCallback(
-                function () {
-                    $this->fs->touch($this->cacheDir . '/CacheClassNew.php');
-                }
-            )
-        ;
+        $this->router = $this->getRouter();
 
         $this->inputAdapter = $this->mockAdapter(['post']);
         $framework = $this->mockContaoFramework([Input::class => $this->inputAdapter]);
 
-        $this->listener = new RewriteContainerListener($router, $this->cacheDir, $this->fs, $framework);
+        $this->listener = new RewriteContainerListener($this->router, $this->cacheDir, $framework);
     }
+
+    abstract protected function getRouter();
 
     protected function tearDown()
     {
@@ -79,13 +74,11 @@ class RewriteContainerListenerTest extends ContaoTestCase
         $this->listener->onRecordsModified();
 
         $this->assertFalse($this->fs->exists($this->cacheDir.'/CacheClassOld.php'));
-        $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
     }
 
     public function testOnInactiveSaveCallback()
     {
         $this->assertSame(1, $this->listener->onInactiveSaveCallback(1));
-        $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
     }
 
     public function testOnNameSaveCallback()

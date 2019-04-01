@@ -24,7 +24,8 @@
         "contao/test-case": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.2",
         "phpunit/phpunit": "^6.0",
-        "satooshi/php-coveralls": "2.*@dev"
+        "satooshi/php-coveralls": "2.*@dev",
+        "symfony-cmf/routing": "^2.1"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"
