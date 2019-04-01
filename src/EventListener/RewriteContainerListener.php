@@ -13,6 +13,7 @@ namespace Terminal42\UrlRewriteBundle\EventListener;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\DataContainer;
 use Contao\Input;
+use Symfony\Cmf\Component\Routing\ChainRouterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
@@ -179,15 +180,18 @@ class RewriteContainerListener
      */
     private function clearRouterCache(): void
     {
-        if ($this->router instanceof Router) {
-            foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
-                $class = $this->router->getOption($option);
-                $file = $this->cacheDir.DIRECTORY_SEPARATOR.$class.'.php';
-
-                if ($this->fs->exists($file)) {
-                    $this->fs->remove($file);
+        // Search Symfony router in CMF ChainRouter (Contao 4.7+)
+        if ($this->router instanceof ChainRouterInterface) {
+            foreach ($this->router->all() as $router) {
+                if ($router instanceof Router) {
+                    $this->clearSymfonyRouterCache($router);
                 }
             }
+        }
+
+        // Regular Symfony router (Contao 4.4+)
+        if ($this->router instanceof Router) {
+            $this->clearSymfonyRouterCache($this->router);
         }
 
         if ($this->router instanceof WarmableInterface) {
@@ -206,6 +210,18 @@ class RewriteContainerListener
             // @codeCoverageIgnoreStart
             apc_clear_cache('opcode');
             // @codeCoverageIgnoreEnd
+        }
+    }
+
+    private function clearSymfonyRouterCache(Router $router): void
+    {
+        foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
+            $class = $router->getOption($option);
+            $file = $this->cacheDir.DIRECTORY_SEPARATOR.$class.'.php';
+
+            if ($this->fs->exists($file)) {
+                $this->fs->remove($file);
+            }
         }
     }
 }
