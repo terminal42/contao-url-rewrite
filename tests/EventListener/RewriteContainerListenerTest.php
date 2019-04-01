@@ -118,6 +118,8 @@ class RewriteContainerListenerTest extends ContaoTestCase
      */
     public function testOnGenerateLabel($provided, $expected)
     {
+        $GLOBALS['TL_LANG']['tl_url_rewrite']['priority'][0] = 'Priority';
+
         $this->assertSame($expected, $this->listener->onGenerateLabel($provided));
     }
 
@@ -130,16 +132,18 @@ class RewriteContainerListenerTest extends ContaoTestCase
                     'requestPath' => 'foo/bar',
                     'responseUri' => 'http://domain.tld/baz/{bar}',
                     'responseCode' => 301,
+                    'priority' => 0
                 ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301]</span>',
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301 (Priority: 0)]</span>',
             ],
             410 => [
                 [
                     'name' => 'Foobar',
                     'requestPath' => 'foo/bar',
                     'responseCode' => 410,
+                    'priority' => 10
                 ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410]</span>',
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410 (Priority: 10)]</span>',
             ]
         ];
     }

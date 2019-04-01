@@ -128,10 +128,12 @@ class RewriteContainerListener
         }
 
         return sprintf(
-            '%s <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[%s &rarr; %s]</span>',
+            '%s <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[%s &rarr; %s (%s: %s)]</span>',
             $row['name'],
             $row['requestPath'],
-            $response
+            $response,
+            $GLOBALS['TL_LANG']['tl_url_rewrite']['priority'][0],
+            $row['priority']
         );
     }
 
