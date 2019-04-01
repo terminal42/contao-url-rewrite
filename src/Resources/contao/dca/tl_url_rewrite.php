@@ -35,10 +35,10 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
     // List
     'list' => [
         'sorting' => [
-            'mode' => 1,
+            'mode' => 2,
             'fields' => ['name'],
             'flag' => 1,
-            'panelLayout' => 'filter;search,limit',
+            'panelLayout' => 'filter;sort,search,limit',
         ],
         'label' => [
             'fields' => ['name'],
@@ -92,9 +92,9 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
     // Palettes
     'palettes' => [
         '__selector__' => ['type', 'responseCode'],
-        'default' => '{name_legend},name,type,inactive',
-        'basic' => '{name_legend},name,type,inactive;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode;{examples_legend},examples',
-        'expert' => '{name_legend},name,type,inactive;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode;{examples_legend},examples',
+        'default' => '{name_legend},name,type,priority,inactive',
+        'basic' => '{name_legend},name,type,priority,inactive;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode;{examples_legend},examples',
+        'expert' => '{name_legend},name,type,priority,inactive;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode;{examples_legend},examples',
     ],
 
     // Subpalettes
@@ -117,7 +117,9 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['name'],
             'exclude' => true,
             'search' => true,
+            'sorting' => true,
             'inputType' => 'text',
+            'flag' => 1,
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
         ],
@@ -131,6 +133,17 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'reference' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['typeRef'],
             'eval' => ['submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
+        ],
+        'priority' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['priority'],
+            'default' => '0',
+            'exclude' => true,
+            'filter' => true,
+            'sorting' => true,
+            'flag' => 12,
+            'inputType' => 'text',
+            'eval' => ['tl_class' => 'w50', 'rgxp' => 'natural'],
+            'sql' => ['type' => 'integer', 'default' => '0'],
         ],
         'inactive' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['inactive'],
@@ -178,6 +191,8 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'default' => 301,
             'exclude' => true,
             'filter' => true,
+            'sorting' => true,
+            'flag' => 11,
             'inputType' => 'select',
             'options_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'getResponseCodes'],
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
