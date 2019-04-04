@@ -2,27 +2,42 @@
 
 namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Contao\CoreBundle\Framework\Adapter;
+use Contao\DataContainer;
+use Contao\Input;
+use Contao\TestCase\ContaoTestCase;
+use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener;
 
-class RewriteContainerListenerTest extends TestCase
+abstract class AbstractContainerListenerTest extends ContaoTestCase
 {
     /**
      * @var RewriteContainerListener
      */
-    private $listener;
+    protected $listener;
 
     /**
      * @var Filesystem
      */
-    private $fs;
+    protected $fs;
 
     /**
      * @var string
      */
-    private $cacheDir;
+    protected $cacheDir;
+
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
+     * @var Input|Adapter|MockObject
+     */
+    private $inputAdapter;
 
     protected function setUp()
     {
@@ -31,24 +46,15 @@ class RewriteContainerListenerTest extends TestCase
         $this->fs = new Filesystem();
         $this->fs->mkdir($this->cacheDir);
 
-        $router = $this->createMock(Router::class);
+        $this->router = $this->getRouter();
 
-        $router
-            ->method('getOption')
-            ->willReturn('CacheClassOld')
-        ;
+        $this->inputAdapter = $this->mockAdapter(['post']);
+        $framework = $this->mockContaoFramework([Input::class => $this->inputAdapter]);
 
-        $router
-            ->method('warmUp')
-            ->willReturnCallback(
-                function () {
-                    $this->fs->touch($this->cacheDir . '/CacheClassNew.php');
-                }
-            )
-        ;
-
-        $this->listener = new RewriteContainerListener($router, $this->cacheDir);
+        $this->listener = new RewriteContainerListener($this->router, $this->cacheDir, $framework);
     }
+
+    abstract protected function getRouter();
 
     protected function tearDown()
     {
@@ -66,13 +72,36 @@ class RewriteContainerListenerTest extends TestCase
         $this->listener->onRecordsModified();
 
         $this->assertFalse($this->fs->exists($this->cacheDir.'/CacheClassOld.php'));
-        $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
     }
 
     public function testOnInactiveSaveCallback()
     {
         $this->assertSame(1, $this->listener->onInactiveSaveCallback(1));
-        $this->assertTrue($this->fs->exists($this->cacheDir.'/CacheClassNew.php'));
+    }
+
+    public function testOnNameSaveCallback()
+    {
+        $dataContainer = $this->createMock(DataContainer::class);
+        $dataContainer->method('__get')->with('activeRecord')->willReturn((object) [ 'requestPath' => 'Bar']);
+
+        $this->assertSame('Foo', $this->listener->onNameSaveCallback('Foo', $dataContainer));
+        $this->assertSame('Bar', $this->listener->onNameSaveCallback('', $dataContainer));
+
+        $this->inputAdapter->method('post')->willReturn('Baz');
+        $this->assertSame('Baz', $this->listener->onNameSaveCallback('', $dataContainer));
+    }
+
+    public function testOnNameSaveCallbackThrowingException()
+    {
+        $GLOBALS['TL_LANG']['ERR']['mandatory'] = '';
+
+        $dataContainer = $this->createMock(DataContainer::class);
+        $dataContainer->method('__get')
+            ->withConsecutive(['activeRecord'], ['field'])
+            ->willReturnOnConsecutiveCalls((object) [ 'requestPath' => ''], 'field');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->listener->onNameSaveCallback('', $dataContainer);
     }
 
     /**
@@ -80,6 +109,8 @@ class RewriteContainerListenerTest extends TestCase
      */
     public function testOnGenerateLabel($provided, $expected)
     {
+        $GLOBALS['TL_LANG']['tl_url_rewrite']['priority'][0] = 'Priority';
+
         $this->assertSame($expected, $this->listener->onGenerateLabel($provided));
     }
 
@@ -92,16 +123,18 @@ class RewriteContainerListenerTest extends TestCase
                     'requestPath' => 'foo/bar',
                     'responseUri' => 'http://domain.tld/baz/{bar}',
                     'responseCode' => 301,
+                    'priority' => 0
                 ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301]</span>',
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301 (Priority: 0)]</span>',
             ],
             410 => [
                 [
                     'name' => 'Foobar',
                     'requestPath' => 'foo/bar',
                     'responseCode' => 410,
+                    'priority' => 10
                 ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410]</span>',
+                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410 (Priority: 10)]</span>',
             ]
         ];
     }

@@ -3,13 +3,14 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
 
 $GLOBALS['TL_LANG']['tl_url_rewrite']['name'] = ['Interne Bezeichnung', 'Hier können Sie eine interne Bezeichnung erfassen (nur im Backend ersichtlich).'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['type'] = ['Typ', 'Wählen Sie hier den Typen der Umleitung aus.'];
+$GLOBALS['TL_LANG']['tl_url_rewrite']['priority'] = ['Priorität', 'Legen Sie hier die Priorität fest, die absteigend sortiert.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestHosts'] = ['Host-Einschränkung', 'Hier können Sie die Regel auf bestimmte Hosts einschränken.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestPath'] = ['Pfad-Einschränkung', 'Hier können Sie einen Pfad eingeben.'];
 $GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements'] = ['Extra-Anforderungen', 'Hier können Sie Extra-Anforderungen für die Regel definieren.'];

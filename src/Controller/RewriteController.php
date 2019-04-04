@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -79,14 +79,14 @@ class RewriteController
     /**
      * Generate the URI.
      *
-     * @param Request       $request
+     * @param Request                $request
      * @param RewriteConfigInterface $config
      *
      * @return string|null
      */
     private function generateUri(Request $request, RewriteConfigInterface $config): ?string
     {
-        if (($uri = $config->getResponseUri()) === null) {
+        if (null === ($uri = $config->getResponseUri())) {
             return null;
         }
 
@@ -138,7 +138,7 @@ class RewriteController
      */
     private function replaceInsertTags(string $uri): string
     {
-        if (stripos($uri, '{{') === false) {
+        if (false === stripos($uri, '{{')) {
             return $uri;
         }
 

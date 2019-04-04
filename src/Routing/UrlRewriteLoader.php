@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -55,7 +55,7 @@ class UrlRewriteLoader extends Loader
         $collection = new RouteCollection();
         $configs = $this->configProvider->findAll();
 
-        if (0 === count($configs)) {
+        if (0 === \count($configs)) {
             return $collection;
         }
 
@@ -65,7 +65,7 @@ class UrlRewriteLoader extends Loader
         foreach ($configs as $config) {
             /** @var Route $route */
             foreach ($this->generateRoutes($config) as $route) {
-                if ($route !== null) {
+                if (null !== $route) {
                     $collection->add('url_rewrite_'.$count++, $route);
                 }
             }
@@ -93,7 +93,7 @@ class UrlRewriteLoader extends Loader
     {
         $hosts = $config->getRequestHosts();
 
-        if (count($hosts) > 0) {
+        if (\count($hosts) > 0) {
             foreach ($hosts as $host) {
                 yield $this->createRoute($config, $host);
             }
@@ -106,7 +106,7 @@ class UrlRewriteLoader extends Loader
      * Create the route object.
      *
      * @param RewriteConfigInterface $config
-     * @param string|null   $host
+     * @param string|null            $host
      *
      * @return Route|null
      */
@@ -123,7 +123,7 @@ class UrlRewriteLoader extends Loader
         $route->setRequirements($config->getRequestRequirements());
 
         // Set the condition
-        if (($condition = $config->getRequestCondition()) !== null) {
+        if (null !== ($condition = $config->getRequestCondition())) {
             $route->setCondition($condition);
         } else {
             $route->setMethods('GET');

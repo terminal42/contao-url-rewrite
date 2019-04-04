@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -55,7 +55,7 @@ class ConfigProviderPass implements CompilerPassInterface
         $services = $this->findAndSortTaggedServices($this->tag, $container);
 
         // If there's only one service or chain service is not present alias the first service
-        if (count($services) === 1 || !$container->hasDefinition($this->chain)) {
+        if (1 === \count($services) || !$container->hasDefinition($this->chain)) {
             $container->setAlias($this->alias, (string) $services[0]);
 
             return;

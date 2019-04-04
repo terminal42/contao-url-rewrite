@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, terminal42 gmbh
+ * @copyright  Copyright (c) 2019, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -230,7 +230,7 @@ class InsertTagsListener
                     $next = $pageAdapter->findFirstPublishedRegularByPid($page->id);
                 }
 
-                if ($next !== null) {
+                if (null !== $next) {
                     return $next->getAbsoluteUrl();
                 }
         }
