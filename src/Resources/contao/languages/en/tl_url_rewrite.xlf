@@ -162,6 +162,19 @@ Response redirect URL: {{link_url::{page}|absolute}}
 ---
 Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</source>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.3.0">
+                <source>Rewrite URLs including slashes (without query string) to new domain:</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.3.1">
+                <source>Type: basic
+Hosts restriction: [beispiel.de]
+Path restriction: /{wildcard}
+Requirements: [wildcard => .*]
+Response code: 301 Moved Permanently
+Response redirect URL: https://example.com/de/{wildcard}
+---
+Result: beispiel.de/blog/test → https://example.com/de/blog/test</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
