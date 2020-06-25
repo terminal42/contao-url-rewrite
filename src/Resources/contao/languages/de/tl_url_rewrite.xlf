@@ -232,21 +232,21 @@ Resultat: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examples.3.1">
                 <source>Type: basic
-Hosts restriction: [beispiel.de]
+Hosts restriction: [domain.com]
 Path restriction: /{wildcard}
 Requirements: [wildcard => .*]
 Response code: 301 Moved Permanently
-Response redirect URL: https://example.com/de/{wildcard}
+Response redirect URL: https://domain.tld/{wildcard}
 ---
-Result: beispiel.de/blog/test → https://example.com/de/blog/test</source>
+Result: domain.com/blog/test → https://domain.tld/blog/test</source>
                 <target>Typ: einfach
-Host-Einschränkung: [beispiel.de]
+Host-Einschränkung: [domain.com]
 Pfad-Einschränkung: /{wildcard}
 Extra-Anforderungen: [wildcard => .*]
 Antwort-Statuscode: 301 Moved Permanently
-Antwort-Umleitungs-URL: https://example.com/de/{wildcard}
+Antwort-Umleitungs-URL: https://domain.tld/{wildcard}
 ---
-Resultat: beispiel.de/blog/test → https://example.com/de/blog/test</target>
+Resultat: domain.com/blog/test → https://domain.tld/blog/test</target>
             </trans-unit>
         </body>
     </file>
