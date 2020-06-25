@@ -131,6 +131,14 @@ services:
             - { name: terminal42_url_rewrite.provider, priority: 128 }
 ```
 
+## Convert rules from fritzmg/contao-short-urls
+
+You can convert all rules from [fritzmg/contao-short-urls](https://packagist.org/packages/fritzmg/contao-short-urls) to url rewrites with the following command:
+```
+vendor/bin/contao-console terminal42:url-rewrite:convert-short-urls [no-remove]
+```
+There is an optional parameter `no-remove` (default: `false`), to determine whether the source short urls should not be removed after conversion - by default they are removed!
+
 ## Resources
 
 1. [Symfony Routing](https://symfony.com/doc/current/routing.html)

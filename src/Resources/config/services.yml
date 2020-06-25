@@ -33,3 +33,12 @@ services:
             - "@database_connection"
         tags:
             - { name: terminal42_url_rewrite.provider, priority: 32 }
+
+    terminal42_url_rewrite.command.convert_short_urls:
+        class: Terminal42\UrlRewriteBundle\Command\ConvertShortUrlsCommand
+        public: false
+        arguments:
+            - "@database_connection"
+            - "@terminal42_url_rewrite.listener.rewrite_container"
+        tags:
+            - { name: console.command }
