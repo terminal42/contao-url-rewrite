@@ -10,6 +10,7 @@
 
 namespace Terminal42\UrlRewriteBundle\ConfigProvider;
 
+use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderException;
 use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 interface ConfigProviderInterface
@@ -20,6 +21,8 @@ interface ConfigProviderInterface
      * @param string $id
      *
      * @return RewriteConfigInterface|null
+     *
+     * @throws TemporarilyUnavailableConfigProviderException
      */
     public function find(string $id): ?RewriteConfigInterface;
 

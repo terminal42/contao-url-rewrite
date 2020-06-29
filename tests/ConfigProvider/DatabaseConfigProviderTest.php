@@ -5,9 +5,12 @@ declare(strict_types = 1);
 namespace Terminal42\UrlRewriteBundle\Tests\ConfigProvider;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\InvalidFieldNameException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
+use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderException;
 
 class DatabaseConfigProviderTest extends TestCase
 {
@@ -199,16 +202,24 @@ class DatabaseConfigProviderTest extends TestCase
     public function connectionExceptionDataProvider()
     {
         $pdoException = $this->createMock(\PDOException::class);
+        $connectionException = $this->createMock(ConnectionException::class);
+        $invalidFieldNameException = $this->createMock(InvalidFieldNameException::class);
         $tableNotFoundException = $this->createMock(TableNotFoundException::class);
         $runtimeException = $this->createMock(\RuntimeException::class);
 
         return [
             // find()
             'Find - PDO exception' => [
-                'find', 'fetchAssoc', $pdoException, null
+                'find', 'fetchAssoc', $pdoException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
+            ],
+            'Find - Connection exception' => [
+                'find', 'fetchAssoc', $connectionException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
             ],
             'Find – Table exception' => [
-                'find', 'fetchAssoc', $tableNotFoundException, null
+                'find', 'fetchAssoc', $tableNotFoundException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
+            ],
+            'Find – Invalid field name exception' => [
+                'find', 'fetchAssoc', $invalidFieldNameException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
             ],
             'Find – Runtime exception (uncaught)' => [
                 'find', 'fetchAssoc', $runtimeException, ['exception' => \RuntimeException::class]
@@ -218,8 +229,14 @@ class DatabaseConfigProviderTest extends TestCase
             'Find all - PDO exception' => [
                 'findAll', 'fetchAll', $pdoException, []
             ],
+            'Find all - Connection exception' => [
+                'findAll', 'fetchAll', $connectionException, []
+            ],
             'Find all - Table exception' => [
                 'findAll', 'fetchAll', $tableNotFoundException, []
+            ],
+            'Find all - Invalid field name exception' => [
+                'findAll', 'fetchAll', $invalidFieldNameException, []
             ],
             'Find all - Runtime exception (uncaught)' => [
                 'findAll', 'fetchAll', $runtimeException, ['exception' => \RuntimeException::class]
