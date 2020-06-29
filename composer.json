@@ -6,10 +6,14 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "terminal42",
+            "name": "terminal42 gmbh",
             "homepage": "https://terminal42.ch"
         }
     ],
+    "support": {
+        "issues": "https://github.com/terminal42/contao-url-rewrite/issues",
+        "source": "https://github.com/terminal42/contao-url-rewrite"
+    },
     "require": {
         "php": ">=7.1",
         "contao/core-bundle": "^4.4",

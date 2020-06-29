@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
+use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderException;
 use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteController
@@ -59,7 +60,12 @@ class RewriteController
         }
 
         $rewriteId = $request->attributes->get('_url_rewrite');
-        $config = $this->configProvider->find($rewriteId);
+
+        try {
+            $config = $this->configProvider->find($rewriteId);
+        } catch (TemporarilyUnavailableConfigProviderException $e) {
+            return new Response(Response::$statusTexts[503], 503);
+        }
 
         if (null === $config) {
             throw new RouteNotFoundException(sprintf('URL rewrite config ID %s does not exist', $rewriteId));

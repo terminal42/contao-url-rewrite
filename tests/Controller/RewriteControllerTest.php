@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
 use Terminal42\UrlRewriteBundle\Controller\RewriteController;
+use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderException;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
 
 class RewriteControllerTest extends TestCase
@@ -118,6 +119,24 @@ class RewriteControllerTest extends TestCase
         $this->assertEquals('Internal Server Error', $response->getContent());
     }
 
+    public function testIndexActionServiceUnavailable()
+    {
+        $provider = $this->createMock(ConfigProviderInterface::class);
+
+        $provider
+            ->method('find')
+            ->willThrowException(new TemporarilyUnavailableConfigProviderException())
+        ;
+
+        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $request = $this->mockRequest(1);
+        $response = $controller->indexAction($request);
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals(503, $response->getStatusCode());
+        $this->assertEquals('Service Unavailable', $response->getContent());
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|ContaoFrameworkInterface
      */
@@ -182,7 +201,7 @@ class RewriteControllerTest extends TestCase
             ->method('getBasePath')
             ->willReturn('')
         ;
-        
+
         return $request;
     }
 
