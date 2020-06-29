@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file datatype="php" original="src/Resources/contao/languages/en/tl_url_rewrite.php" source-language="en" >
+        <body>
+            <trans-unit id="tl_url_rewrite.name.0">
+                <source>Internal name</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.name.1">
+                <source>Please enter the rewrite internal name (visible only in backend).</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.type.0">
+                <source>Type</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.type.1">
+                <source>Here you can choose the type.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.priority.0">
+                <source>Priority</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.priority.1">
+                <source>Here you can define a priority sorted descending.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.inactive.0">
+                <source>Deactivate the rule</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.inactive.1">
+                <source>Deactivate the rewrite rule. It will not be loaded into the router configuration.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestHosts.0">
+                <source>Hosts restriction</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestHosts.1">
+                <source>Here you can restrict the rule to certain hosts.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestPath.0">
+                <source>Path restriction</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestPath.1">
+                <source>Here you can enter the path to match.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestRequirements.0">
+                <source>Extra requirements</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestRequirements.1">
+                <source>Here you can add extra requirements for the match.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestCondition.0">
+                <source>Request condition</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestCondition.1">
+                <source>Please enter the request condition using Symfony's Expression Language (e.g. &lt;em&gt;context.getMethod() in ['GET'] and request.query.has('foo')&lt;/em&gt;).</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.responseCode.0">
+                <source>Response status code</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.responseCode.1">
+                <source>Here you can select the response status code.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.responseUri.0">
+                <source>Response redirect URL</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.responseUri.1">
+                <source>Here you can enter the response redirect URI. You can use the insert tags, route attributes and query parameters as wildcards (e.g. &lt;em&gt;/foo/{bar}&lt;/em&gt;). To generate absolute URLs using insert tags you can use the &quot;absolute&quot; insert tag flag (e.g. &lt;em&gt;{{link_url::123|absolute}}&lt;/em&gt;).</source>
+            </trans-unit>
+
+            <trans-unit id="tl_url_rewrite.name_legend">
+                <source>Rewrite name</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.request_legend">
+                <source>Request matching</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.response_legend">
+                <source>Response processing</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples_legend">
+                <source>Examples</source>
+            </trans-unit>
+
+            <trans-unit id="tl_url_rewrite.new.0">
+                <source>New rule</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.new.1">
+                <source>Create a new rewrite rule</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.show.0">
+                <source>Rule details</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.show.1">
+                <source>Show the details of rewrite rule ID %s</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.edit.0">
+                <source>Edit rule</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.edit.1">
+                <source>Edit rewrite rule ID %s</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.copy.0">
+                <source>Duplicate rule</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.copy.1">
+                <source>Duplicate rewrite rule ID %s</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.delete.0">
+                <source>Delete rule</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.delete.1">
+                <source>Delete rewrite rule ID %s</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.toggle.0">
+                <source>Activate/deactivate rule</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.toggle.1">
+                <source>Activate/deactivate rewrite rule ID %s</source>
+            </trans-unit>
+
+            <trans-unit id="tl_url_rewrite.typeRef.basic.0">
+                <source>Basic</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.typeRef.basic.1">
+                <source>Allows to define the request matching using the basic Symfony routing features.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.typeRef.expert.0">
+                <source>Expert</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.typeRef.expert.1">
+                <source>Allows to define the request condition using the &lt;a href=&quot;https://symfony.com/doc/current/components/expression_language.html&quot; target=&quot;_blank&quot;>Expression Language&lt;/a&gt;. For more information please &lt;a href=&quot;https://symfony.com/doc/current/routing/conditions.html&quot; target=&quot;_blank&quot;>visit this link&lt;/a&gt;.</source>
+            </trans-unit>
+
+            <trans-unit id="tl_url_rewrite.examples.0.0">
+                <source>Find address on Google Maps:</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.0.1">
+                <source>Type: basic
+Path restriction: find/{address}
+Response code: 303 See Other
+Response redirect URL: https://www.google.com/maps?q={address}
+---
+Result: domain.tld/find/Switzerland → https://www.google.com/maps?q=Switzerland</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.1.0">
+                <source>Redirect to a specific news entry:</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.1.1">
+                <source>Type: basic
+Path restriction: news/{news}
+Requirements: [news => \d+]
+Response code: 301 Moved Permanently
+Response redirect URL: {{news_url::{news}|absolute}}
+---
+Result: domain.tld/news/123 → domain.tld/news-reader/foobar-123.html
+Result: domain.tld/news/foobar → 404 Page Not Found</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.2.0">
+                <source>Rewrite legacy URLs with query string:</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.2.1">
+                <source>Type: expert
+Path restriction: home.php
+Request condition: context.getMethod() == 'GET' and request.query.has('page')
+Response code: 301 Moved Permanently
+Response redirect URL: {{link_url::{page}|absolute}}
+---
+Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.3.0">
+                <source>Rewrite URLs including slashes (without query string) to new domain:</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.3.1">
+                <source>Type: basic
+Hosts restriction: [domain.com]
+Path restriction: /{wildcard}
+Requirements: [wildcard => .*]
+Response code: 301 Moved Permanently
+Response redirect URL: https://domain.tld/{wildcard}
+---
+Result: domain.com/blog/test → https://domain.tld/blog/test</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

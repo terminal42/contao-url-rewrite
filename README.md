@@ -103,6 +103,19 @@ Response URI: {{link_url::{page}|absolute}}
 Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html
 ```
 
+4. Rewrite URLs including slashes (without query string) to new domain:
+
+```
+Type: basic
+Hosts restriction: [domain.com]
+Path restriction: /{wildcard}
+Requirements: [wildcard => .*]
+Response code: 301 Moved Permanently
+Response redirect URL: https://domain.tld/{wildcard}
+---
+Result: domain.com/blog/test → https://domain.tld/blog/test
+```
+
 ## Create a custom config provider
 
 In addition to the existing providers you can create your own class that provides the rewrite configurations.
