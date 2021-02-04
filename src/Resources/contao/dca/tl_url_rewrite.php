@@ -164,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'listWizard',
-            'eval' => ['tl_class' => 'clr'],
+            'eval' => ['multiple' => true, 'tl_class' => 'clr'],
             'sql' => ['type' => 'blob', 'notnull' => false],
         ],
         'requestPath' => [
