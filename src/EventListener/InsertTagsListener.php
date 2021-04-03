@@ -14,7 +14,7 @@ namespace Terminal42\UrlRewriteBundle\EventListener;
 
 use Contao\ArticleModel;
 use Contao\Config;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Environment;
 use Contao\FilesModel;
 use Contao\PageModel;
@@ -23,14 +23,14 @@ use Contao\Validator;
 class InsertTagsListener
 {
     /**
-     * @var ContaoFrameworkInterface
+     * @var ContaoFramework
      */
     private $framework;
 
     /**
      * InsertTagsListener constructor.
      */
-    public function __construct(ContaoFrameworkInterface $framework)
+    public function __construct(ContaoFramework $framework)
     {
         $this->framework = $framework;
     }

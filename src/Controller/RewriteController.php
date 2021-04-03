@@ -10,7 +10,7 @@
 
 namespace Terminal42\UrlRewriteBundle\Controller;
 
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\InsertTags;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,14 +28,14 @@ class RewriteController
     private $configProvider;
 
     /**
-     * @var ContaoFrameworkInterface
+     * @var ContaoFramework
      */
     private $framework;
 
     /**
      * RewriteController constructor.
      */
-    public function __construct(ConfigProviderInterface $configProvider, ContaoFrameworkInterface $framework)
+    public function __construct(ConfigProviderInterface $configProvider, ContaoFramework $framework)
     {
         $this->configProvider = $configProvider;
         $this->framework = $framework;
