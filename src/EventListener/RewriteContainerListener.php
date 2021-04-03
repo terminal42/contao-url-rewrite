@@ -196,8 +196,16 @@ class RewriteContainerListener
 
     private function clearSymfonyRouterCache(Router $router): void
     {
-        foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
-            $class = $router->getOption($option);
+        try {
+            $cacheClasses = [];
+            foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
+                $cacheClasses[] = $router->getOption($option);
+            }
+        } catch (\InvalidArgumentException $exception) {
+            $cacheClasses = ['url_generating_routes', 'url_matching_routes'];
+        }
+
+        foreach ($cacheClasses as $class) {
             $file = $this->cacheDir.\DIRECTORY_SEPARATOR.$class.'.php';
 
             if ($this->fs->exists($file)) {
