@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -34,8 +34,6 @@ class UrlRewriteLoader extends Loader
 
     /**
      * UrlRewriteLoader constructor.
-     *
-     * @param ConfigProviderInterface $configProvider
      */
     public function __construct(ConfigProviderInterface $configProvider)
     {
@@ -84,10 +82,6 @@ class UrlRewriteLoader extends Loader
 
     /**
      * Generate the routes.
-     *
-     * @param RewriteConfigInterface $config
-     *
-     * @return \Generator
      */
     private function generateRoutes(RewriteConfigInterface $config): \Generator
     {
@@ -104,11 +98,6 @@ class UrlRewriteLoader extends Loader
 
     /**
      * Create the route object.
-     *
-     * @param RewriteConfigInterface $config
-     * @param string|null            $host
-     *
-     * @return Route|null
      */
     private function createRoute(RewriteConfigInterface $config, string $host = null): ?Route
     {

@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -49,10 +49,6 @@ class RewriteConfig implements RewriteConfigInterface
 
     /**
      * RewriteConfig constructor.
-     *
-     * @param string $identifier
-     * @param string $requestPath
-     * @param int    $responseCode
      */
     public function __construct(string $identifier, string $requestPath, int $responseCode = 301)
     {
@@ -61,9 +57,6 @@ class RewriteConfig implements RewriteConfigInterface
         $this->setResponseCode($responseCode);
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
@@ -77,57 +70,36 @@ class RewriteConfig implements RewriteConfigInterface
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return string
-     */
     public function getRequestPath(): string
     {
         return $this->requestPath;
     }
 
-    /**
-     * @param string $requestPath
-     */
     public function setRequestPath(string $requestPath): void
     {
         $this->requestPath = $requestPath;
     }
 
-    /**
-     * @return array
-     */
     public function getRequestHosts(): array
     {
         return $this->requestHosts;
     }
 
-    /**
-     * @param array $requestHosts
-     */
     public function setRequestHosts(array $requestHosts): void
     {
         $this->requestHosts = array_values(array_unique(array_filter($requestHosts)));
     }
 
-    /**
-     * @return array
-     */
     public function getRequestRequirements(): array
     {
         return $this->requestRequirements;
     }
 
-    /**
-     * @param array $requestRequirements
-     */
     public function setRequestRequirements(array $requestRequirements): void
     {
         $this->requestRequirements = $requestRequirements;
     }
 
-    /**
-     * @return string|null
-     */
     public function getRequestCondition(): ?string
     {
         return $this->requestCondition;
@@ -141,17 +113,12 @@ class RewriteConfig implements RewriteConfigInterface
         $this->requestCondition = $requestCondition;
     }
 
-    /**
-     * @return int
-     */
     public function getResponseCode(): int
     {
         return $this->responseCode;
     }
 
     /**
-     * @param int $responseCode
-     *
      * @throws \InvalidArgumentException
      */
     public function setResponseCode(int $responseCode): void
@@ -163,9 +130,6 @@ class RewriteConfig implements RewriteConfigInterface
         $this->responseCode = $responseCode;
     }
 
-    /**
-     * @return string|null
-     */
     public function getResponseUri(): ?string
     {
         return $this->responseUri;

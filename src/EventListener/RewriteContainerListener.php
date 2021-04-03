@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -84,8 +84,7 @@ class RewriteContainerListener
     /**
      * On name save callback.
      *
-     * @param mixed         $value
-     * @param DataContainer $dataContainer
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -97,9 +96,7 @@ class RewriteContainerListener
         }
 
         if ('' === $value) {
-            throw new \InvalidArgumentException(
-                sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $dataContainer->field)
-            );
+            throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $dataContainer->field));
         }
 
         return $value;
@@ -107,10 +104,6 @@ class RewriteContainerListener
 
     /**
      * On generate the label.
-     *
-     * @param array $row
-     *
-     * @return string
      */
     public function onGenerateLabel(array $row): string
     {
@@ -132,8 +125,6 @@ class RewriteContainerListener
 
     /**
      * Get the response codes.
-     *
-     * @return array
      */
     public function getResponseCodes(): array
     {
@@ -148,8 +139,6 @@ class RewriteContainerListener
 
     /**
      * Generate the examples.
-     *
-     * @return string
      */
     public function generateExamples(): string
     {
