@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -21,8 +21,6 @@ class ChainConfigProvider implements ConfigProviderInterface
 
     /**
      * Add the config provider.
-     *
-     * @param ConfigProviderInterface $provider
      */
     public function addProvider(ConfigProviderInterface $provider): void
     {
@@ -70,10 +68,6 @@ class ChainConfigProvider implements ConfigProviderInterface
 
     /**
      * Get the provider identifier.
-     *
-     * @param ConfigProviderInterface $provider
-     *
-     * @return string
      */
     private function getProviderIdentifier(ConfigProviderInterface $provider): string
     {

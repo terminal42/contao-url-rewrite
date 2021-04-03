@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -28,8 +28,6 @@ class DatabaseConfigProvider implements ConfigProviderInterface
 
     /**
      * DatabaseConfigProvider constructor.
-     *
-     * @param Connection $connection
      */
     public function __construct(Connection $connection)
     {
@@ -82,10 +80,6 @@ class DatabaseConfigProvider implements ConfigProviderInterface
 
     /**
      * Create the config.
-     *
-     * @param array $data
-     *
-     * @return RewriteConfig|null
      */
     private function createConfig(array $data): ?RewriteConfig
     {
