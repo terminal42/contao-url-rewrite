@@ -144,7 +144,7 @@ class RewriteControllerTest extends TestCase
         $insertTags = $this
             ->getMockBuilder(Adapter::class)
             ->disableOriginalConstructor()
-            ->setMethods(['replace'])
+            ->addMethods(['replace'])
             ->getMock()
         ;
 
@@ -187,7 +187,7 @@ class RewriteControllerTest extends TestCase
                 [],
                 $attributes
             ])
-            ->setMethods(['getSchemeAndHttpHost', 'getBasePath'])
+            ->onlyMethods(['getSchemeAndHttpHost', 'getBasePath'])
             ->getMock()
         ;
 

@@ -15,7 +15,7 @@
         "source": "https://github.com/terminal42/contao-url-rewrite"
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "codefog/contao-haste": "^4.20",
         "contao/core-bundle": "^4.4",
         "symfony/config": "^3.3 || ^4.0 || ^5.0",
@@ -31,9 +31,9 @@
         "contao/calendar-bundle": "^4.4",
         "contao/faq-bundle": "^4.4",
         "contao/news-bundle": "^4.4",
-        "contao/test-case": "^2.0",
+        "contao/test-case": "^4.0",
         "friendsofphp/php-cs-fixer": "^2.2",
-        "phpunit/phpunit": "^7.0",
+        "phpunit/phpunit": "^8.0",
         "php-coveralls/php-coveralls": "^2.4",
         "symfony-cmf/routing": "^2.1"
     },

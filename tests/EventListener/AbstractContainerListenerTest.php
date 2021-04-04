@@ -39,7 +39,7 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
      */
     private $inputAdapter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cacheDir = __DIR__ . '/tmp';
 
@@ -56,7 +56,7 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
 
     abstract protected function getRouter();
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->fs->remove($this->cacheDir);
     }

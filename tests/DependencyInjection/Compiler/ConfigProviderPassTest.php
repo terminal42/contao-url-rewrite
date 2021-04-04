@@ -17,7 +17,7 @@ class ConfigProviderPassTest extends TestCase
      */
     private $pass;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->pass = new ConfigProviderPass('alias', 'chain', 'tag');
     }
