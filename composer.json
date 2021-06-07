@@ -24,7 +24,8 @@
         "symfony/filesystem": "^3.3 || ^4.0 || ^5.0",
         "symfony/http-foundation": "^3.3 || ^4.0 || ^5.0",
         "symfony/http-kernel": "^3.3 || ^4.0 || ^5.0",
-        "symfony/routing": "^3.3 || ^4.0 || ^5.0"
+        "symfony/routing": "^3.3 || ^4.0 || ^5.0",
+        "bacon/bacon-qr-code": "^2.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
