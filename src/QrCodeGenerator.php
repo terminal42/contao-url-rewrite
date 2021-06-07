@@ -16,7 +16,9 @@ use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\RouterInterface;
+use Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider;
 use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
+use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
 class QrCodeGenerator
 {
@@ -51,11 +53,11 @@ class QrCodeGenerator
         }
 
         $routeId = null;
-        $rewriteId = DatabaseConfigProvider::class.':'.$data['id'];
+        $rewriteId = ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, $data['id']);
 
         foreach ($this->router->getRouteCollection() as $id => $route) {
             // Skip the routes not matching the URL rewrite default
-            if (!$route->hasDefault('_url_rewrite') || $route->getDefault('_url_rewrite') !== $rewriteId) {
+            if (!$route->hasDefault(UrlRewriteLoader::ATTRIBUTE_NAME) || $route->getDefault(UrlRewriteLoader::ATTRIBUTE_NAME) !== $rewriteId) {
                 continue;
             }
 
