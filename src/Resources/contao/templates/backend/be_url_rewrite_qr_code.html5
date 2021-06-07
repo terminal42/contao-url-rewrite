@@ -1,0 +1,49 @@
+
+<div id="tl_buttons">
+    <a href="<?= ampersand($this->backUrl) ?>" class="header_back" title="<?= \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
+</div>
+
+<div class="maintenance_active">
+    <h2 class="sub_headline"><?= $this->trans('tl_url_rewrite.qrCodeRef.headline') ?></h2>
+
+    <div class="tl_tbox" style="padding:12px 18px">
+        <p><?= $this->trans('tl_url_rewrite.qrCodeRef.explanation') ?></p>
+    </div>
+
+    <?php if ($this->error): ?>
+        <div class="tl_message">
+            <p class="tl_error"><?= $this->trans('ERR.general') ?></p>
+            <p class="tl_error"><?= $this->error ?></p>
+        </div>
+    <?php elseif ($this->qrCode): ?>
+        <div class="tl_tbox" style="padding:18px;text-align:center">
+            <figure>
+                <img src="<?= $this->qrCode ?>" alt="">
+                <figcaption style="margin-top:18px"><a href="<?= $this->url ?>" target="_blank"><?= $this->url ?></a></figcaption>
+            </figure>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($this->formFields && $this->formSubmit): ?>
+        <form method="post">
+            <div class="tl_formbody_edit">
+                <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
+
+                <fieldset class="tl_tbox nolegend">
+                    <?php foreach ($this->formFields as $formField): ?>
+                        <div class="widget clr">
+                            <?= $formField->parse() ?>
+                        </div>
+                    <?php endforeach; ?>
+                </fieldset>
+
+                <div class="tl_formbody_submit">
+                    <div class="tl_submit_container">
+                        <button type="submit" class="tl_submit"><?= $this->trans('tl_url_rewrite.qrCodeRef.submit') ?></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    <?php endif; ?>
+</div>

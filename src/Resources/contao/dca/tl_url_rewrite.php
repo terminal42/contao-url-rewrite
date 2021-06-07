@@ -86,6 +86,12 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
                     ],
                 ],
             ],
+            'qrCode' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCode'],
+                'href' => 'key=qrCode',
+                'icon' => 'bundles/terminal42urlrewrite/icon-qr.svg',
+                'button_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'onQrCodeButtonCallback'],
+            ],
         ],
     ],
 
