@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -92,9 +92,9 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
     // Palettes
     'palettes' => [
         '__selector__' => ['type', 'responseCode'],
-        'default' => '{name_legend},name,type,priority,inactive',
-        'basic' => '{name_legend},name,type,priority,inactive;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode;{examples_legend},examples',
-        'expert' => '{name_legend},name,type,priority,inactive;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode;{examples_legend},examples',
+        'default' => '{name_legend},name,type,priority,comment,inactive',
+        'basic' => '{name_legend},name,type,priority,comment,inactive;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode;{examples_legend},examples',
+        'expert' => '{name_legend},name,type,priority,comment,inactive;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode;{examples_legend},examples',
     ],
 
     // Subpalettes
@@ -147,6 +147,14 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'inputType' => 'text',
             'eval' => ['tl_class' => 'w50', 'rgxp' => 'natural'],
             'sql' => ['type' => 'integer', 'default' => '0'],
+        ],
+        'comment' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['comment'],
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
         ],
         'inactive' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['inactive'],

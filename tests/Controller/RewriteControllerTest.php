@@ -6,7 +6,6 @@ namespace Terminal42\UrlRewriteBundle\Tests\Controller;
 
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\CoreBundle\Framework\ContaoFramework;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -138,14 +137,14 @@ class RewriteControllerTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ContaoFrameworkInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|ContaoFramework
      */
     private function mockContaoFramework()
     {
         $insertTags = $this
             ->getMockBuilder(Adapter::class)
             ->disableOriginalConstructor()
-            ->setMethods(['replace'])
+            ->addMethods(['replace'])
             ->getMock()
         ;
 
@@ -188,7 +187,7 @@ class RewriteControllerTest extends TestCase
                 [],
                 $attributes
             ])
-            ->setMethods(['getSchemeAndHttpHost', 'getBasePath'])
+            ->onlyMethods(['getSchemeAndHttpHost', 'getBasePath'])
             ->getMock()
         ;
 

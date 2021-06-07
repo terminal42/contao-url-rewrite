@@ -202,7 +202,7 @@ class InsertTagsListenerTest extends TestCase
         $listener = $this
             ->getMockBuilder(InsertTagsListener::class)
             ->setConstructorArgs([$this->createFrameworkMock($provided[0])])
-            ->setMethods(['classExists'])
+            ->onlyMethods(['classExists'])
             ->getMock()
         ;
 
@@ -339,7 +339,7 @@ class InsertTagsListenerTest extends TestCase
         $listener = $this
             ->getMockBuilder(InsertTagsListener::class)
             ->setConstructorArgs([$this->createFrameworkMock($provided[0])])
-            ->setMethods(['classExists'])
+            ->onlyMethods(['classExists'])
             ->getMock()
         ;
 
@@ -423,7 +423,7 @@ class InsertTagsListenerTest extends TestCase
         $listener = $this
             ->getMockBuilder(InsertTagsListener::class)
             ->setConstructorArgs([$this->createFrameworkMock($provided[0])])
-            ->setMethods(['classExists'])
+            ->onlyMethods(['classExists'])
             ->getMock()
         ;
 
@@ -575,7 +575,7 @@ class InsertTagsListenerTest extends TestCase
         return $this
             ->getMockBuilder(Adapter::class)
             ->disableOriginalConstructor()
-            ->setMethods($methods)
+            ->addMethods($methods)
             ->getMock()
         ;
     }

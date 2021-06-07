@@ -20,6 +20,12 @@
             <trans-unit id="tl_url_rewrite.priority.1">
                 <source>Here you can define a priority sorted descending.</source>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.comment.0">
+                <source>Comment</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.comment.1">
+                <source>Please enter a comment (visible only in backend).</source>
+            </trans-unit>
             <trans-unit id="tl_url_rewrite.inactive.0">
                 <source>Deactivate the rule</source>
             </trans-unit>

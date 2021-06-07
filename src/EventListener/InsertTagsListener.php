@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -14,7 +14,7 @@ namespace Terminal42\UrlRewriteBundle\EventListener;
 
 use Contao\ArticleModel;
 use Contao\Config;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Environment;
 use Contao\FilesModel;
 use Contao\PageModel;
@@ -23,16 +23,14 @@ use Contao\Validator;
 class InsertTagsListener
 {
     /**
-     * @var ContaoFrameworkInterface
+     * @var ContaoFramework
      */
     private $framework;
 
     /**
      * InsertTagsListener constructor.
-     *
-     * @param ContaoFrameworkInterface $framework
      */
-    public function __construct(ContaoFrameworkInterface $framework)
+    public function __construct(ContaoFramework $framework)
     {
         $this->framework = $framework;
     }
@@ -40,8 +38,6 @@ class InsertTagsListener
     /**
      * On insert tag flags.
      *
-     * @param string $flag
-     * @param string $tag
      * @param string $value
      *
      * @return string|bool
@@ -74,10 +70,6 @@ class InsertTagsListener
 
     /**
      * Return true if the class exists.
-     *
-     * @param string $class
-     *
-     * @return bool
      */
     public function classExists(string $class): bool
     {
@@ -86,8 +78,6 @@ class InsertTagsListener
 
     /**
      * Generate the article URL.
-     *
-     * @param string $articleId
      *
      * @return bool|string
      */
@@ -108,8 +98,6 @@ class InsertTagsListener
 
     /**
      * Generate the event URL.
-     *
-     * @param string $eventId
      *
      * @return bool|string
      */
@@ -149,8 +137,6 @@ class InsertTagsListener
     /**
      * Generate the FAQ URL.
      *
-     * @param string $faqId
-     *
      * @return bool|string
      */
     private function generateFaqUrl(string $faqId)
@@ -179,8 +165,6 @@ class InsertTagsListener
     /**
      * Generate the file URL.
      *
-     * @param string $file
-     *
      * @throws \RuntimeException
      *
      * @return bool|string
@@ -205,8 +189,6 @@ class InsertTagsListener
 
     /**
      * Generate the link URL.
-     *
-     * @param string $pageId
      *
      * @return bool|string
      */
@@ -240,8 +222,6 @@ class InsertTagsListener
 
     /**
      * Generate the news URL.
-     *
-     * @param string $newsId
      *
      * @return bool|string
      */

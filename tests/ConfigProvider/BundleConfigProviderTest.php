@@ -19,7 +19,7 @@ class BundleConfigProviderTest extends TestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new BundleConfigProvider([
             // Invalid entry

@@ -3,7 +3,7 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
@@ -22,8 +22,6 @@ class BundleConfigProvider implements ConfigProviderInterface
 
     /**
      * BundleConfigProvider constructor.
-     *
-     * @param array $entries
      */
     public function __construct(array $entries = [])
     {
@@ -64,11 +62,6 @@ class BundleConfigProvider implements ConfigProviderInterface
 
     /**
      * Create the config.
-     *
-     * @param string $id
-     * @param array  $data
-     *
-     * @return RewriteConfig|null
      */
     private function createConfig(string $id, array $data): ?RewriteConfig
     {

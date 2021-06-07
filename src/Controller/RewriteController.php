@@ -3,14 +3,14 @@
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2019, terminal42 gmbh
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
  * @author     terminal42 <https://terminal42.ch>
  * @license    MIT
  */
 
 namespace Terminal42\UrlRewriteBundle\Controller;
 
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\InsertTags;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,17 +28,14 @@ class RewriteController
     private $configProvider;
 
     /**
-     * @var ContaoFrameworkInterface
+     * @var ContaoFramework
      */
     private $framework;
 
     /**
      * RewriteController constructor.
-     *
-     * @param ConfigProviderInterface  $configProvider
-     * @param ContaoFrameworkInterface $framework
      */
-    public function __construct(ConfigProviderInterface $configProvider, ContaoFrameworkInterface $framework)
+    public function __construct(ConfigProviderInterface $configProvider, ContaoFramework $framework)
     {
         $this->configProvider = $configProvider;
         $this->framework = $framework;
@@ -47,11 +44,7 @@ class RewriteController
     /**
      * Index action.
      *
-     * @param Request $request
-     *
      * @throws RouteNotFoundException
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {
@@ -84,11 +77,6 @@ class RewriteController
 
     /**
      * Generate the URI.
-     *
-     * @param Request                $request
-     * @param RewriteConfigInterface $config
-     *
-     * @return string|null
      */
     private function generateUri(Request $request, RewriteConfigInterface $config): ?string
     {
@@ -112,11 +100,6 @@ class RewriteController
 
     /**
      * Replace the wildcards.
-     *
-     * @param Request $request
-     * @param string  $uri
-     *
-     * @return string
      */
     private function replaceWildcards(Request $request, string $uri): string
     {
@@ -137,10 +120,6 @@ class RewriteController
 
     /**
      * Replace the insert tags.
-     *
-     * @param string $uri
-     *
-     * @return string
      */
     private function replaceInsertTags(string $uri): string
     {

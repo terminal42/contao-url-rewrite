@@ -1,9 +1,10 @@
 language: php
 
 php:
-  - 7.1
   - 7.2
   - 7.3
+  - 7.4
+  - 8.0
 
 sudo: false
 
@@ -12,7 +13,7 @@ before_script:
 
 script:
   - mkdir -p build/logs
-  - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   - php vendor/bin/coveralls
