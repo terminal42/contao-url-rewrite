@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
+
 namespace Terminal42\UrlRewriteBundle;
 
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
@@ -19,7 +27,6 @@ class QrCodeGenerator
 
     /**
      * QrCodeGenerator constructor.
-     * @param RouterInterface $router
      */
     public function __construct(RouterInterface $router)
     {
@@ -31,7 +38,7 @@ class QrCodeGenerator
      */
     public function validate(array $data): bool
     {
-        return $data['requestPath'] !== '' && !$data['inactive'];
+        return '' !== $data['requestPath'] && !$data['inactive'];
     }
 
     /**
@@ -44,7 +51,7 @@ class QrCodeGenerator
         }
 
         $routeId = null;
-        $rewriteId = DatabaseConfigProvider::class . ':' . $data['id'];
+        $rewriteId = DatabaseConfigProvider::class.':'.$data['id'];
 
         foreach ($this->router->getRouteCollection() as $id => $route) {
             // Skip the routes not matching the URL rewrite default
@@ -55,11 +62,11 @@ class QrCodeGenerator
             $routeHost = $route->getHost();
 
             // Match the route host
-            if ($routeHost === '' || $parameters['host'] === $routeHost) {
+            if ('' === $routeHost || $parameters['host'] === $routeHost) {
                 $routeId = $id;
 
                 // Unset the host from parameters, if it's already in the route settings
-                if ($routeHost !== '') {
+                if ('' !== $routeHost) {
                     unset($parameters['host']);
                 }
 
@@ -67,7 +74,7 @@ class QrCodeGenerator
             }
         }
 
-        if ($routeId === null) {
+        if (null === $routeId) {
             throw new \RuntimeException(sprintf('Unable to determine route ID for rewrite ID %s', $data['id']));
         }
 

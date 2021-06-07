@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
+
 namespace Terminal42\UrlRewriteBundle\Controller;
 
 use Contao\Backend;
@@ -36,9 +44,6 @@ class QrCodeController
 
     /**
      * QrCodeController constructor.
-     * @param Connection $connection
-     * @param QrCodeGenerator $qrCodeGenerator
-     * @param RequestStack $requestStack
      */
     public function __construct(Connection $connection, QrCodeGenerator $qrCodeGenerator, RequestStack $requestStack)
     {
@@ -72,7 +77,7 @@ class QrCodeController
         $this->addFormToTemplate($template, $request, $rewriteData, $routeParameters);
 
         // Generate the QR code only if ALL parameters are set
-        if (!in_array(null, $routeParameters, true)) {
+        if (!\in_array(null, $routeParameters, true)) {
             $this->addQrCodeToTemplate($template, $rewriteData, $routeParameters);
         }
 
@@ -114,9 +119,9 @@ class QrCodeController
         ], 'scheme', Input::post('scheme') ?: $request->getScheme()));
 
         // Determine the host
-        if (is_array($hosts = StringUtil::deserialize($rewriteData['requestHosts'])) && count($hosts = array_filter($hosts)) > 0) {
+        if (\is_array($hosts = StringUtil::deserialize($rewriteData['requestHosts'])) && \count($hosts = array_filter($hosts)) > 0) {
             // Set the host immediately if there's only one
-            if (count($hosts) === 1) {
+            if (1 === \count($hosts)) {
                 $routeParameters['host'] = $hosts[0];
             } else {
                 // Generate a select menu field for host
@@ -137,10 +142,10 @@ class QrCodeController
         $requirements = StringUtil::deserialize($rewriteData['requestRequirements']);
 
         // Generate the requirement fields
-        if (is_array($requirements) && count($requirements) > 0) {
+        if (\is_array($requirements) && \count($requirements) > 0) {
             foreach ($requirements as $requirement) {
                 if ('' !== $requirement['key'] && '' !== $requirement['value']) {
-                    $fieldName = 'requirement_' . $requirement['key'];
+                    $fieldName = 'requirement_'.$requirement['key'];
 
                     $formFields[$fieldName] = new $GLOBALS['BE_FFL']['text'](Widget::getAttributesFromDca([
                         'label' => sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['requirement'], $requirement['key'], $requirement['value']),
@@ -154,7 +159,7 @@ class QrCodeController
         }
 
         // Add form to template
-        if (count($formFields) > 0) {
+        if (\count($formFields) > 0) {
             $formSubmit = 'contao-url-rewrite-qr-code';
 
             $template->formFields = $formFields;
@@ -179,7 +184,7 @@ class QrCodeController
             $formField->validate();
 
             // Validate the requirement regexp, if any
-            if ($formField->urlRewriteRequirement && !preg_match('/' . $formField->urlRewriteRequirement['value'] . '/', $formField->value)) {
+            if ($formField->urlRewriteRequirement && !preg_match('/'.$formField->urlRewriteRequirement['value'].'/', $formField->value)) {
                 $formField->addError(sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['requirementError'], $formField->urlRewriteRequirement['value']));
             }
 
