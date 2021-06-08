@@ -44,9 +44,20 @@ class QrCodeGenerator
     }
 
     /**
-     * Generate the QR code and the URL.
+     * Generate the image.
      */
-    public function generate(array $data, array $parameters = []): array
+    public function generateImage(string $url): string
+    {
+        $renderer = new ImageRenderer(new RendererStyle(180, 0), new SvgImageBackEnd());
+        $writer = new Writer($renderer);
+
+        return $writer->writeString($url);
+    }
+
+    /**
+     * Generate the URL.
+     */
+    public function generateUrl(array $data, array $parameters = []): string
     {
         if (!isset($parameters['host'])) {
             throw new MissingMandatoryParametersException('The parameter "host" is mandatory');
@@ -80,8 +91,6 @@ class QrCodeGenerator
             throw new \RuntimeException(sprintf('Unable to determine route ID for rewrite ID %s', $data['id']));
         }
 
-        $renderer = new ImageRenderer(new RendererStyle(180, 0), new SvgImageBackEnd());
-        $writer = new Writer($renderer);
         $context = $this->router->getContext();
 
         // Set the scheme
@@ -96,8 +105,6 @@ class QrCodeGenerator
             unset($parameters['host']);
         }
 
-        $url = $this->router->generate($routeId, $parameters, RouterInterface::ABSOLUTE_URL);
-
-        return ['qrCode' => $writer->writeString($url), 'url' => $url];
+        return $this->router->generate($routeId, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 }

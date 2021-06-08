@@ -13,6 +13,11 @@ services:
             - "@database_connection"
             - "@terminal42_url_rewrite.qr_code_generator"
             - "@request_stack"
+            - "@router"
+
+    Terminal42\UrlRewriteBundle\Controller\QrCodeController:
+        alias: terminal42_url_rewrite.qr_code_controller
+        public: true
 
     terminal42_url_rewrite.qr_code_generator:
         class: Terminal42\UrlRewriteBundle\QrCodeGenerator

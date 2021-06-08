@@ -13,16 +13,18 @@ namespace Terminal42\UrlRewriteBundle\Controller;
 use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\CoreBundle\Exception\PageNotFoundException;
-use Contao\File;
 use Contao\Input;
 use Contao\StringUtil;
+use Contao\Validator;
 use Contao\Widget;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\QrCodeGenerator;
 
 class QrCodeController
@@ -43,13 +45,19 @@ class QrCodeController
     private $requestStack;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * QrCodeController constructor.
      */
-    public function __construct(Connection $connection, QrCodeGenerator $qrCodeGenerator, RequestStack $requestStack)
+    public function __construct(Connection $connection, QrCodeGenerator $qrCodeGenerator, RequestStack $requestStack, RouterInterface $router)
     {
         $this->connection = $connection;
         $this->qrCodeGenerator = $qrCodeGenerator;
         $this->requestStack = $requestStack;
+        $this->router = $router;
     }
 
     /**
@@ -85,21 +93,32 @@ class QrCodeController
     }
 
     /**
+     * @Route("/url_rewrite_qr_code/{url}", name="url_rewrite_qr_code", methods={"GET"})
+     */
+    public function qrCode(string $url): Response
+    {
+        $url = base64_decode($url);
+
+        if (!Validator::isUrl($url) || !preg_match('/https?:\/\//', $url)) {
+            return new Response(Response::$statusTexts[Response::HTTP_BAD_REQUEST], Response::HTTP_BAD_REQUEST);
+        }
+
+        $response = new Response($this->qrCodeGenerator->generateImage($url));
+        $response->headers->set('content-type', 'image/svg+xml');
+
+        return $response;
+    }
+
+    /**
      * Add QR code to the template.
      */
     private function addQrCodeToTemplate(BackendTemplate $template, array $rewriteData, array $routeParameters): void
     {
         try {
-            $data = $this->qrCodeGenerator->generate($rewriteData, $routeParameters);
+            $url = $this->qrCodeGenerator->generateUrl($rewriteData, $routeParameters);
 
-            // Create an image out of QR code so it can be easily downloaded
-            $file = new File(sprintf('assets/images/q/qr-%s.svg', md5($data['url'])));
-            $file->truncate();
-            $file->write($data['qrCode']);
-            $file->close();
-
-            $template->qrCode = $file->path;
-            $template->url = $data['url'];
+            $template->qrCode = $this->router->generate('url_rewrite_qr_code', ['url' => base64_encode($url)]);
+            $template->url = $url;
         } catch (MissingMandatoryParametersException | InvalidParameterException $e) {
             $template->error = $e->getMessage();
         }
