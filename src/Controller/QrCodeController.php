@@ -167,7 +167,7 @@ class QrCodeController
 
             // Process the form
             if ($request->request->get('FORM_SUBMIT') === $formSubmit) {
-                $this->processForm($formFields, $routeParameters);
+                $routeParameters = $this->processForm($formFields, $routeParameters);
             }
         }
 
@@ -177,7 +177,7 @@ class QrCodeController
     /**
      * Process the form.
      */
-    private function processForm(array $formFields, array &$routeParameters): array
+    private function processForm(array $formFields, array $routeParameters): array
     {
         /** @var Widget $formField */
         foreach ($formFields as $formField) {
