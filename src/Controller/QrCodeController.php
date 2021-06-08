@@ -21,6 +21,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
@@ -50,14 +51,20 @@ class QrCodeController
     private $router;
 
     /**
+     * @var UriSigner
+     */
+    private $uriSigner;
+
+    /**
      * QrCodeController constructor.
      */
-    public function __construct(Connection $connection, QrCodeGenerator $qrCodeGenerator, RequestStack $requestStack, RouterInterface $router)
+    public function __construct(Connection $connection, QrCodeGenerator $qrCodeGenerator, RequestStack $requestStack, RouterInterface $router, UriSigner $uriSigner)
     {
         $this->connection = $connection;
         $this->qrCodeGenerator = $qrCodeGenerator;
         $this->requestStack = $requestStack;
         $this->router = $router;
+        $this->uriSigner = $uriSigner;
     }
 
     /**
@@ -95,8 +102,12 @@ class QrCodeController
     /**
      * @Route("/url_rewrite_qr_code/{url}", name="url_rewrite_qr_code", methods={"GET"})
      */
-    public function qrCode(string $url): Response
+    public function qrCode(Request $request, string $url): Response
     {
+        if (!$this->uriSigner->check($request->getSchemeAndHttpHost() . $request->getBaseUrl() . $request->getPathInfo() . (null !== ($qs = $request->server->get('QUERY_STRING')) ? '?' . $qs : ''))) {
+            return new Response(Response::$statusTexts[Response::HTTP_BAD_REQUEST], Response::HTTP_BAD_REQUEST);
+        }
+
         $url = base64_decode($url);
 
         if (!Validator::isUrl($url) || !preg_match('/https?:\/\//', $url)) {
@@ -117,7 +128,7 @@ class QrCodeController
         try {
             $url = $this->qrCodeGenerator->generateUrl($rewriteData, $routeParameters);
 
-            $template->qrCode = $this->router->generate('url_rewrite_qr_code', ['url' => base64_encode($url)]);
+            $template->qrCode = $this->uriSigner->sign($this->router->generate('url_rewrite_qr_code', ['url' => base64_encode($url)], RouterInterface::ABSOLUTE_URL));
             $template->url = $url;
         } catch (MissingMandatoryParametersException | InvalidParameterException $e) {
             $template->error = $e->getMessage();
