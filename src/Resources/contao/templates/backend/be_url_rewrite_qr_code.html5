@@ -16,11 +16,15 @@
             <p class="tl_error"><?= $this->error ?></p>
         </div>
     <?php elseif ($this->qrCode): ?>
-        <div class="tl_tbox" style="padding:18px;text-align:center">
-            <figure>
+        <div class="tl_tbox" style="text-align:center;background-color:#f6f6f6">
+            <figure style="padding:18px">
                 <img src="<?= $this->qrCode ?>" alt="">
-                <figcaption style="margin-top:18px"><a href="<?= $this->url ?>" target="_blank"><?= $this->url ?></a></figcaption>
+                <figcaption style="margin-top:18px;font-weight:bold"><a href="<?= $this->url ?>" target="_blank"><?= $this->url ?></a></figcaption>
             </figure>
+            <div style="padding:18px 18px 0;border-top:1px solid #e6e6e6">
+                <p><?= $this->trans('tl_url_rewrite.qrCodeRef.copy') ?></p>
+                <input type="text" class="tl_text" value="<?= $this->url ?>" readonly style="color:inherit;text-align:center;cursor:auto">
+            </div>
         </div>
     <?php endif; ?>
 
