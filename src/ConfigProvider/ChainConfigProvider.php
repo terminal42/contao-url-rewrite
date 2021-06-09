@@ -32,7 +32,7 @@ class ChainConfigProvider implements ConfigProviderInterface
      */
     public function find(string $id): ?RewriteConfigInterface
     {
-        list($class, $id) = explode(':', $id);
+        [$class, $id] = explode(':', $id);
 
         /** @var ConfigProviderInterface $provider */
         foreach ($this->providers as $provider) {
@@ -57,13 +57,21 @@ class ChainConfigProvider implements ConfigProviderInterface
 
             /** @var RewriteConfigInterface $config */
             foreach ($providerConfigs as $config) {
-                $config->setIdentifier($this->getProviderIdentifier($provider).':'.$config->getIdentifier());
+                $config->setIdentifier(static::getConfigIdentifier($this->getProviderIdentifier($provider), $config->getIdentifier()));
             }
 
             $configs = array_merge($configs, $providerConfigs);
         }
 
         return $configs;
+    }
+
+    /**
+     * Get the config identifier.
+     */
+    public static function getConfigIdentifier(string $providerIdentifier, string $configIdentifier): string
+    {
+        return $providerIdentifier.':'.$configIdentifier;
     }
 
     /**

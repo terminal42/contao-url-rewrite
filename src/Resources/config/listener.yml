@@ -9,6 +9,7 @@ services:
         class: Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener
         public: true
         arguments:
+            - "@terminal42_url_rewrite.qr_code_generator"
             - "@router"
             - "%kernel.cache_dir%"
             - "@contao.framework"

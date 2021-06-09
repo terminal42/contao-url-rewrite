@@ -6,6 +6,25 @@ services:
             - "@terminal42_url_rewrite.provider"
             - "@contao.framework"
 
+    terminal42_url_rewrite.qr_code_controller:
+        class: Terminal42\UrlRewriteBundle\Controller\QrCodeController
+        public: true
+        arguments:
+            - "@database_connection"
+            - "@terminal42_url_rewrite.qr_code_generator"
+            - "@request_stack"
+            - "@router"
+            - "@uri_signer"
+
+    Terminal42\UrlRewriteBundle\Controller\QrCodeController:
+        alias: terminal42_url_rewrite.qr_code_controller
+        public: true
+
+    terminal42_url_rewrite.qr_code_generator:
+        class: Terminal42\UrlRewriteBundle\QrCodeGenerator
+        arguments:
+            - "@router"
+
     terminal42_url_rewrite.rewrite_loader:
         class: Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader
         arguments:

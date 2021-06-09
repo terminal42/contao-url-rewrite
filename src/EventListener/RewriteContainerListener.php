@@ -10,19 +10,28 @@
 
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
+use Contao\Backend;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\DataContainer;
+use Contao\Image;
 use Contao\Input;
+use Contao\StringUtil;
 use Symfony\Cmf\Component\Routing\ChainRouterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
+use Terminal42\UrlRewriteBundle\QrCodeGenerator;
 use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteContainerListener
 {
+    /**
+     * @var QrCodeGenerator
+     */
+    private $qrCodeGenerator;
+
     /**
      * @var RouterInterface
      */
@@ -44,6 +53,7 @@ class RewriteContainerListener
     private $fs;
 
     public function __construct(
+        QrCodeGenerator $qrCodeGenerator,
         RouterInterface $router,
         string $cacheDir,
         ContaoFramework $framework,
@@ -53,6 +63,7 @@ class RewriteContainerListener
             $fs = new Filesystem();
         }
 
+        $this->qrCodeGenerator = $qrCodeGenerator;
         $this->router = $router;
         $this->cacheDir = $cacheDir;
         $this->fs = $fs;
@@ -154,6 +165,14 @@ class RewriteContainerListener
         }
 
         return sprintf('<div class="widget long">%s</div>', $buffer);
+    }
+
+    /**
+     * On QR code button callback.
+     */
+    public function onQrCodeButtonCallback(array $row, string $href, string $label, string $title, string $icon, string $attributes): string
+    {
+        return $this->qrCodeGenerator->validate($row) ? '<a href="'.Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)).' ';
     }
 
     /**
