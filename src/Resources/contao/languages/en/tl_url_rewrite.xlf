@@ -142,7 +142,7 @@
                 <source>Generate QR code</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.qrCodeRef.explanation">
-                <source>Use the form below to generate the QR code for this route. You may need to provide the necessary parameters if the route requires them.</source>
+                <source>Use the form below to generate the QR code for this rule. You may need to provide the necessary parameters if the rule requires them.</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.qrCodeRef.submit">
                 <source>Generate</source>
@@ -160,7 +160,7 @@
                 <source>The value does not match pattern "%s"!</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.qrCodeRef.routeError">
-                <source>Router could not generate the URL.</source>
+                <source>System was unable to generate the URL, please verify your configuration.</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.qrCodeRef.copy">
                 <source>Copy the image URL:</source>
