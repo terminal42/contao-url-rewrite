@@ -36,7 +36,7 @@
 
                 <fieldset class="tl_tbox nolegend">
                     <?php foreach ($this->formFields as $formField): ?>
-                        <div class="widget clr">
+                        <div class="widget w50">
                             <?= $formField->parse() ?>
                         </div>
                     <?php endforeach; ?>
