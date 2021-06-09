@@ -128,8 +128,12 @@ class QrCodeController
         try {
             $url = $this->qrCodeGenerator->generateUrl($rewriteData, $routeParameters);
 
-            $template->qrCode = $this->uriSigner->sign($this->router->generate('url_rewrite_qr_code', ['url' => base64_encode($url)], RouterInterface::ABSOLUTE_URL));
-            $template->url = $url;
+            if ($url !== '') {
+                $template->qrCode = $this->uriSigner->sign($this->router->generate('url_rewrite_qr_code', ['url' => base64_encode($url)], RouterInterface::ABSOLUTE_URL));
+                $template->url = $url;
+            } else {
+                $template->error = $GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['routeError'];
+            }
         } catch (MissingMandatoryParametersException | InvalidParameterException $e) {
             $template->error = $e->getMessage();
         }

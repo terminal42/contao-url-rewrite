@@ -201,6 +201,9 @@
             <trans-unit id="tl_url_rewrite.qrCodeRef.requirementError">
                 <source>The value does not match pattern "%s"!</source>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.routeError">
+                <source>Router could not generate the URL.</source>
+            </trans-unit>
             <trans-unit id="tl_url_rewrite.qrCodeRef.copy">
                 <source>Copy the image URL:</source>
             </trans-unit>
