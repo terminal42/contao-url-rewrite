@@ -92,7 +92,7 @@ class QrCodeController
         $this->addFormToTemplate($template, $request, $rewriteData, $routeParameters);
 
         // Generate the QR code only if ALL parameters are set
-        if (!\in_array(null, $routeParameters, true)) {
+        if (count($routeParameters) > 0 && !\in_array(null, $routeParameters, true)) {
             $this->addQrCodeToTemplate($template, $rewriteData, $routeParameters);
         }
 
