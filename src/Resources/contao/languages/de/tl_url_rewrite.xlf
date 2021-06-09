@@ -156,6 +156,12 @@
                 <source>Activate/deactivate rewrite rule ID %s</source>
                 <target>Regel ID %s aktivieren/deaktivieren</target>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCode.0">
+                <source>Generate QR code</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCode.1">
+                <source>Generate QR code for rule ID %s</source>
+            </trans-unit>
 
             <trans-unit id="tl_url_rewrite.typeRef.basic.0">
                 <source>Basic</source>
@@ -172,6 +178,31 @@
             <trans-unit id="tl_url_rewrite.typeRef.expert.1">
                 <source>Allows to define the request condition using the &lt;a href=&quot;https://symfony.com/doc/current/components/expression_language.html&quot; target=&quot;_blank&quot;>Expression Language&lt;/a&gt;. For more information please &lt;a href=&quot;https://symfony.com/doc/current/routing/conditions.html&quot; target=&quot;_blank&quot;>visit this link&lt;/a&gt;.</source>
                 <target>Erlaubt die Anfrage-Zuordnung auf Basis der Symfony &lt;a href=&quot;https://symfony.com/doc/current/components/expression_language.html&quot; target=&quot;_blank&quot;>Expression Language&lt;/a&gt;. Für weitere Informationen &lt;a href=&quot;https://symfony.com/doc/current/routing/conditions.html&quot; target=&quot;_blank&quot;>besuchen Sie bitte diese Seite&lt;/a&gt;.</target>
+            </trans-unit>
+
+            <trans-unit id="tl_url_rewrite.qrCodeRef.headline">
+                <source>Generate QR code</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.explanation">
+                <source>Use the form below to generate the QR code for this route. You may need to provide the necessary parameters if the route requires them.</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.submit">
+                <source>Generate</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.scheme">
+                <source>Scheme</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.host">
+                <source>Host</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.requirement">
+                <source>Requirement: %s (%s)</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.requirementError">
+                <source>The value does not match pattern "%s"!</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.qrCodeRef.copy">
+                <source>Copy the image URL:</source>
             </trans-unit>
 
             <trans-unit id="tl_url_rewrite.examples.0.0">
