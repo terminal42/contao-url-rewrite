@@ -214,7 +214,7 @@ class QrCodeController
             $formField->validate();
 
             // Validate the requirement regexp, if any
-            if ($formField->urlRewriteRequirement && !preg_match('/'.$formField->urlRewriteRequirement['value'].'/', $formField->value)) {
+            if ($formField->urlRewriteRequirement && !preg_match('/^'.$formField->urlRewriteRequirement['value'].'$/', $formField->value)) {
                 $formField->addError(sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['requirementError'], $formField->urlRewriteRequirement['value']));
             }
 
