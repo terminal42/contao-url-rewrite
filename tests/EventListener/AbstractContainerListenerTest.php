@@ -11,6 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener;
+use Terminal42\UrlRewriteBundle\QrCodeGenerator;
 
 abstract class AbstractContainerListenerTest extends ContaoTestCase
 {
@@ -30,6 +31,11 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
     protected $cacheDir;
 
     /**
+     * @var QrCodeGenerator
+     */
+    protected $qrCodeGenerator;
+
+    /**
      * @var RouterInterface
      */
     protected $router;
@@ -46,12 +52,14 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
         $this->fs = new Filesystem();
         $this->fs->mkdir($this->cacheDir);
 
+        $this->qrCodeGenerator = $this->createMock(QrCodeGenerator::class);
+
         $this->router = $this->getRouter();
 
         $this->inputAdapter = $this->mockAdapter(['post']);
         $framework = $this->mockContaoFramework([Input::class => $this->inputAdapter]);
 
-        $this->listener = new RewriteContainerListener($this->router, $this->cacheDir, $framework);
+        $this->listener = new RewriteContainerListener($this->qrCodeGenerator, $this->router, $this->cacheDir, $framework);
     }
 
     abstract protected function getRouter();

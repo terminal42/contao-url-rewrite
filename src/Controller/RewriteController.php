@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
 use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderException;
 use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
+use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
 class RewriteController
 {
@@ -48,11 +49,11 @@ class RewriteController
      */
     public function indexAction(Request $request): Response
     {
-        if (!$request->attributes->has('_url_rewrite')) {
-            throw new RouteNotFoundException('The _url_rewrite attribute is missing');
+        if (!$request->attributes->has(UrlRewriteLoader::ATTRIBUTE_NAME)) {
+            throw new RouteNotFoundException(sprintf('The "%s" attribute is missing', UrlRewriteLoader::ATTRIBUTE_NAME));
         }
 
-        $rewriteId = $request->attributes->get('_url_rewrite');
+        $rewriteId = $request->attributes->get(UrlRewriteLoader::ATTRIBUTE_NAME);
 
         try {
             $config = $this->configProvider->find($rewriteId);

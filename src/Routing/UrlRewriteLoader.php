@@ -21,6 +21,11 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 class UrlRewriteLoader extends Loader
 {
     /**
+     * Attribute name
+     */
+    public const ATTRIBUTE_NAME = '_url_rewrite';
+
+    /**
      * @var ConfigProviderInterface
      */
     private $configProvider;
@@ -107,7 +112,7 @@ class UrlRewriteLoader extends Loader
 
         $route = new Route(rawurldecode($config->getRequestPath()));
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller:indexAction');
-        $route->setDefault('_url_rewrite', $config->getIdentifier());
+        $route->setDefault(self::ATTRIBUTE_NAME, $config->getIdentifier());
         $route->setOption('utf8', true);
         $route->setRequirements($config->getRequestRequirements());
 
