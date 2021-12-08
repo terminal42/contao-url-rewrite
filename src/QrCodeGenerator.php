@@ -66,7 +66,7 @@ class QrCodeGenerator
         }
 
         $routeId = null;
-        $rewriteId = ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, $data['id']);
+        $rewriteId = ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, (string) $data['id']);
 
         foreach ($this->router->getRouteCollection() as $id => $route) {
             // Skip the routes not matching the URL rewrite default
@@ -107,6 +107,6 @@ class QrCodeGenerator
             unset($parameters['host']);
         }
 
-        return $this->router->generate($routeId, $parameters, RouterInterface::ABSOLUTE_URL);
+        return $this->router->generate((string) $routeId, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 }

@@ -58,7 +58,7 @@ class RewriteController
         $rewriteId = $request->attributes->get(UrlRewriteLoader::ATTRIBUTE_NAME);
 
         try {
-            $config = $this->configProvider->find($rewriteId);
+            $config = $this->configProvider->find((string) $rewriteId);
         } catch (TemporarilyUnavailableConfigProviderException $e) {
             return new Response(Response::$statusTexts[503], 503);
         }

@@ -35,7 +35,7 @@ class DatabaseConfigProviderTest extends TestCase
         $connection = $this->createMock(Connection::class);
 
         $connection
-            ->method('fetchAssoc')
+            ->method('fetchAssociative')
             ->willReturn($row)
         ;
 
@@ -148,7 +148,7 @@ class DatabaseConfigProviderTest extends TestCase
         $connection = $this->createMock(Connection::class);
 
         $connection
-            ->method('fetchAll')
+            ->method('fetchAllAssociative')
             ->willReturn([
                 [
                     'id' => 123,
@@ -177,7 +177,7 @@ class DatabaseConfigProviderTest extends TestCase
         $connection = $this->createMock(Connection::class);
 
         $connection
-            ->method('fetchAll')
+            ->method('fetchAllAssociative')
             ->willReturn([])
         ;
 
@@ -218,36 +218,36 @@ class DatabaseConfigProviderTest extends TestCase
         return [
             // find()
             'Find - PDO exception' => [
-                'find', 'fetchAssoc', $pdoException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+                'find', 'fetchAssociative', $pdoException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find - Connection exception' => [
-                'find', 'fetchAssoc', $connectionException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+                'find', 'fetchAssociative', $connectionException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find – Table exception' => [
-                'find', 'fetchAssoc', $tableNotFoundException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+                'find', 'fetchAssociative', $tableNotFoundException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find – Invalid field name exception' => [
-                'find', 'fetchAssoc', $invalidFieldNameException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+                'find', 'fetchAssociative', $invalidFieldNameException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find – Runtime exception (uncaught)' => [
-                'find', 'fetchAssoc', $runtimeException, ['exception' => \RuntimeException::class],
+                'find', 'fetchAssociative', $runtimeException, ['exception' => \RuntimeException::class],
             ],
 
             // findAll()
             'Find all - PDO exception' => [
-                'findAll', 'fetchAll', $pdoException, [],
+                'findAll', 'fetchAllAssociative', $pdoException, [],
             ],
             'Find all - Connection exception' => [
-                'findAll', 'fetchAll', $connectionException, [],
+                'findAll', 'fetchAllAssociative', $connectionException, [],
             ],
             'Find all - Table exception' => [
-                'findAll', 'fetchAll', $tableNotFoundException, [],
+                'findAll', 'fetchAllAssociative', $tableNotFoundException, [],
             ],
             'Find all - Invalid field name exception' => [
-                'findAll', 'fetchAll', $invalidFieldNameException, [],
+                'findAll', 'fetchAllAssociative', $invalidFieldNameException, [],
             ],
             'Find all - Runtime exception (uncaught)' => [
-                'findAll', 'fetchAll', $runtimeException, ['exception' => \RuntimeException::class],
+                'findAll', 'fetchAllAssociative', $runtimeException, ['exception' => \RuntimeException::class],
             ],
         ];
     }

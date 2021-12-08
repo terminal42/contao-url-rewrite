@@ -66,6 +66,7 @@
         "contao-manager-plugin": "Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin"
     },
     "scripts": {
+        "unit-tests": "vendor/bin/phpunit --colors=always",
         "cs-fixer": [
             "vendor/bin/ecs check src/ tests/ --fix --ansi"
         ]
