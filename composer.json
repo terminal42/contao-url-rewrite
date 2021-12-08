@@ -7,7 +7,17 @@
     "authors": [
         {
             "name": "terminal42 gmbh",
-            "homepage": "https://terminal42.ch"
+            "homepage": "http://www.terminal42.ch"
+        }
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/terminal42"
+        },
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/terminal42"
         }
     ],
     "support": {
@@ -15,7 +25,7 @@
         "source": "https://github.com/terminal42/contao-url-rewrite"
     },
     "require": {
-        "php": ">=7.2",
+        "php": "^7.2 || ^8.0",
         "codefog/contao-haste": "^4.20",
         "contao/core-bundle": "^4.4",
         "symfony/config": "^3.3 || ^4.0 || ^5.0",
@@ -34,7 +44,7 @@
         "contao/faq-bundle": "^4.4",
         "contao/news-bundle": "^4.4",
         "contao/test-case": "^4.0",
-        "friendsofphp/php-cs-fixer": "^2.2",
+        "contao/easy-coding-standard": "^3.0",
         "phpunit/phpunit": "^8.0",
         "php-coveralls/php-coveralls": "^2.4",
         "symfony-cmf/routing": "^2.1"
@@ -54,5 +64,10 @@
     },
     "extra": {
         "contao-manager-plugin": "Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin"
+    },
+    "scripts": {
+        "cs-fixer": [
+            "vendor/bin/ecs check src/ tests/ --fix --ansi"
+        ]
     }
 }
