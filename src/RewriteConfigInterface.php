@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
@@ -12,7 +14,7 @@ namespace Terminal42\UrlRewriteBundle;
 
 interface RewriteConfigInterface
 {
-    const VALID_RESPONSE_CODES = [301, 302, 303, 307, 410];
+    public const VALID_RESPONSE_CODES = [301, 302, 303, 307, 410];
 
     public function getIdentifier(): string;
 

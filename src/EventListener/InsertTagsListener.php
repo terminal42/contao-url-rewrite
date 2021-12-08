@@ -13,10 +13,13 @@ declare(strict_types=1);
 namespace Terminal42\UrlRewriteBundle\EventListener;
 
 use Contao\ArticleModel;
+use Contao\CalendarEventsModel;
 use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Environment;
+use Contao\FaqModel;
 use Contao\FilesModel;
+use Contao\NewsModel;
 use Contao\PageModel;
 use Contao\Validator;
 
@@ -53,14 +56,19 @@ class InsertTagsListener
         switch ($elements[0]) {
             case 'article_url':
                 return $this->generateArticleUrl((string) $elements[1]);
+
             case 'event_url':
                 return $this->generateEventUrl((string) $elements[1]);
+
             case 'faq_url':
                 return $this->generateFaqUrl((string) $elements[1]);
+
             case 'file':
                 return $this->generateFileUrl((string) $elements[1]);
+
             case 'link_url':
                 return $this->generateLinkUrl((string) $elements[1]);
+
             case 'news_url':
                 return $this->generateNewsUrl((string) $elements[1]);
         }
@@ -86,13 +94,14 @@ class InsertTagsListener
         /** @var ArticleModel $articleAdapter */
         $articleAdapter = $this->framework->getAdapter(ArticleModel::class);
 
-        if (null === ($article = $articleAdapter->findByIdOrAlias($articleId))
+        if (
+            null === ($article = $articleAdapter->findByIdOrAlias($articleId))
             || null === ($page = $article->getRelated('pid'))
         ) {
             return false;
         }
 
-        /* @var PageModel $page */
+        /** @var PageModel $page */
         return $page->getAbsoluteUrl('/articles/'.($article->alias ?: $article->id));
     }
 
@@ -107,7 +116,7 @@ class InsertTagsListener
             return false;
         }
 
-        /** @var \Contao\CalendarEventsModel $eventAdapter */
+        /** @var CalendarEventsModel $eventAdapter */
         $eventAdapter = $this->framework->getAdapter('Contao\CalendarEventsModel');
 
         if (null === ($event = $eventAdapter->findByIdOrAlias($eventId))) {
@@ -117,8 +126,10 @@ class InsertTagsListener
         switch ($event->source) {
             case 'external':
                 return $event->url;
+
             case 'internal':
                 return $this->generateLinkUrl((string) $event->jumpTo);
+
             case 'article':
                 return $this->generateArticleUrl((string) $event->articleId);
         }
@@ -130,7 +141,7 @@ class InsertTagsListener
         /** @var Config $config */
         $config = $this->framework->getAdapter(Config::class);
 
-        /* @var PageModel $page */
+        /** @var PageModel $page */
         return $page->getAbsoluteUrl(($config->get('useAutoItem') ? '/' : '/events/').($event->alias ?: $event->id));
     }
 
@@ -145,10 +156,11 @@ class InsertTagsListener
             return false;
         }
 
-        /** @var \Contao\FaqModel $faqAdapter */
+        /** @var FaqModel $faqAdapter */
         $faqAdapter = $this->framework->getAdapter('Contao\FaqModel');
 
-        if (null === ($faq = $faqAdapter->findByIdOrAlias($faqId))
+        if (
+            null === ($faq = $faqAdapter->findByIdOrAlias($faqId))
             || null === ($category = $faq->getRelated('pid'))
             || null === ($page = $category->getRelated('jumpTo'))
         ) {
@@ -158,7 +170,7 @@ class InsertTagsListener
         /** @var Config $config */
         $config = $this->framework->getAdapter(Config::class);
 
-        /* @var PageModel $page */
+        /** @var PageModel $page */
         return $page->getAbsoluteUrl(($config->get('useAutoItem') ? '/' : '/items/').($faq->alias ?: $faq->id));
     }
 
@@ -204,6 +216,7 @@ class InsertTagsListener
         switch ($page->type) {
             case 'redirect':
                 return $page->url;
+
             case 'forward':
                 if ($page->jumpTo) {
                     /** @var PageModel $next */
@@ -231,7 +244,7 @@ class InsertTagsListener
             return false;
         }
 
-        /** @var \Contao\NewsModel $newsAdapter */
+        /** @var NewsModel $newsAdapter */
         $newsAdapter = $this->framework->getAdapter('Contao\NewsModel');
 
         if (null === ($news = $newsAdapter->findByIdOrAlias($newsId))) {
@@ -241,8 +254,10 @@ class InsertTagsListener
         switch ($news->source) {
             case 'external':
                 return $news->url;
+
             case 'internal':
                 return $this->generateLinkUrl((string) $news->jumpTo);
+
             case 'article':
                 return $this->generateArticleUrl((string) $news->articleId);
         }
@@ -254,7 +269,7 @@ class InsertTagsListener
         /** @var Config $config */
         $config = $this->framework->getAdapter(Config::class);
 
-        /* @var PageModel $page */
+        /** @var PageModel $page */
         return $page->getAbsoluteUrl(($config->get('useAutoItem') ? '/' : '/items/').($news->alias ?: $news->id));
     }
 }

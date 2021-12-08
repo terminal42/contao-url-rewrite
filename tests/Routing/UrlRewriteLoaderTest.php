@@ -2,8 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Terminal42\UrlRewriteBundle\Tests\ContaoManager;
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
+namespace Terminal42\UrlRewriteBundle\Tests\Routing;
+
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -13,12 +22,12 @@ use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
 class UrlRewriteLoaderTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(UrlRewriteLoader::class, new UrlRewriteLoader($this->mockConfigProvider()));
     }
 
-    public function testSupports()
+    public function testSupports(): void
     {
         $loader = new UrlRewriteLoader($this->mockConfigProvider());
 
@@ -27,7 +36,7 @@ class UrlRewriteLoaderTest extends TestCase
         $this->assertFalse($loader->supports(''));
     }
 
-    public function testLoadedTwice()
+    public function testLoadedTwice(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -36,7 +45,7 @@ class UrlRewriteLoaderTest extends TestCase
         $loader->load('');
     }
 
-    public function testNoRoutes()
+    public function testNoRoutes(): void
     {
         $loader = new UrlRewriteLoader($this->mockConfigProvider());
         $collection = $loader->load('');
@@ -48,7 +57,7 @@ class UrlRewriteLoaderTest extends TestCase
     /**
      * @dataProvider getRouteCollectionProvider
      */
-    public function testLoad($provided, $expected)
+    public function testLoad($provided, $expected): void
     {
         $provider = $this->mockConfigProvider([$provided]);
         $loader = new UrlRewriteLoader($provider);
@@ -56,22 +65,22 @@ class UrlRewriteLoaderTest extends TestCase
         $routes = $collection->getIterator();
 
         $this->assertInstanceOf(RouteCollection::class, $collection);
-        $this->assertCount(count($expected), $routes);
+        $this->assertCount(\count($expected), $routes);
 
         $index = 0;
 
         /** @var Route $route */
         foreach ($routes as $route) {
-            $this->assertEquals('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
+            $this->assertSame('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
             $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
             $this->assertTrue($route->getOption('utf8'));
-            $this->assertEquals($expected[$index]['methods'], $route->getMethods());
-            $this->assertEquals($expected[$index]['path'], $route->getPath());
-            $this->assertEquals($expected[$index]['requirements'], $route->getRequirements());
-            $this->assertEquals($expected[$index]['host'], $route->getHost());
-            $this->assertEquals($expected[$index]['condition'], $route->getCondition());
+            $this->assertSame($expected[$index]['methods'], $route->getMethods());
+            $this->assertSame($expected[$index]['path'], $route->getPath());
+            $this->assertSame($expected[$index]['requirements'], $route->getRequirements());
+            $this->assertSame($expected[$index]['host'], $route->getHost());
+            $this->assertSame($expected[$index]['condition'], $route->getCondition());
 
-            $index++;
+            ++$index;
         }
     }
 
@@ -121,7 +130,7 @@ class UrlRewriteLoaderTest extends TestCase
                         'host' => 'domain2.tld',
                         'condition' => '',
                     ],
-                ]
+                ],
             ],
 
             'Expert – single route' => [
@@ -154,20 +163,18 @@ class UrlRewriteLoaderTest extends TestCase
                         'host' => 'domain2.tld',
                         'condition' => 'context.getMethod() in [\'GET\']',
                     ],
-                ]
+                ],
             ],
 
             'Invalid' => [
                 new RewriteConfig('1', ''),
-                []
+                [],
             ],
         ];
     }
 
     /**
-     * @param array $configs
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|ConfigProviderInterface
+     * @return MockObject|ConfigProviderInterface
      */
     private function mockConfigProvider(array $configs = [])
     {

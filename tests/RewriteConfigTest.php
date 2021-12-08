@@ -1,6 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Tests;
 
@@ -9,7 +17,7 @@ use Terminal42\UrlRewriteBundle\RewriteConfig;
 
 class RewriteConfigTest extends TestCase
 {
-    public function testSettersAndGetters()
+    public function testSettersAndGetters(): void
     {
         $config = new RewriteConfig('1', 'foo/bar');
         $config->setRequestHosts(['domain1.tld', 'domain1.tld', 'domain2.tld', '']);
@@ -33,7 +41,7 @@ class RewriteConfigTest extends TestCase
         $this->assertSame('foo/baz', $config->getRequestPath());
     }
 
-    public function testInvalidResponseCode()
+    public function testInvalidResponseCode(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new RewriteConfig('1', 'foobar', 500);

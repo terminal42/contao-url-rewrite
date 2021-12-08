@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
+
 namespace Terminal42\UrlRewriteBundle\Tests\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
@@ -17,7 +27,7 @@ use Terminal42\UrlRewriteBundle\Terminal42UrlRewriteBundle;
 
 class PluginTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $plugin = new Plugin();
 
@@ -26,7 +36,7 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(RoutingPluginInterface::class, $plugin);
     }
 
-    public function testGetBundles()
+    public function testGetBundles(): void
     {
         $plugin = new Plugin();
         $bundles = $plugin->getBundles($this->createMock(ParserInterface::class));
@@ -36,11 +46,11 @@ class PluginTest extends TestCase
 
         $this->assertCount(1, $bundles);
         $this->assertInstanceOf(BundleConfig::class, $config);
-        $this->assertEquals(Terminal42UrlRewriteBundle::class, $config->getName());
-        $this->assertEquals([ContaoCoreBundle::class], $config->getLoadAfter());
+        $this->assertSame(Terminal42UrlRewriteBundle::class, $config->getName());
+        $this->assertSame([ContaoCoreBundle::class], $config->getLoadAfter());
     }
 
-    public function testGetRouteCollection()
+    public function testGetRouteCollection(): void
     {
         $loader = $this->createMock(YamlFileLoader::class);
 
@@ -61,7 +71,7 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(RouteCollection::class, $plugin->getRouteCollection($resolver, $this->createMock(Kernel::class)));
     }
 
-    public function testGetRouteCollectionNull()
+    public function testGetRouteCollectionNull(): void
     {
         $resolver = $this->createMock(LoaderResolver::class);
 

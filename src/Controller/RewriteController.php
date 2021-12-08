@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
@@ -69,7 +71,9 @@ class RewriteController
 
         if (410 === $responseCode) {
             return new Response(Response::$statusTexts[$responseCode], $responseCode);
-        } elseif (null !== ($uri = $this->generateUri($request, $config))) {
+        }
+
+        if (null !== ($uri = $this->generateUri($request, $config))) {
             return new RedirectResponse($uri, $responseCode);
         }
 

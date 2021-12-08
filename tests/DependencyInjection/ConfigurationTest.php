@@ -1,6 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Tests\DependencyInjection;
 
@@ -12,14 +20,14 @@ use Terminal42\UrlRewriteBundle\DependencyInjection\Configuration;
 
 class ConfigurationTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(Configuration::class, new Configuration());
     }
 
-    public function testValidConfig()
+    public function testValidConfig(): void
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__ . '/../Fixtures/config_valid.yml'));
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../Fixtures/config_valid.yml'));
         $config = (new Processor())->processConfiguration(new Configuration(), $yaml);
 
         $expected = [
@@ -44,7 +52,7 @@ class ConfigurationTest extends TestCase
                     ],
                     'response' => [
                         'code' => 301,
-                        'uri' => '{{news_url::{news}|absolute}}'
+                        'uri' => '{{news_url::{news}|absolute}}',
                     ],
                 ],
                 [
@@ -65,11 +73,11 @@ class ConfigurationTest extends TestCase
         $this->assertSame($expected, $config);
     }
 
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $this->expectException(InvalidConfigurationException::class);
 
-        $yaml = Yaml::parse(file_get_contents(__DIR__ . '/../Fixtures/config_invalid.yml'));
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../Fixtures/config_invalid.yml'));
         (new Processor())->processConfiguration(new Configuration(), $yaml);
     }
 }

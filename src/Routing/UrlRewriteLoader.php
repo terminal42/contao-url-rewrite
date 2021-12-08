@@ -21,7 +21,7 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 class UrlRewriteLoader extends Loader
 {
     /**
-     * Attribute name
+     * Attribute name.
      */
     public const ATTRIBUTE_NAME = '_url_rewrite';
 
@@ -37,17 +37,13 @@ class UrlRewriteLoader extends Loader
      */
     private $loaded = false;
 
-    /**
-     * UrlRewriteLoader constructor.
-     */
     public function __construct(ConfigProviderInterface $configProvider)
     {
+        parent::__construct();
+
         $this->configProvider = $configProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($resource, $type = null): RouteCollection
     {
         if (true === $this->loaded) {
@@ -77,9 +73,6 @@ class UrlRewriteLoader extends Loader
         return $collection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($resource, $type = null): bool
     {
         return 'terminal42_url_rewrite' === $type;

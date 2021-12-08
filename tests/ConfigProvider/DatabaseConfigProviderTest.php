@@ -1,6 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Tests\ConfigProvider;
 
@@ -14,7 +22,7 @@ use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderEx
 
 class DatabaseConfigProviderTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(DatabaseConfigProvider::class, new DatabaseConfigProvider($this->createMock(Connection::class)));
     }
@@ -22,7 +30,7 @@ class DatabaseConfigProviderTest extends TestCase
     /**
      * @dataProvider findDataProvider
      */
-    public function testFind($row, $expected)
+    public function testFind($row, $expected): void
     {
         $connection = $this->createMock(Connection::class);
 
@@ -34,7 +42,7 @@ class DatabaseConfigProviderTest extends TestCase
         $provider = new DatabaseConfigProvider($connection);
 
         // Handle the exception
-        if (is_array($expected) && isset($expected['exception'])) {
+        if (\is_array($expected) && isset($expected['exception'])) {
             $this->expectException($expected['exception']);
             $provider->find('foobar');
 
@@ -42,7 +50,7 @@ class DatabaseConfigProviderTest extends TestCase
         }
 
         // Compare the values
-        if (is_array($expected)) {
+        if (\is_array($expected)) {
             $config = $provider->find('foobar');
 
             foreach ($expected as $method => $value) {
@@ -96,7 +104,7 @@ class DatabaseConfigProviderTest extends TestCase
                     'requestHosts' => serialize(['domain1.tld', 'domain2.tld']),
                     'requestRequirements' => serialize([
                         ['key' => 'foo', 'value' => '\d+'],
-                        ['key' => 'bar', 'value' => '\s+']
+                        ['key' => 'bar', 'value' => '\s+'],
                     ]),
                     'responseUri' => 'foo/baz',
                     'responseCode' => 301,
@@ -135,7 +143,7 @@ class DatabaseConfigProviderTest extends TestCase
         ];
     }
 
-    public function testFindAll()
+    public function testFindAll(): void
     {
         $connection = $this->createMock(Connection::class);
 
@@ -164,7 +172,7 @@ class DatabaseConfigProviderTest extends TestCase
         $this->assertCount(2, $provider->findAll());
     }
 
-    public function testFindAllNoRecords()
+    public function testFindAllNoRecords(): void
     {
         $connection = $this->createMock(Connection::class);
 
@@ -181,7 +189,7 @@ class DatabaseConfigProviderTest extends TestCase
     /**
      * @dataProvider connectionExceptionDataProvider
      */
-    public function testConnectionException($method, $connMethod, $exception, $expected)
+    public function testConnectionException($method, $connMethod, $exception, $expected): void
     {
         $connection = $this->createMock(Connection::class);
 
@@ -192,7 +200,7 @@ class DatabaseConfigProviderTest extends TestCase
 
         $provider = new DatabaseConfigProvider($connection);
 
-        if (is_array($expected) && isset($expected['exception'])) {
+        if (\is_array($expected) && isset($expected['exception'])) {
             $this->expectException($expected['exception']);
         }
 
@@ -210,36 +218,36 @@ class DatabaseConfigProviderTest extends TestCase
         return [
             // find()
             'Find - PDO exception' => [
-                'find', 'fetchAssoc', $pdoException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
+                'find', 'fetchAssoc', $pdoException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find - Connection exception' => [
-                'find', 'fetchAssoc', $connectionException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
+                'find', 'fetchAssoc', $connectionException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find – Table exception' => [
-                'find', 'fetchAssoc', $tableNotFoundException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
+                'find', 'fetchAssoc', $tableNotFoundException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find – Invalid field name exception' => [
-                'find', 'fetchAssoc', $invalidFieldNameException, ['exception' => TemporarilyUnavailableConfigProviderException::class]
+                'find', 'fetchAssoc', $invalidFieldNameException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
             ],
             'Find – Runtime exception (uncaught)' => [
-                'find', 'fetchAssoc', $runtimeException, ['exception' => \RuntimeException::class]
+                'find', 'fetchAssoc', $runtimeException, ['exception' => \RuntimeException::class],
             ],
 
             // findAll()
             'Find all - PDO exception' => [
-                'findAll', 'fetchAll', $pdoException, []
+                'findAll', 'fetchAll', $pdoException, [],
             ],
             'Find all - Connection exception' => [
-                'findAll', 'fetchAll', $connectionException, []
+                'findAll', 'fetchAll', $connectionException, [],
             ],
             'Find all - Table exception' => [
-                'findAll', 'fetchAll', $tableNotFoundException, []
+                'findAll', 'fetchAll', $tableNotFoundException, [],
             ],
             'Find all - Invalid field name exception' => [
-                'findAll', 'fetchAll', $invalidFieldNameException, []
+                'findAll', 'fetchAll', $invalidFieldNameException, [],
             ],
             'Find all - Runtime exception (uncaught)' => [
-                'findAll', 'fetchAll', $runtimeException, ['exception' => \RuntimeException::class]
+                'findAll', 'fetchAll', $runtimeException, ['exception' => \RuntimeException::class],
             ],
         ];
     }

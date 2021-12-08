@@ -1,12 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
+
 namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\TestCase\ContaoTestCase;
-use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RouterInterface;
@@ -47,7 +56,7 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
 
     protected function setUp(): void
     {
-        $this->cacheDir = __DIR__ . '/tmp';
+        $this->cacheDir = __DIR__.'/tmp';
 
         $this->fs = new Filesystem();
         $this->fs->mkdir($this->cacheDir);
@@ -62,60 +71,67 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
         $this->listener = new RewriteContainerListener($this->qrCodeGenerator, $this->router, $this->cacheDir, $framework);
     }
 
-    abstract protected function getRouter();
-
     protected function tearDown(): void
     {
         $this->fs->remove($this->cacheDir);
     }
 
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(RewriteContainerListener::class, $this->listener);
     }
 
-    public function testOnRecordsModified()
+    public function testOnRecordsModified(): void
     {
-        $this->fs->touch($this->cacheDir . '/CacheClassOld.php');
+        $this->fs->touch($this->cacheDir.'/CacheClassOld.php');
         $this->listener->onRecordsModified();
 
         $this->assertFalse($this->fs->exists($this->cacheDir.'/CacheClassOld.php'));
     }
 
-    public function testOnInactiveSaveCallback()
+    public function testOnInactiveSaveCallback(): void
     {
         $this->assertSame(1, $this->listener->onInactiveSaveCallback(1));
     }
 
-    public function testOnNameSaveCallback()
+    public function testOnNameSaveCallback(): void
     {
         $dataContainer = $this->createMock(DataContainer::class);
-        $dataContainer->method('__get')->with('activeRecord')->willReturn((object) [ 'requestPath' => 'Bar']);
+        $dataContainer
+            ->method('__get')
+            ->with('activeRecord')
+            ->willReturn((object) ['requestPath' => 'Bar'])
+        ;
 
         $this->assertSame('Foo', $this->listener->onNameSaveCallback('Foo', $dataContainer));
         $this->assertSame('Bar', $this->listener->onNameSaveCallback('', $dataContainer));
 
-        $this->inputAdapter->method('post')->willReturn('Baz');
+        $this->inputAdapter
+            ->method('post')
+            ->willReturn('Baz')
+        ;
         $this->assertSame('Baz', $this->listener->onNameSaveCallback('', $dataContainer));
     }
 
-    public function testOnNameSaveCallbackThrowingException()
+    public function testOnNameSaveCallbackThrowingException(): void
     {
         $GLOBALS['TL_LANG']['ERR']['mandatory'] = '';
 
         $dataContainer = $this->createMock(DataContainer::class);
-        $dataContainer->method('__get')
+        $dataContainer
+            ->method('__get')
             ->withConsecutive(['activeRecord'], ['field'])
-            ->willReturnOnConsecutiveCalls((object) [ 'requestPath' => ''], 'field');
+            ->willReturnOnConsecutiveCalls((object) ['requestPath' => ''], 'field')
+        ;
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->listener->onNameSaveCallback('', $dataContainer);
     }
 
     /**
      * @dataProvider onGenerateLabelDataProvider
      */
-    public function testOnGenerateLabel($provided, $expected)
+    public function testOnGenerateLabel($provided, $expected): void
     {
         $GLOBALS['TL_LANG']['tl_url_rewrite']['priority'][0] = 'Priority';
 
@@ -131,7 +147,7 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
                     'requestPath' => 'foo/bar',
                     'responseUri' => 'http://domain.tld/baz/{bar}',
                     'responseCode' => 301,
-                    'priority' => 0
+                    'priority' => 0,
                 ],
                 'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301 (Priority: 0)]</span>',
             ],
@@ -140,20 +156,20 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
                     'name' => 'Foobar',
                     'requestPath' => 'foo/bar',
                     'responseCode' => 410,
-                    'priority' => 10
+                    'priority' => 10,
                 ],
                 'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410 (Priority: 10)]</span>',
-            ]
+            ],
         ];
     }
 
-    public function testOnGenerateExamples()
+    public function testOnGenerateExamples(): void
     {
         $GLOBALS['TL_LANG'] = [
             'tl_url_rewrite' => [
                 'examples' => [
-                    ['foo', 'bar']
-                ]
+                    ['foo', 'bar'],
+                ],
             ],
         ];
 
@@ -163,7 +179,7 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
         $this->assertStringEndsWith('</div>', $buffer);
     }
 
-    public function testOnGetResponseCodes()
+    public function testOnGetResponseCodes(): void
     {
         $expected = [
             301 => '301 Moved Permanently',
@@ -175,4 +191,6 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
 
         $this->assertSame($expected, $this->listener->getResponseCodes());
     }
+
+    abstract protected function getRouter();
 }

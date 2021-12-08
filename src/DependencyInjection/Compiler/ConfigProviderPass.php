@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
@@ -50,7 +52,7 @@ class ConfigProviderPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $services = $this->findAndSortTaggedServices($this->tag, $container);
 

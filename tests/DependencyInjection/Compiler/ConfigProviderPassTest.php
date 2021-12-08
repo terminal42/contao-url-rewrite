@@ -1,6 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Tests\DependencyInjection\Compiler;
 
@@ -17,17 +25,17 @@ class ConfigProviderPassTest extends TestCase
      */
     private $pass;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->pass = new ConfigProviderPass('alias', 'chain', 'tag');
     }
 
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(ConfigProviderPass::class, $this->pass);
     }
 
-    public function testProcessSingleProvider()
+    public function testProcessSingleProvider(): void
     {
         $chainDefinition = new Definition();
 
@@ -43,11 +51,11 @@ class ConfigProviderPassTest extends TestCase
 
         $this->pass->process($container);
 
-        $this->assertEquals('provider', (string) $container->getAlias('alias'));
+        $this->assertSame('provider', (string) $container->getAlias('alias'));
         $this->assertEmpty($chainDefinition->getMethodCalls());
     }
 
-    public function testProcessMultipleProviders()
+    public function testProcessMultipleProviders(): void
     {
         $chainDefinition = new Definition();
 
@@ -69,14 +77,14 @@ class ConfigProviderPassTest extends TestCase
 
         $calls = $chainDefinition->getMethodCalls();
 
-        $this->assertEquals($chainDefinition, $container->getDefinition('alias'));
-        $this->assertEquals('addProvider', $calls[0][0]);
+        $this->assertSame($chainDefinition, $container->getDefinition('alias'));
+        $this->assertSame('addProvider', $calls[0][0]);
         $this->assertInstanceOf(Reference::class, $calls[0][1][0]);
-        $this->assertEquals('provider2', (string) $calls[0][1][0]);
-        $this->assertEquals('provider1', (string) $calls[1][1][0]);
+        $this->assertSame('provider2', (string) $calls[0][1][0]);
+        $this->assertSame('provider1', (string) $calls[1][1][0]);
     }
 
-    public function testProcessMultipleProvidersNoChain()
+    public function testProcessMultipleProvidersNoChain(): void
     {
         $aliasDefinition = new Definition();
 
@@ -95,6 +103,6 @@ class ConfigProviderPassTest extends TestCase
 
         $this->pass->process($container);
 
-        $this->assertEquals('provider2', (string) $container->getAlias('alias'));
+        $this->assertSame('provider2', (string) $container->getAlias('alias'));
     }
 }

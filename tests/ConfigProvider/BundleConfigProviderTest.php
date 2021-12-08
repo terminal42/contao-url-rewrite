@@ -1,12 +1,19 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Tests\ConfigProvider;
 
 use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\ConfigProvider\BundleConfigProvider;
-use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
 
 class BundleConfigProviderTest extends TestCase
@@ -35,18 +42,18 @@ class BundleConfigProviderTest extends TestCase
                 ],
                 'response' => [
                     'code' => 303,
-                    'uri' => 'foo/baz'
+                    'uri' => 'foo/baz',
                 ],
             ],
         ]);
     }
 
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(BundleConfigProvider::class, $this->provider);
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $config = $this->provider->find('1');
 
@@ -62,7 +69,7 @@ class BundleConfigProviderTest extends TestCase
         $this->assertSame('foo/baz', $config->getResponseUri());
     }
 
-    public function testFindAll()
+    public function testFindAll(): void
     {
         $this->assertCount(0, (new BundleConfigProvider())->findAll());
         $this->assertCount(1, $this->provider->findAll());

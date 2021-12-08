@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
@@ -72,7 +74,8 @@ class QrCodeController
      */
     public function index(): Response
     {
-        if (($request = $this->requestStack->getCurrentRequest()) === null
+        if (
+            ($request = $this->requestStack->getCurrentRequest()) === null
             || !($id = $request->query->getInt('id'))
             || ($rewriteData = $this->connection->fetchAssociative('SELECT * FROM tl_url_rewrite WHERE id=?', [$id])) === false
             || !$this->qrCodeGenerator->validate($rewriteData)
@@ -92,7 +95,7 @@ class QrCodeController
         $this->addFormToTemplate($template, $request, $rewriteData, $routeParameters);
 
         // Generate the QR code only if ALL parameters are set
-        if (count($routeParameters) > 0 && !\in_array(null, $routeParameters, true)) {
+        if (\count($routeParameters) > 0 && !\in_array(null, $routeParameters, true)) {
             $this->addQrCodeToTemplate($template, $rewriteData, $routeParameters);
         }
 
@@ -104,11 +107,11 @@ class QrCodeController
      */
     public function qrCode(Request $request, string $url): Response
     {
-        if (!$this->uriSigner->check($request->getSchemeAndHttpHost() . $request->getBaseUrl() . $request->getPathInfo() . (null !== ($qs = $request->server->get('QUERY_STRING')) ? '?' . $qs : ''))) {
+        if (!$this->uriSigner->check($request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo().(null !== ($qs = $request->server->get('QUERY_STRING')) ? '?'.$qs : ''))) {
             return new Response(Response::$statusTexts[Response::HTTP_BAD_REQUEST], Response::HTTP_BAD_REQUEST);
         }
 
-        $url = base64_decode($url);
+        $url = base64_decode($url, true);
 
         if (!Validator::isUrl($url) || !preg_match('/https?:\/\//', $url)) {
             return new Response(Response::$statusTexts[Response::HTTP_BAD_REQUEST], Response::HTTP_BAD_REQUEST);
@@ -128,7 +131,7 @@ class QrCodeController
         try {
             $url = $this->qrCodeGenerator->generateUrl($rewriteData, $routeParameters);
 
-            if ($url !== '') {
+            if ('' !== $url) {
                 $template->qrCode = $this->uriSigner->sign($this->router->generate('url_rewrite_qr_code', ['url' => base64_encode($url)], RouterInterface::ABSOLUTE_URL));
                 $template->url = $url;
             } else {

@@ -1,9 +1,18 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Tests\ConfigProvider;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
@@ -11,12 +20,12 @@ use Terminal42\UrlRewriteBundle\RewriteConfig;
 
 class ChainConfigProviderTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(ChainConfigProvider::class, new ChainConfigProvider());
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $config1 = new RewriteConfig('1', 'path/1');
         $config2 = new RewriteConfig('2', 'path/2');
@@ -36,9 +45,7 @@ class ChainConfigProviderTest extends TestCase
     }
 
     /**
-     * @param array $configs
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|ConfigProviderInterface
+     * @return MockObject|ConfigProviderInterface
      */
     private function mockProvider(array $configs)
     {

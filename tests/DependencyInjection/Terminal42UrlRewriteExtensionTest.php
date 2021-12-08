@@ -1,6 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * UrlRewrite Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2021, terminal42 gmbh
+ * @author     terminal42 <https://terminal42.ch>
+ * @license    MIT
+ */
 
 namespace Terminal42\UrlRewriteBundle\Tests\DependencyInjection;
 
@@ -10,12 +18,12 @@ use Terminal42\UrlRewriteBundle\DependencyInjection\Terminal42UrlRewriteExtensio
 
 class Terminal42UrlRewriteExtensionTest extends TestCase
 {
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $this->assertInstanceOf(Terminal42UrlRewriteExtension::class, new Terminal42UrlRewriteExtension());
     }
 
-    public function testLoadWithBackendManagement()
+    public function testLoadWithBackendManagement(): void
     {
         $container = new ContainerBuilder();
         $extension = new Terminal42UrlRewriteExtension();
@@ -29,7 +37,7 @@ class Terminal42UrlRewriteExtensionTest extends TestCase
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.rewrite_controller'));
     }
 
-    public function testLoadWithoutBackendManagement()
+    public function testLoadWithoutBackendManagement(): void
     {
         $container = new ContainerBuilder();
         $extension = new Terminal42UrlRewriteExtension();

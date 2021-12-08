@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * UrlRewrite Bundle for Contao Open Source CMS.
  *
@@ -52,13 +54,8 @@ class RewriteContainerListener
      */
     private $fs;
 
-    public function __construct(
-        QrCodeGenerator $qrCodeGenerator,
-        RouterInterface $router,
-        string $cacheDir,
-        ContaoFramework $framework,
-        Filesystem $fs = null
-    ) {
+    public function __construct(QrCodeGenerator $qrCodeGenerator, RouterInterface $router, string $cacheDir, ContaoFramework $framework, Filesystem $fs = null)
+    {
         if (null === $fs) {
             $fs = new Filesystem();
         }
@@ -217,6 +214,7 @@ class RewriteContainerListener
     {
         try {
             $cacheClasses = [];
+
             foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
                 $cacheClasses[] = $router->getOption($option);
             }
