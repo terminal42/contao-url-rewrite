@@ -20,6 +20,12 @@ Install the bundle via Composer:
 composer require terminal42/contao-url-rewrite
 ```
 
+## Migration of short URLs
+
+Since the extension [fritzmg/contao-short-urls](https://packagist.org/packages/fritzmg/contao-short-urls) has been
+abandoned, you can migrate short URLs to URL rewrites with the extension 
+[bwein-net/contao-migrate-short-urls](https://packagist.org/packages/bwein-net/contao-migrate-short-urls).
+
 ## Configuration
 
 ### Bundle configuration
