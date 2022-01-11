@@ -223,7 +223,6 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'search' => true,
             'inputType' => 'text',
             'eval' => [
-                'rgxp' => 'url',
                 'decodeEntities' => true,
                 'dcaPicker' => true,
                 'fieldType' => 'radio',
