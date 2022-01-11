@@ -1,15 +1,11 @@
 # URL Rewrite bundle for Contao Open Source CMS
 
-
-[![](https://img.shields.io/travis/terminal42/contao-url-rewrite/master.svg?style=flat-square)](https://travis-ci.org/terminal42/contao-url-rewrite/)
-[![](https://img.shields.io/coveralls/terminal42/contao-url-rewrite/master.svg?style=flat-square)](https://coveralls.io/github/terminal42/contao-url-rewrite)
-
 The extension provides a new way for Contao to set various URL rewrites. The available config providers are:
 
 - Bundle config provider – the entries are taken from `config.yml` file
 - Database provider – the entries are taken from backend module
 
-Behind the scenes the rules are added as routes to the internal application router which allows to use all the features 
+Behind the scenes the rules are added as routes to the internal application router which allows to use all the features
 provided by the Symfony Routing component.
 
 ## Installation
@@ -47,8 +43,8 @@ terminal42_url_rewrite:
             request:
                 path: 'news/{news}'
                 requirements: {news: '\d+'}
-            response: 
-                code: 301 
+            response:
+                code: 301
                 uri: '{{news_url::{news}|absolute}}'
 
         -
@@ -60,10 +56,10 @@ terminal42_url_rewrite:
                 uri: '{{link_url::{page}|absolute}}'
 ```
 
-### Running under non Contao managed edition 
+### Running under non Contao managed edition
 
 If you are running the Contao Managed Edition then the extension should work out of the box. For all the other systems
-you have to additionally register the routing configuration in the config files:  
+you have to additionally register the routing configuration in the config files:
 
 ```yaml
 # config/routing.yml
@@ -125,8 +121,8 @@ Result: domain.com/blog/test → https://domain.tld/blog/test
 ## Create a custom config provider
 
 In addition to the existing providers you can create your own class that provides the rewrite configurations.
-The new service must implement the [Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface](src/ConfigProvider/ConfigProviderInterface.php) 
-interface and be registered with the appropriate tag: 
+The new service must implement the [Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface](src/ConfigProvider/ConfigProviderInterface.php)
+interface and be registered with the appropriate tag:
 
 ```yaml
 services:
@@ -142,4 +138,4 @@ services:
 1. [Symfony Routing](https://symfony.com/doc/current/routing.html)
 2. [Symfony Routing Component](https://symfony.com/doc/current/components/routing.html)
 3. [How to Restrict Route Matching through Conditions](https://symfony.com/doc/current/routing/conditions.html)
-4. [How to Define Route Requirements](https://symfony.com/doc/current/routing/requirements.html) 
+4. [How to Define Route Requirements](https://symfony.com/doc/current/routing/requirements.html)
