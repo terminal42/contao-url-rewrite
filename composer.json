@@ -44,9 +44,6 @@
         "contao/faq-bundle": "^4.4",
         "contao/news-bundle": "^4.4",
         "contao/test-case": "^4.0",
-        "contao/easy-coding-standard": "^3.0",
-        "phpunit/phpunit": "^8.0",
-        "php-coveralls/php-coveralls": "^2.4",
         "symfony-cmf/routing": "^2.1"
     },
     "conflict": {
@@ -66,9 +63,7 @@
         "contao-manager-plugin": "Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin"
     },
     "scripts": {
-        "unit-tests": "vendor/bin/phpunit --colors=always",
-        "cs-fixer": [
-            "vendor/bin/ecs check src/ tests/ --fix --ansi"
-        ]
+        "unit-tests": "tools/phpunit/vendor/bin/phpunit --colors=always",
+        "cs-fixer": "tools/ecs/vendor/bin/ecs check src/ tests/ --fix --ansi"
     }
 }
