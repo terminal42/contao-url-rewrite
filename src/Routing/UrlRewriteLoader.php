@@ -2,14 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * UrlRewrite Bundle for Contao Open Source CMS.
- *
- * @copyright  Copyright (c) 2021, terminal42 gmbh
- * @author     terminal42 <https://terminal42.ch>
- * @license    MIT
- */
-
 namespace Terminal42\UrlRewriteBundle\Routing;
 
 use Symfony\Component\Config\Loader\Loader;
@@ -37,6 +29,10 @@ class UrlRewriteLoader extends Loader
      */
     private $loaded = false;
 
+    /**
+     * @noinspection MagicMethodsValidityInspection
+     * @noinspection PhpMissingParentConstructorInspection
+     */
     public function __construct(ConfigProviderInterface $configProvider)
     {
         // Do not call parent constructor, it does not exist in Symfony < 5

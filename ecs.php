@@ -13,18 +13,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::SKIP, [
         '*/Resources/contao/*',
+        HeaderCommentFixer::class => null,
         MethodChainingIndentationFixer::class => [
             '*/DependencyInjection/Configuration.php',
         ],
     ]);
-
-    $date = date('Y');
-
-    $services = $containerConfigurator->services();
-    $services
-        ->set(HeaderCommentFixer::class)
-        ->call('configure', [[
-            'header' => "UrlRewrite Bundle for Contao Open Source CMS.\n\n@copyright  Copyright (c) $date, terminal42 gmbh\n@author     terminal42 <https://terminal42.ch>\n@license    MIT",
-        ]])
-    ;
 };
