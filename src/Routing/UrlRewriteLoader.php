@@ -39,7 +39,7 @@ class UrlRewriteLoader extends Loader
 
     public function __construct(ConfigProviderInterface $configProvider)
     {
-        parent::__construct();
+        // Do not call parent constructor, it does not exist in Symfony < 5
 
         $this->configProvider = $configProvider;
     }
