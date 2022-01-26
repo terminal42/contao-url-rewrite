@@ -66,6 +66,10 @@
                 <source>Here you can add extra requirements for the match.</source>
                 <target>Hier können Sie Extra-Anforderungen für die Regel definieren.</target>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestRequirements.invalid">
+                <source>Invalid regular expression for key "%s".</source>
+                <target>Ungültiger regulärer Ausdruck für Schlüssel "%s".</target>
+            </trans-unit>
             <trans-unit id="tl_url_rewrite.requestCondition.0">
                 <source>Request condition</source>
                 <target>Anfrage-Bedingung</target>

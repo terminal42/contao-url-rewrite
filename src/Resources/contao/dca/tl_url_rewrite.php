@@ -197,6 +197,9 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'inputType' => 'keyValueWizard',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'clr'],
             'sql' => ['type' => 'blob', 'notnull' => false],
+            'save_callback' => [
+                ['terminal42_url_rewrite.listener.rewrite_container', 'onRequestRequirementsSaveCallback'],
+            ],
         ],
         'requestCondition' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['requestCondition'],

@@ -103,6 +103,24 @@ class RewriteContainerListener
     }
 
     /**
+     * Validate that request requirements contain valid regular expression.
+     */
+    public function onRequestRequirementsSaveCallback($value)
+    {
+        foreach (StringUtil::deserialize($value, true) as $regex) {
+            try {
+                if (false === preg_match('('.$regex['value'].')', '')) {
+                    throw new \RuntimeException();
+                }
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements']['invalid'], $regex['key']), 0, $e);
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * On generate the label.
      */
     public function onGenerateLabel(array $row): string
