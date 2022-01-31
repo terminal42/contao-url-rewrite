@@ -50,6 +50,9 @@
             <trans-unit id="tl_url_rewrite.requestRequirements.1">
                 <source>Here you can add extra requirements for the match.</source>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.requestRequirements.invalid">
+                <source>Invalid regular expression for key "%s".</source>
+            </trans-unit>
             <trans-unit id="tl_url_rewrite.requestCondition.0">
                 <source>Request condition</source>
             </trans-unit>
