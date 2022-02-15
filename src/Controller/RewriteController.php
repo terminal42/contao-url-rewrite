@@ -85,10 +85,10 @@ class RewriteController
         $uri = $this->replaceInsertTags($uri);
 
         // Replace the multiple slashes except the ones for protocol
-        $uri = preg_replace('@(?<!http:|https:)/+@', '/', $uri);
+        $uri = preg_replace('@(?<!http:|https:|^)/+@', '/', $uri);
 
         // Make the URL absolute if it's not yet already
-        if (!preg_match('@^https?://@', $uri)) {
+        if (!preg_match('@^(https?:)?//@', $uri)) {
             $uri = $request->getSchemeAndHttpHost().$request->getBasePath().'/'.ltrim($uri, '/');
         }
 
