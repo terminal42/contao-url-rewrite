@@ -153,8 +153,15 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'sorting' => true,
             'flag' => 12,
             'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'rgxp' => 'natural'],
+            'eval' => ['tl_class' => 'w50'],
             'sql' => ['type' => 'integer', 'default' => '0'],
+            'save_callback' => [static function ($value) {
+                if (!preg_match('/^-?\d+$/', $value)) {
+                    throw new \RuntimeException($GLOBALS['TL_LANG']['ERR']['digit']);
+                }
+
+                return $value;
+            }]
         ],
         'comment' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['comment'],
