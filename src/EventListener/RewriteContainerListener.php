@@ -162,7 +162,7 @@ class RewriteContainerListener
     {
         $buffer = '';
 
-        foreach ($GLOBALS['TL_LANG']['tl_url_rewrite']['examples'] as $i => $example) {
+        foreach ($GLOBALS['TL_LANG']['tl_url_rewrite']['examplesRef'] as $i => $example) {
             $buffer .= sprintf(
                 '<h3>%s. %s</h3><pre style="margin-top:.5rem;padding:1rem;background:#f6f6f8;font-size:.75rem;">%s</pre>',
                 $i + 1,

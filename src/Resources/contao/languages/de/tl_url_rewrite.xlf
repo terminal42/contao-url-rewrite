@@ -94,6 +94,10 @@
                 <source>Here you can enter the response redirect URI. You can use the insert tags, route attributes and query parameters as wildcards (e.g. &lt;em&gt;/foo/{bar}&lt;/em&gt;). To generate absolute URLs using insert tags you can use the &quot;absolute&quot; insert tag flag (e.g. &lt;em&gt;{{link_url::123|absolute}}&lt;/em&gt;).</source>
                 <target>Hier können Sie die Umleitungs-URL eingeben. Sie können Insert-Tags, Routen-Attribute und Query-Parameter als Wildcards nutzen (z.B. &lt;em&gt;/foo/{bar}&lt;/em&gt;). Wenn Sie absolute URLs generieren möchten, nutzen Sie das &quot;absolute&quot; Insert Tag Flag (bspw. &lt;em&gt;{{link_url::123|absolute}}&lt;/em&gt;).</target>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.examples.0">
+                <source>Examples</source>
+                <target>Beispiele</target>
+            </trans-unit>
 
             <trans-unit id="tl_url_rewrite.name_legend">
                 <source>Rewrite name</source>
@@ -223,11 +227,11 @@
                 <target>Bild-URL kopieren:</target>
             </trans-unit>
 
-            <trans-unit id="tl_url_rewrite.examples.0.0">
+            <trans-unit id="tl_url_rewrite.examplesRef.0.0">
                 <source>Find address on Google Maps:</source>
                 <target>Adresse auf Google Maps finden:</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.examples.0.1">
+            <trans-unit id="tl_url_rewrite.examplesRef.0.1">
                 <source>Type: basic
 Path restriction: find/{address}
 Response code: 303 See Other
@@ -241,11 +245,11 @@ Antwort-Umleitungs-URL: https://www.google.com/maps?q={address}
 ---
 Resultat: domain.tld/find/Schweiz → https://www.google.com/maps?q=Schweiz</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.examples.1.0">
+            <trans-unit id="tl_url_rewrite.examplesRef.1.0">
                 <source>Redirect to a specific news entry:</source>
                 <target>Zu einem bestimmten News-Artikel weiterleiten:</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.examples.1.1">
+            <trans-unit id="tl_url_rewrite.examplesRef.1.1">
                 <source>Type: basic
 Path restriction: news/{news}
 Requirements: [news => \d+]
@@ -263,11 +267,11 @@ Antwort-Umleitungs-URL: {{news_url::{news}|absolute}}
 Resultat: domain.tld/news/123 → domain.tld/news-reader/foobar-123.html
 Resultat: domain.tld/news/foobar → 404 Page Not Found</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.examples.2.0">
+            <trans-unit id="tl_url_rewrite.examplesRef.2.0">
                 <source>Rewrite legacy URLs with query string:</source>
                 <target>Alte URLs mit Query Parameter umschreiben:</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.examples.2.1">
+            <trans-unit id="tl_url_rewrite.examplesRef.2.1">
                 <source>Type: expert
 Path restriction: home.php
 Request condition: context.getMethod() == 'GET' and request.query.has('page')
@@ -283,11 +287,11 @@ Antwort-Umleitungs-URL: {{link_url::{page}|absolute}}
 ---
 Resultat: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.examples.3.0">
+            <trans-unit id="tl_url_rewrite.examplesRef.3.0">
                 <source>Rewrite URLs including slashes (without query string) to new domain:</source>
                 <target>Alle URLs inklusive Slashes (ohne Query Parameter) zu neuer Domain umschreiben:</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.examples.3.1">
+            <trans-unit id="tl_url_rewrite.examplesRef.3.1">
                 <source>Type: basic
 Hosts restriction: [domain.com]
 Path restriction: /{wildcard}
