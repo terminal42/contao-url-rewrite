@@ -1,6 +1,6 @@
 
 <div id="tl_buttons">
-    <a href="<?= ampersand($this->backUrl) ?>" class="header_back" title="<?= \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
+    <a href="<?= \Contao\StringUtil::ampersand($this->backUrl) ?>" class="header_back" title="<?= \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
 </div>
 
 <div class="maintenance_active">
@@ -32,7 +32,7 @@
         <form method="post">
             <div class="tl_formbody_edit">
                 <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
-                <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
 
                 <fieldset class="tl_tbox nolegend">
                     <?php foreach ($this->formFields as $formField): ?>

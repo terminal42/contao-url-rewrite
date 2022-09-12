@@ -13,7 +13,7 @@ use Contao\System;
 $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
     // Config
     'config' => [
-        'dataContainer' => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'enableVersioning' => true,
         'onsubmit_callback' => [
             ['terminal42_url_rewrite.listener.rewrite_container', 'onRecordsModified'],
