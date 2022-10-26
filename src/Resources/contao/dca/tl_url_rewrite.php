@@ -79,14 +79,9 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             ],
             'toggle' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['toggle'],
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-                'haste_ajax_operation' => [
-                    'field' => 'inactive',
-                    'options' => [
-                        ['value' => 0, 'icon' => 'visible.svg'],
-                        ['value' => 1, 'icon' => 'invisible.svg'],
-                    ],
-                ],
+                'href' => 'act=toggle&amp;field=inactive',
+                'icon' => 'visible.svg',
+                'button_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'onToggleButtonCallback'],
             ],
             'qrCode' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCode'],
@@ -174,6 +169,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
         'inactive' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['inactive'],
             'exclude' => true,
+            'toggle' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],

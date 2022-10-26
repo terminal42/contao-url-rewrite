@@ -175,6 +175,18 @@ class RewriteContainerListener
     }
 
     /**
+     * On toggle button callback.
+     */
+    public function onToggleButtonCallback(array $row, string $href, string $label, string $title, string $icon, string $attributes): string
+    {
+        if ($row['inactive']) {
+            $icon = 'invisible.svg';
+        }
+
+        return '<a href="'.Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.StringUtil::specialchars($title).'" onclick="Backend.getScrollOffset();return AjaxRequest.toggleField(this,true)">'.Image::getHtml($icon, $label, 'data-icon="' . Image::getPath('visible.svg') . '" data-icon-disabled="' . Image::getPath('invisible.svg') . '" data-state="' . ($row['inactive'] ? 0 : 1) . '"') . '</a> ';
+    }
+
+    /**
      * On QR code button callback.
      */
     public function onQrCodeButtonCallback(array $row, string $href, string $label, string $title, string $icon, string $attributes): string
