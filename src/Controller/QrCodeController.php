@@ -81,6 +81,7 @@ class QrCodeController
         ];
 
         $template = new BackendTemplate('be_url_rewrite_qr_code');
+        $template->requestToken = $request->query->get('rt');
         $template->backUrl = Backend::getReferer();
 
         // Add form to the template
