@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\UrlRewriteBundle\Controller;
 
-use Contao\CoreBundle\Framework\ContaoFramework;
-use Contao\InsertTags;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,17 +22,17 @@ class RewriteController
     private $configProvider;
 
     /**
-     * @var ContaoFramework
+     * @var InsertTagParser
      */
-    private $framework;
+    private $insertTagParser;
 
     /**
      * RewriteController constructor.
      */
-    public function __construct(ConfigProviderInterface $configProvider, ContaoFramework $framework)
+    public function __construct(ConfigProviderInterface $configProvider, InsertTagParser $insertTagParser)
     {
         $this->configProvider = $configProvider;
-        $this->framework = $framework;
+        $this->insertTagParser = $insertTagParser;
     }
 
     /**
@@ -124,11 +123,6 @@ class RewriteController
             return $uri;
         }
 
-        $this->framework->initialize();
-
-        /** @var InsertTags $insertTags */
-        $insertTags = $this->framework->createInstance(InsertTags::class);
-
-        return $insertTags->replace($uri);
+        return $this->insertTagParser->replaceInline($uri);
     }
 }

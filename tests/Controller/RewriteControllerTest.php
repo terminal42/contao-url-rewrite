@@ -6,6 +6,7 @@ namespace Terminal42\UrlRewriteBundle\Tests\Controller;
 
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,13 +24,13 @@ class RewriteControllerTest extends TestCase
     {
         $this->assertInstanceOf(RewriteController::class, new RewriteController(
             $this->mockConfigProvider(),
-            $this->mockContaoFramework()
+            $this->mockInsertTagParser()
         ));
     }
 
     public function testIndexActionNoUrlRewriteAttribute(): void
     {
-        $controller = new RewriteController($this->mockConfigProvider(), $this->mockContaoFramework());
+        $controller = new RewriteController($this->mockConfigProvider(), $this->mockInsertTagParser());
         $request = $this->mockRequest(null);
 
         $this->expectException(RouteNotFoundException::class);
@@ -39,7 +40,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionNoUrlRewriteRecord(): void
     {
         $provider = $this->mockConfigProvider();
-        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $controller = new RewriteController($provider, $this->mockInsertTagParser());
         $request = $this->mockRequest(1);
 
         $this->expectException(RouteNotFoundException::class);
@@ -52,7 +53,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionRedirect($provided, $expected): void
     {
         $provider = $this->mockConfigProvider($provided[0]);
-        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $controller = new RewriteController($provider, $this->mockInsertTagParser());
         $request = $this->mockRequest(1, $provided[1], $provided[2]);
         $response = $controller->indexAction($request);
 
@@ -98,7 +99,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionGone(): void
     {
         $provider = $this->mockConfigProvider(new RewriteConfig('1', 'foobar', 410));
-        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $controller = new RewriteController($provider, $this->mockInsertTagParser());
         $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
@@ -110,7 +111,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionInternalServerError(): void
     {
         $provider = $this->mockConfigProvider(new RewriteConfig('1', 'foobar'));
-        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $controller = new RewriteController($provider, $this->mockInsertTagParser());
         $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
@@ -128,42 +129,13 @@ class RewriteControllerTest extends TestCase
             ->willThrowException(new TemporarilyUnavailableConfigProviderException())
         ;
 
-        $controller = new RewriteController($provider, $this->mockContaoFramework());
+        $controller = new RewriteController($provider, $this->mockInsertTagParser());
         $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(503, $response->getStatusCode());
         $this->assertSame('Service Unavailable', $response->getContent());
-    }
-
-    /**
-     * @return MockObject|ContaoFramework
-     */
-    private function mockContaoFramework()
-    {
-        $insertTags = $this
-            ->getMockBuilder(Adapter::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['replace'])
-            ->getMock()
-        ;
-
-        $insertTags
-            ->method('replace')
-            ->willReturnCallback(function ($buffer) {
-                return str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer);
-            })
-        ;
-
-        $framework = $this->createMock(ContaoFramework::class);
-
-        $framework
-            ->method('createInstance')
-            ->willReturn($insertTags)
-        ;
-
-        return $framework;
     }
 
     /**
@@ -215,6 +187,23 @@ class RewriteControllerTest extends TestCase
         $provider
             ->method('find')
             ->willReturn($config)
+        ;
+
+        return $provider;
+    }
+
+    /**
+     * @return MockObject|InsertTagParser
+     */
+    private function mockInsertTagParser()
+    {
+        $provider = $this->createMock(InsertTagParser::class);
+
+        $provider
+            ->method('replaceInline')
+            ->willReturnCallback(function ($buffer) {
+                return str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer);
+            })
         ;
 
         return $provider;
