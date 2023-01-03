@@ -4,7 +4,7 @@ services:
         public: true
         arguments:
             - "@terminal42_url_rewrite.provider"
-            - "@contao.framework"
+            - "@contao.insert_tag.parser"
 
     terminal42_url_rewrite.qr_code_controller:
         class: Terminal42\UrlRewriteBundle\Controller\QrCodeController
