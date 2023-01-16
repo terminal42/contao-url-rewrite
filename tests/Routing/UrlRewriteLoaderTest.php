@@ -63,7 +63,7 @@ class UrlRewriteLoaderTest extends TestCase
 
         /** @var Route $route */
         foreach ($routes as $route) {
-            $this->assertSame('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
+            $this->assertSame('terminal42_url_rewrite.rewrite_controller::indexAction', $route->getDefault('_controller'));
             $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
             $this->assertTrue($route->getOption('utf8'));
             $this->assertSame($expected[$index]['methods'], $route->getMethods());
