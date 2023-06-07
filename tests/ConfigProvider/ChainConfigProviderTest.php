@@ -33,7 +33,7 @@ class ChainConfigProviderTest extends TestCase
         $this->assertSame('path/1', $chain->find($configs[0]->getIdentifier())->getRequestPath());
         $this->assertSame('path/2', $chain->find($configs[1]->getIdentifier())->getRequestPath());
         $this->assertSame('path/3', $chain->find($configs[2]->getIdentifier())->getRequestPath());
-        $this->assertNull($chain->find('bar:baz'));
+        $this->assertNull($chain->find('bar.baz'));
     }
 
     /**

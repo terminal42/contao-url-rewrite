@@ -8,6 +8,8 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class ChainConfigProvider implements ConfigProviderInterface
 {
+    private const IDENTIFIER_SEPARATOR = '.';
+
     /**
      * @var array
      */
@@ -26,11 +28,11 @@ class ChainConfigProvider implements ConfigProviderInterface
      */
     public function find(string $id): ?RewriteConfigInterface
     {
-        [$class, $id] = explode(':', $id);
+        [$providerIdentifier, $providerRewriteId] = explode(self::IDENTIFIER_SEPARATOR, $id);
 
         /** @var ConfigProviderInterface $provider */
         foreach ($this->providers as $provider) {
-            if ($class === $this->getProviderIdentifier($provider) && null !== ($config = $provider->find($id))) {
+            if ($providerIdentifier === static::getProviderIdentifier(get_class($provider)) && null !== ($config = $provider->find($providerRewriteId))) {
                 return $config;
             }
         }
@@ -51,7 +53,7 @@ class ChainConfigProvider implements ConfigProviderInterface
 
             /** @var RewriteConfigInterface $config */
             foreach ($providerConfigs as $config) {
-                $config->setIdentifier(static::getConfigIdentifier($this->getProviderIdentifier($provider), $config->getIdentifier()));
+                $config->setIdentifier(static::getConfigIdentifier(get_class($provider), $config->getIdentifier()));
             }
 
             $configs = array_merge($configs, $providerConfigs);
@@ -63,16 +65,19 @@ class ChainConfigProvider implements ConfigProviderInterface
     /**
      * Get the config identifier.
      */
-    public static function getConfigIdentifier(string $providerIdentifier, string $configIdentifier): string
+    public static function getConfigIdentifier(string $providerClass, string $configIdentifier): string
     {
-        return $providerIdentifier.':'.$configIdentifier;
+        return static::getProviderIdentifier($providerClass).self::IDENTIFIER_SEPARATOR.$configIdentifier;
     }
 
     /**
      * Get the provider identifier.
      */
-    private function getProviderIdentifier(ConfigProviderInterface $provider): string
+    private static function getProviderIdentifier(string $providerClass): string
     {
-        return \get_class($provider);
+        $provider = str_replace('\\', '_', $providerClass);
+        $provider = strtolower($provider);
+
+        return $provider;
     }
 }

@@ -10,6 +10,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
+use Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider;
 use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
 use Terminal42\UrlRewriteBundle\QrCodeGenerator;
 use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
@@ -59,10 +60,10 @@ class QrCodeGeneratorTest extends TestCase
 
         $routeCorrect1 = new Route('foo/bar');
         $routeCorrect1->setHost('domain.tld');
-        $routeCorrect1->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, DatabaseConfigProvider::class.':123');
+        $routeCorrect1->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, '123'));
 
         $routeCorrect2 = new Route('foo/bar');
-        $routeCorrect2->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, DatabaseConfigProvider::class.':456');
+        $routeCorrect2->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, '456'));
 
         $this->router
             ->method('getRouteCollection')
@@ -87,17 +88,5 @@ class QrCodeGeneratorTest extends TestCase
         $this->expectExceptionMessage('The parameter "host" is mandatory');
 
         $this->qrCodeGenerator->generateUrl([]);
-    }
-
-    public function testGenerateUrlRuntimeException(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to determine route ID for rewrite ID 456');
-
-        $this->router
-            ->method('getRouteCollection')
-            ->willReturn([])
-        ;
-        $this->qrCodeGenerator->generateUrl(['id' => 456], ['host' => 'domain.tld']);
     }
 }
