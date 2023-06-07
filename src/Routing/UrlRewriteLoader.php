@@ -80,11 +80,11 @@ class UrlRewriteLoader extends Loader
         $hosts = $config->getRequestHosts();
 
         if (\count($hosts) > 0) {
-            $domains = array_map('preg_quote', $hosts);
-            $domains = implode('|', $domains);
-            $domains = sprintf('(%s)', $domains);
+            $hosts = array_map('preg_quote', $hosts);
+            $hosts = implode('|', $hosts);
+            $hosts = sprintf('(%s)', $hosts);
 
-            yield $this->createRoute($config, '{domain}', ['domain' => $domains]);
+            yield $this->createRoute($config, '{hosts}', ['hosts' => $hosts]);
         } else {
             yield $this->createRoute($config);
         }

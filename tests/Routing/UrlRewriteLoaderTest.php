@@ -121,9 +121,9 @@ class UrlRewriteLoaderTest extends TestCase
                         'requirements' => [
                             'foo' => '\d+',
                             'baz' => '\s+',
-                            'domain' => '(domain1\.tld|domain2\.tld)'
+                            'hosts' => '(domain1\.tld|domain2\.tld)'
                         ],
-                        'host' => '{domain}',
+                        'host' => '{hosts}',
                         'condition' => '',
                     ],
                 ],
@@ -149,9 +149,9 @@ class UrlRewriteLoaderTest extends TestCase
                         'path' => '/foo/baz',
                         'methods' => [],
                         'requirements' => [
-                            'domain' => '(domain1\.tld|domain2\.tld)'
+                            'hosts' => '(domain1\.tld|domain2\.tld)'
                         ],
-                        'host' => '{domain}',
+                        'host' => '{hosts}',
                         'condition' => 'context.getMethod() in [\'GET\']',
                     ],
                 ],
