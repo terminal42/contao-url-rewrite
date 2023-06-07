@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider;
 use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
-use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
 class QrCodeGenerator
 {
@@ -57,34 +56,6 @@ class QrCodeGenerator
             throw new MissingMandatoryParametersException('The parameter "host" is mandatory');
         }
 
-        $routeId = null;
-        $rewriteId = ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, (string) $data['id']);
-
-        foreach ($this->router->getRouteCollection() as $id => $route) {
-            // Skip the routes not matching the URL rewrite default
-            if (!$route->hasDefault(UrlRewriteLoader::ATTRIBUTE_NAME) || $route->getDefault(UrlRewriteLoader::ATTRIBUTE_NAME) !== $rewriteId) {
-                continue;
-            }
-
-            $routeHost = $route->getHost();
-
-            // Match the route host
-            if ('' === $routeHost || $parameters['host'] === $routeHost) {
-                $routeId = $id;
-
-                // Unset the host from parameters, if it's already in the route settings
-                if ('' !== $routeHost) {
-                    unset($parameters['host']);
-                }
-
-                break;
-            }
-        }
-
-        if (null === $routeId) {
-            throw new \RuntimeException(sprintf('Unable to determine route ID for rewrite ID %s', $data['id']));
-        }
-
         $context = $this->router->getContext();
 
         // Set the scheme
@@ -99,6 +70,8 @@ class QrCodeGenerator
             unset($parameters['host']);
         }
 
-        return $this->router->generate((string) $routeId, $parameters, RouterInterface::ABSOLUTE_URL);
+        $routeId = ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, (string) $data['id']);
+
+        return $this->router->generate($routeId, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 }

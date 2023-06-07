@@ -63,7 +63,14 @@ class UrlRewriteLoaderTest extends TestCase
 
         /** @var Route $route */
         foreach ($routes as $route) {
-            $this->assertSame('terminal42_url_rewrite.rewrite_controller:indexAction', $route->getDefault('_controller'));
+            $controller = $route->getDefault('_controller');
+
+            // Support old and new format with single semicolon
+            if (stripos($controller, '::') !== false) {
+                $controller = str_replace('::', ':', $controller);
+            }
+
+            $this->assertSame('terminal42_url_rewrite.rewrite_controller:indexAction', $controller);
             $this->assertArrayHasKey('_url_rewrite', $route->getDefaults());
             $this->assertTrue($route->getOption('utf8'));
             $this->assertSame($expected[$index]['methods'], $route->getMethods());
@@ -78,16 +85,16 @@ class UrlRewriteLoaderTest extends TestCase
 
     public function getRouteCollectionProvider()
     {
-        $config1 = new RewriteConfig('1', 'foo/bar');
+        $config1 = new RewriteConfig('provider.1', 'foo/bar');
 
-        $config2 = new RewriteConfig('2', 'foo/baz');
+        $config2 = new RewriteConfig('provider.2', 'foo/baz');
         $config2->setRequestHosts(['domain1.tld', 'domain2.tld']);
         $config2->setRequestRequirements(['foo' => '\d+', 'baz' => '\s+']);
 
-        $config3 = new RewriteConfig('3', 'foo/bar');
+        $config3 = new RewriteConfig('provider.3', 'foo/bar');
         $config3->setRequestCondition('context.getMethod() in [\'GET\']');
 
-        $config4 = new RewriteConfig('4', 'foo/baz');
+        $config4 = new RewriteConfig('provider.4', 'foo/baz');
         $config4->setRequestHosts(['domain1.tld', 'domain2.tld']);
         $config4->setRequestCondition('context.getMethod() in [\'GET\']');
 
@@ -111,15 +118,12 @@ class UrlRewriteLoaderTest extends TestCase
                     [
                         'path' => '/foo/baz',
                         'methods' => ['GET'],
-                        'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
-                        'host' => 'domain1.tld',
-                        'condition' => '',
-                    ],
-                    [
-                        'path' => '/foo/baz',
-                        'methods' => ['GET'],
-                        'requirements' => ['foo' => '\d+', 'baz' => '\s+'],
-                        'host' => 'domain2.tld',
+                        'requirements' => [
+                            'foo' => '\d+',
+                            'baz' => '\s+',
+                            'domain' => '(domain1\.tld|domain2\.tld)'
+                        ],
+                        'host' => '{domain}',
                         'condition' => '',
                     ],
                 ],
@@ -144,22 +148,17 @@ class UrlRewriteLoaderTest extends TestCase
                     [
                         'path' => '/foo/baz',
                         'methods' => [],
-                        'requirements' => [],
-                        'host' => 'domain1.tld',
-                        'condition' => 'context.getMethod() in [\'GET\']',
-                    ],
-                    [
-                        'path' => '/foo/baz',
-                        'methods' => [],
-                        'requirements' => [],
-                        'host' => 'domain2.tld',
+                        'requirements' => [
+                            'domain' => '(domain1\.tld|domain2\.tld)'
+                        ],
+                        'host' => '{domain}',
                         'condition' => 'context.getMethod() in [\'GET\']',
                     ],
                 ],
             ],
 
             'Invalid' => [
-                new RewriteConfig('1', ''),
+                new RewriteConfig('provider.1', ''),
                 [],
             ],
         ];

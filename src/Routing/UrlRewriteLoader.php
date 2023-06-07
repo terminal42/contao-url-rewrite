@@ -54,14 +54,12 @@ class UrlRewriteLoader extends Loader
             return $collection;
         }
 
-        $count = 0;
-
         /** @var RewriteConfigInterface $config */
         foreach ($configs as $config) {
             /** @var Route $route */
             foreach ($this->generateRoutes($config) as $route) {
                 if (null !== $route) {
-                    $collection->add('url_rewrite_'.$count++, $route);
+                    $collection->add($config->getIdentifier(), $route);
                 }
             }
         }
@@ -82,9 +80,11 @@ class UrlRewriteLoader extends Loader
         $hosts = $config->getRequestHosts();
 
         if (\count($hosts) > 0) {
-            foreach ($hosts as $host) {
-                yield $this->createRoute($config, $host);
-            }
+            $domains = array_map('preg_quote', $hosts);
+            $domains = implode('|', $domains);
+            $domains = sprintf('(%s)', $domains);
+
+            yield $this->createRoute($config, '{domain}', ['domain' => $domains]);
         } else {
             yield $this->createRoute($config);
         }
@@ -93,7 +93,7 @@ class UrlRewriteLoader extends Loader
     /**
      * Create the route object.
      */
-    private function createRoute(RewriteConfigInterface $config, string $host = null): ?Route
+    private function createRoute(RewriteConfigInterface $config, string $host = null, array $requirements = []): ?Route
     {
         if (!$config->getRequestPath()) {
             return null;
@@ -114,7 +114,7 @@ class UrlRewriteLoader extends Loader
         $route->setDefault('_controller', 'terminal42_url_rewrite.rewrite_controller::indexAction');
         $route->setDefault(self::ATTRIBUTE_NAME, $config->getIdentifier());
         $route->setOption('utf8', true);
-        $route->setRequirements($config->getRequestRequirements());
+        $route->setRequirements(array_merge($config->getRequestRequirements(), $requirements));
 
         // Set the condition
         if (null !== ($condition = $config->getRequestCondition())) {
