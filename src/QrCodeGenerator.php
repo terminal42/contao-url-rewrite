@@ -67,6 +67,7 @@ class QrCodeGenerator
         // Override the route host, if it's a route without restriction
         if (isset($parameters['host'])) {
             $context->setHost($parameters['host']);
+            $context->setParameter('hosts', $parameters['host']);
             unset($parameters['host']);
         }
 
