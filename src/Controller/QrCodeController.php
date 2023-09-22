@@ -89,7 +89,7 @@ class QrCodeController
 
         // Generate the QR code only if ALL parameters are set
         if (\count($routeParameters) > 0 && !\in_array(null, $routeParameters, true)) {
-            $this->addQrCodeToTemplate($template, $rewriteData, $routeParameters);
+            $this->addQrCodeToTemplate($request, $template, $rewriteData, $routeParameters);
         }
 
         return $template->getResponse();
@@ -119,12 +119,15 @@ class QrCodeController
     /**
      * Add QR code to the template.
      */
-    private function addQrCodeToTemplate(BackendTemplate $template, array $rewriteData, array $routeParameters): void
+    private function addQrCodeToTemplate(Request $request, BackendTemplate $template, array $rewriteData, array $routeParameters): void
     {
         try {
             $url = $this->qrCodeGenerator->generateUrl($rewriteData, $routeParameters);
 
             if ('' !== $url) {
+                // Set the current request host, so the QR code URL is generated correctly
+                $this->router->getContext()->setHost($request->getHost());
+
                 $template->qrCode = $this->uriSigner->sign($this->router->generate('url_rewrite_qr_code', ['url' => base64_encode($url)], RouterInterface::ABSOLUTE_URL));
                 $template->url = $url;
             } else {
