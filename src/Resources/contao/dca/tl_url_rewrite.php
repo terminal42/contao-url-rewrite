@@ -209,7 +209,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'string', 'default' => ''],
+            'sql' => ['type' => 'text', 'notnull' => false],
         ],
         'responseCode' => [
             'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['responseCode'],
