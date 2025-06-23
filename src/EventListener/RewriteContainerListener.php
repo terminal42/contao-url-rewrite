@@ -165,7 +165,7 @@ class RewriteContainerListener
         if (is_array($GLOBALS['TL_LANG']['tl_url_rewrite']['examplesRef'] ?? null)) {
             foreach ($GLOBALS['TL_LANG']['tl_url_rewrite']['examplesRef'] as $i => $example) {
                 $buffer .= sprintf(
-                    '<h3>%s. %s</h3><pre style="margin-top:.5rem;padding:1rem;background:#f6f6f8;font-size:.75rem;">%s</pre>',
+                    '<h3>%s. %s</h3><pre style="margin-top:.5rem;padding:1rem;background:#7c7c9e12;font-size:.75rem;">%s</pre>',
                     $i + 1,
                     $example[0],
                     $example[1]
