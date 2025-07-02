@@ -16,3 +16,4 @@ terminal42_url_rewrite:
                 condition: "context.getMethod() == 'GET' and request.query.has('page')"
             response:
                 uri: '{{link_url::{page}|absolute}}'
+                keepQueryParams: true

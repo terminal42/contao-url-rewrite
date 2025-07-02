@@ -76,6 +76,10 @@ class RewriteController
             $uri = $request->getSchemeAndHttpHost().$request->getBasePath().'/'.ltrim((string) $uri, '/');
         }
 
+        if ($config->keepQueryParams()) {
+            $uri .= '?'.http_build_query($request->query->all());
+        }
+
         return $uri;
     }
 

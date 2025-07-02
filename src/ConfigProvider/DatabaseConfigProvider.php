@@ -78,6 +78,11 @@ class DatabaseConfigProvider implements ConfigProviderInterface
             $config->setResponseUri($data['responseUri']);
         }
 
+        // Keep query parameters
+        if (isset($data['keepQueryParams'])) {
+            $config->setKeepQueryParams(true);
+        }
+
         switch ($data['type']) {
             // Basic type
             case 'basic':

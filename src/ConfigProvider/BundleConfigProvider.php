@@ -70,6 +70,11 @@ class BundleConfigProvider implements ConfigProviderInterface
             $config->setResponseUri($data['response']['uri']);
         }
 
+        // Keep query parameters
+        if (isset($data['response']['keepQueryParams'])) {
+            $config->setKeepQueryParams($data['response']['keepQueryParams']);
+        }
+
         return $config;
     }
 }

@@ -34,6 +34,7 @@ class ConfigurationTest extends TestCase
                     'response' => [
                         'code' => 303,
                         'uri' => 'https://www.google.com/maps?q={address}',
+                        'keepQueryParams' => false,
                     ],
                 ],
                 [
@@ -45,6 +46,7 @@ class ConfigurationTest extends TestCase
                     'response' => [
                         'code' => 301,
                         'uri' => '{{news_url::{news}|absolute}}',
+                        'keepQueryParams' => false,
                     ],
                 ],
                 [
@@ -56,6 +58,7 @@ class ConfigurationTest extends TestCase
                     ],
                     'response' => [
                         'uri' => '{{link_url::{page}|absolute}}',
+                        'keepQueryParams' => true,
                         'code' => 301,
                     ],
                 ],

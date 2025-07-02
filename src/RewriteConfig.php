@@ -18,6 +18,8 @@ class RewriteConfig implements RewriteConfigInterface
 
     private string|null $responseUri = null;
 
+    private bool $keepQueryParams = false;
+
     public function __construct(
         private string $identifier,
         string $requestPath,
@@ -105,5 +107,15 @@ class RewriteConfig implements RewriteConfigInterface
     public function setResponseUri(string|null $responseUri): void
     {
         $this->responseUri = $responseUri;
+    }
+
+    public function setKeepQueryParams(bool $keepQueryParams): void
+    {
+        $this->keepQueryParams = $keepQueryParams;
+    }
+
+    public function keepQueryParams(): bool
+    {
+        return $this->keepQueryParams;
     }
 }

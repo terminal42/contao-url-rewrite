@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\UrlRewriteBundle;
 
 /**
- * @internal This is an internal interface, you are not supposed do add your own configurations at the moment.
+ * @internal this is an internal interface, you are not supposed do add your own configurations at the moment
  */
 interface RewriteConfigInterface
 {
@@ -26,4 +26,6 @@ interface RewriteConfigInterface
     public function getResponseCode(): int;
 
     public function getResponseUri(): string|null;
+
+    public function keepQueryParams(): bool;
 }

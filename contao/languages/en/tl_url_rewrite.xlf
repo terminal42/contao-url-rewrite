@@ -71,10 +71,15 @@
             <trans-unit id="tl_url_rewrite.responseUri.1">
                 <source>Here you can enter the response redirect URI. You can use the insert tags, route attributes and query parameters as wildcards (e.g. &lt;em&gt;/foo/{bar}&lt;/em&gt;). To generate absolute URLs using insert tags you can use the &quot;absolute&quot; insert tag flag (e.g. &lt;em&gt;{{link_url::123|absolute}}&lt;/em&gt;).</source>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.keepQueryParams.0">
+                <source>Keep request query parameters</source>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.keepQueryParams.1">
+                <source>If you enable this checkbox, existing query parameters from the request will be added to the redirect.</source>
+            </trans-unit>
             <trans-unit id="tl_url_rewrite.examples.0">
                 <source>Examples</source>
             </trans-unit>
-
             <trans-unit id="tl_url_rewrite.name_legend">
                 <source>Rewrite name</source>
             </trans-unit>

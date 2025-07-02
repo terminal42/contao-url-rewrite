@@ -67,10 +67,10 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
 
     // Subpalettes
     'subpalettes' => [
-        'responseCode_301' => 'responseUri',
-        'responseCode_302' => 'responseUri',
-        'responseCode_303' => 'responseUri',
-        'responseCode_307' => 'responseUri',
+        'responseCode_301' => 'responseUri,keepQueryParams',
+        'responseCode_302' => 'responseUri,keepQueryParams',
+        'responseCode_303' => 'responseUri,keepQueryParams',
+        'responseCode_307' => 'responseUri,keepQueryParams',
     ],
 
     // Fields
@@ -176,11 +176,17 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
                 'dcaPicker' => true,
                 'fieldType' => 'radio',
                 'filesOnly' => true,
-                'tl_class' => 'clr wizard',
+                'tl_class' => 'wizard w75',
             ],
             'sql' => ['type' => 'text', 'notnull' => false],
         ],
-
+        'keepQueryParams' => [
+            'inputType' => 'checkbox',
+            'eval' => [
+                'tl_class' => 'w25 m12',
+            ],
+            'sql' => ['type' => 'boolean', 'default' => false],
+        ],
         'examples' => [
             'input_field_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'generateExamples'],
         ],

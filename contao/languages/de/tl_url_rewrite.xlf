@@ -94,6 +94,14 @@
                 <source>Here you can enter the response redirect URI. You can use the insert tags, route attributes and query parameters as wildcards (e.g. &lt;em&gt;/foo/{bar}&lt;/em&gt;). To generate absolute URLs using insert tags you can use the &quot;absolute&quot; insert tag flag (e.g. &lt;em&gt;{{link_url::123|absolute}}&lt;/em&gt;).</source>
                 <target>Hier können Sie die Umleitungs-URL eingeben. Sie können Insert-Tags, Routen-Attribute und Query-Parameter als Wildcards nutzen (z.B. &lt;em&gt;/foo/{bar}&lt;/em&gt;). Wenn Sie absolute URLs generieren möchten, nutzen Sie das &quot;absolute&quot; Insert Tag Flag (bspw. &lt;em&gt;{{link_url::123|absolute}}&lt;/em&gt;).</target>
             </trans-unit>
+            <trans-unit id="tl_url_rewrite.keepQueryParams.0">
+                <source>Keep request query parameters</source>
+                <target>Query-Parameter der Anfrage beibehalten</target>
+            </trans-unit>
+            <trans-unit id="tl_url_rewrite.keepQueryParams.1">
+                <source>If you enable this checkbox, existing query parameters from the request will be added to the redirect.</source>
+                <target>Wenn Sie dieses Kontrollkästchen aktivieren, werden vorhandene Query-Parameter der Anfrage zur Weiterleitung hinzugefügt.</target>
+            </trans-unit>
             <trans-unit id="tl_url_rewrite.examples.0">
                 <source>Examples</source>
                 <target>Beispiele</target>
