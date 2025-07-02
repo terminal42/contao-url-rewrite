@@ -1,0 +1,511 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\ConfigProvider\\BundleConfigProvider\:\:__construct\(\) has parameter \$entries with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/BundleConfigProvider.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\ConfigProvider\\BundleConfigProvider\:\:createConfig\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/BundleConfigProvider.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\ConfigProvider\\BundleConfigProvider\:\:findAll\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/BundleConfigProvider.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\ConfigProvider\\ChainConfigProvider\:\:findAll\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/ChainConfigProvider.php
+
+		-
+			message: '#^Property Terminal42\\UrlRewriteBundle\\ConfigProvider\\ChainConfigProvider\:\:\$providers type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/ChainConfigProvider.php
+
+		-
+			message: '#^Unsafe call to private method Terminal42\\UrlRewriteBundle\\ConfigProvider\\ChainConfigProvider\:\:getProviderIdentifier\(\) through static\:\:\.$#'
+			identifier: staticClassAccess.privateMethod
+			count: 2
+			path: src/ConfigProvider/ChainConfigProvider.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\ConfigProvider\\ConfigProviderInterface\:\:findAll\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/ConfigProviderInterface.php
+
+		-
+			message: '#^Dead catch \- PDOException is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 2
+			path: src/ConfigProvider/DatabaseConfigProvider.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\ConfigProvider\\DatabaseConfigProvider\:\:createConfig\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/DatabaseConfigProvider.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\ConfigProvider\\DatabaseConfigProvider\:\:findAll\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ConfigProvider/DatabaseConfigProvider.php
+
+		-
+			message: '#^Access to an undefined property Contao\\Widget\:\:\$urlRewriteRequirement\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:addFormToTemplate\(\) has parameter \$rewriteData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:addFormToTemplate\(\) has parameter \$routeParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:addFormToTemplate\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:addQrCodeToTemplate\(\) has parameter \$rewriteData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:addQrCodeToTemplate\(\) has parameter \$routeParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:processForm\(\) has parameter \$formFields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:processForm\(\) has parameter \$routeParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Controller\\QrCodeController\:\:processForm\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Controller/QrCodeController.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\DependencyInjection\\Terminal42UrlRewriteExtension\:\:loadInternal\(\) has parameter \$mergedConfig with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DependencyInjection/Terminal42UrlRewriteExtension.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:getResponseCodes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onGenerateLabel\(\) has parameter \$row with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onInactiveSaveCallback\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onInactiveSaveCallback\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onNameSaveCallback\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onNameSaveCallback\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onQrCodeButtonCallback\(\) has parameter \$row with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onRequestRequirementsSaveCallback\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onRequestRequirementsSaveCallback\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\EventListener\\RewriteContainerListener\:\:onToggleButtonCallback\(\) has parameter \$row with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/EventListener/RewriteContainerListener.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\QrCodeGenerator\:\:generateUrl\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QrCodeGenerator.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\QrCodeGenerator\:\:generateUrl\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QrCodeGenerator.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\QrCodeGenerator\:\:validate\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QrCodeGenerator.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\RewriteConfig\:\:getRequestHosts\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfig.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\RewriteConfig\:\:getRequestRequirements\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfig.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\RewriteConfig\:\:setRequestHosts\(\) has parameter \$requestHosts with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfig.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\RewriteConfig\:\:setRequestRequirements\(\) has parameter \$requestRequirements with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfig.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$requestCondition with type string\|null is not subtype of native type string\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/RewriteConfig.php
+
+		-
+			message: '#^Property Terminal42\\UrlRewriteBundle\\RewriteConfig\:\:\$requestHosts type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfig.php
+
+		-
+			message: '#^Property Terminal42\\UrlRewriteBundle\\RewriteConfig\:\:\$requestRequirements type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfig.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\RewriteConfigInterface\:\:getRequestHosts\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfigInterface.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\RewriteConfigInterface\:\:getRequestRequirements\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/RewriteConfigInterface.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Routing\\UrlRewriteLoader\:\:createRoute\(\) has parameter \$requirements with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Routing/UrlRewriteLoader.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Routing\\UrlRewriteLoader\:\:load\(\) has parameter \$type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Routing/UrlRewriteLoader.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Routing\\UrlRewriteLoader\:\:supports\(\) has parameter \$type with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Routing/UrlRewriteLoader.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\ConfigProvider\\\\ChainConfigProvider'' and Terminal42\\UrlRewriteBundle\\ConfigProvider\\ChainConfigProvider will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ConfigProvider/ChainConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\ChainConfigProviderTest\:\:mockProvider\(\) has parameter \$configs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/ConfigProvider/ChainConfigProviderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\ConfigProvider\\\\DatabaseConfigProvider'' and Terminal42\\UrlRewriteBundle\\ConfigProvider\\DatabaseConfigProvider will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:connectionExceptionDataProvider\(\) return type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:findDataProvider\(\) return type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:testConnectionException\(\) has parameter \$connMethod with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:testConnectionException\(\) has parameter \$exception with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:testConnectionException\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:testConnectionException\(\) has parameter \$method with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:testFind\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\ConfigProvider\\DatabaseConfigProviderTest\:\:testFind\(\) has parameter \$row with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/ConfigProvider/DatabaseConfigProviderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Contao\\\\ManagerPlugin\\\\Bundle\\\\BundlePluginInterface'' and Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ContaoManager/PluginTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Contao\\\\ManagerPlugin\\\\Routing\\\\RoutingPluginInterface'' and Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ContaoManager/PluginTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\ContaoManager\\\\Plugin'' and Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ContaoManager/PluginTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\Response'' and Symfony\\Component\\HttpFoundation\\Response will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 3
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\Controller\\\\RewriteController'' and Terminal42\\UrlRewriteBundle\\Controller\\RewriteController will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Controller\\RewriteControllerTest\:\:indexActionRedirectDataProvider\(\) return type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Controller\\RewriteControllerTest\:\:mockRequest\(\) has parameter \$query with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Controller\\RewriteControllerTest\:\:mockRequest\(\) has parameter \$routeParams with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Controller\\RewriteControllerTest\:\:mockRequest\(\) has parameter \$urlRewrite with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Controller\\RewriteControllerTest\:\:testIndexActionRedirect\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Controller\\RewriteControllerTest\:\:testIndexActionRedirect\(\) has parameter \$provided with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Controller/RewriteControllerTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\DependencyInjection\\\\Configuration'' and Terminal42\\UrlRewriteBundle\\DependencyInjection\\Configuration will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/DependencyInjection/ConfigurationTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\DependencyInjection\\\\Terminal42UrlRewriteExtension'' and Terminal42\\UrlRewriteBundle\\DependencyInjection\\Terminal42UrlRewriteExtension will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/DependencyInjection/Terminal42UrlRewriteExtensionTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\AbstractContainerListenerTest\:\:getRouter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/EventListener/AbstractContainerListenerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\AbstractContainerListenerTest\:\:onGenerateLabelDataProvider\(\) return type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/EventListener/AbstractContainerListenerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\AbstractContainerListenerTest\:\:testOnGenerateLabel\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/EventListener/AbstractContainerListenerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\AbstractContainerListenerTest\:\:testOnGenerateLabel\(\) has parameter \$provided with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/EventListener/AbstractContainerListenerTest.php
+
+		-
+			message: '#^Missing call to parent\:\:tearDown\(\) method\.$#'
+			identifier: phpunit.callParent
+			count: 1
+			path: tests/EventListener/AbstractContainerListenerTest.php
+
+		-
+			message: '#^Property Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\AbstractContainerListenerTest\:\:\$inputAdapter \(Contao\\CoreBundle\\Framework\\Adapter\|Contao\\Input\|PHPUnit\\Framework\\MockObject\\MockObject\) is never assigned Contao\\Input so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: tests/EventListener/AbstractContainerListenerTest.php
+
+		-
+			message: '#^Property Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\AbstractContainerListenerTest\:\:\$inputAdapter with generic class Contao\\CoreBundle\\Framework\\Adapter does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/EventListener/AbstractContainerListenerTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\RewriteContainerListenerWithCMFChainRouterTest\:\:getRouter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/EventListener/RewriteContainerListenerWithCMFChainRouterTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\EventListener\\RewriteContainerListenerWithSymfonyRouterTest\:\:getRouter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/EventListener/RewriteContainerListenerWithSymfonyRouterTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\Routing\\\\RouteCollection'' and Symfony\\Component\\Routing\\RouteCollection will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Routing/UrlRewriteLoaderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\Routing\\\\UrlRewriteLoader'' and Terminal42\\UrlRewriteBundle\\Routing\\UrlRewriteLoader will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Routing/UrlRewriteLoaderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Routing\\UrlRewriteLoaderTest\:\:getRouteCollectionProvider\(\) return type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Routing/UrlRewriteLoaderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Routing\\UrlRewriteLoaderTest\:\:mockConfigProvider\(\) has parameter \$configs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Routing/UrlRewriteLoaderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Routing\\UrlRewriteLoaderTest\:\:testLoad\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Routing/UrlRewriteLoaderTest.php
+
+		-
+			message: '#^Method Terminal42\\UrlRewriteBundle\\Tests\\Routing\\UrlRewriteLoaderTest\:\:testLoad\(\) has parameter \$provided with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Routing/UrlRewriteLoaderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Terminal42\\\\UrlRewriteBundle\\\\Terminal42UrlRewriteBundle'' and Terminal42\\UrlRewriteBundle\\Terminal42UrlRewriteBundle will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Terminal42UrlRewriteBundleTest.php

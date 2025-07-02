@@ -15,9 +15,6 @@ class BundleConfigProviderTest extends TestCase
      */
     private $provider;
 
-    /**
-     * @inheritDoc
-     */
     protected function setUp(): void
     {
         $this->provider = new BundleConfigProvider([

@@ -42,12 +42,9 @@ class ChainConfigProviderTest extends TestCase
     private function mockProvider(array $configs)
     {
         $provider = $this->createMock(ConfigProviderInterface::class);
-
         $provider
             ->method('find')
-            ->willReturnCallback(function($key) use ($configs) {
-                return isset($configs[$key]) ? $configs[$key] : null;
-            })
+            ->willReturnCallback(static fn ($key) => $configs[$key] ?? null)
         ;
 
         $provider

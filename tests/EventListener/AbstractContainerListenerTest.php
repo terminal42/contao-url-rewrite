@@ -130,7 +130,7 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
         $this->assertSame($expected, $this->listener->onGenerateLabel($provided));
     }
 
-    public function onGenerateLabelDataProvider()
+    public static function onGenerateLabelDataProvider(): iterable
     {
         return [
             301 => [

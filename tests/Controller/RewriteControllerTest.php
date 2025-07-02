@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Terminal42\UrlRewriteBundle\Tests\Controller;
 
-use Contao\CoreBundle\Framework\Adapter;
-use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +22,7 @@ class RewriteControllerTest extends TestCase
     {
         $this->assertInstanceOf(RewriteController::class, new RewriteController(
             $this->mockConfigProvider(),
-            $this->mockInsertTagParser()
+            $this->mockInsertTagParser(),
         ));
     }
 
@@ -62,7 +60,7 @@ class RewriteControllerTest extends TestCase
         $this->assertSame($expected[1], $response->getStatusCode());
     }
 
-    public function indexActionRedirectDataProvider()
+    public static function indexActionRedirectDataProvider(): iterable
     {
         $config1 = new RewriteConfig('1', 'foobar');
         $config1->setResponseUri('{{link_url::{bar}|absolute}}/foo///{baz}/{quux}');
@@ -123,7 +121,6 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionServiceUnavailable(): void
     {
         $provider = $this->createMock(ConfigProviderInterface::class);
-
         $provider
             ->method('find')
             ->willThrowException(new TemporarilyUnavailableConfigProviderException())
@@ -139,7 +136,6 @@ class RewriteControllerTest extends TestCase
     }
 
     /**
-     * @param mixed $urlRewrite
      * @param array $routeParams
      * @param array $query
      *
@@ -180,10 +176,9 @@ class RewriteControllerTest extends TestCase
     /**
      * @return MockObject|ConfigProviderInterface
      */
-    private function mockConfigProvider(RewriteConfig $config = null)
+    private function mockConfigProvider(RewriteConfig|null $config = null)
     {
         $provider = $this->createMock(ConfigProviderInterface::class);
-
         $provider
             ->method('find')
             ->willReturn($config)
@@ -198,12 +193,9 @@ class RewriteControllerTest extends TestCase
     private function mockInsertTagParser()
     {
         $provider = $this->createMock(InsertTagParser::class);
-
         $provider
             ->method('replaceInline')
-            ->willReturnCallback(function ($buffer) {
-                return str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer);
-            })
+            ->willReturnCallback(static fn ($buffer) => str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer))
         ;
 
         return $provider;

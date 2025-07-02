@@ -25,25 +25,23 @@
         "source": "https://github.com/terminal42/contao-url-rewrite"
     },
     "require": {
-        "php": "^7.2 || ^8.0",
-        "contao/core-bundle": "^4.13 || ^5.0",
-        "symfony/config": "^5.0 || ^6.0",
-        "symfony/dependency-injection": "^5.0 || ^6.0",
-        "symfony/expression-language": "^5.0 || ^6.0",
-        "symfony/filesystem": "^5.0 || ^6.0",
-        "symfony/http-foundation": "^5.0 || ^6.0",
-        "symfony/http-kernel": "^5.0 || ^6.0",
-        "symfony/routing": "^5.0 || ^6.0",
+        "php": "^8.1",
+        "contao/core-bundle": "^5.3",
+        "symfony/config": "^6.4 || ^7.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0",
+        "symfony/expression-language": "^6.4 || ^7.0",
+        "symfony/filesystem": "^6.4 || ^7.0",
+        "symfony/http-foundation": "^6.4 || ^7.0",
+        "symfony/http-kernel": "^6.4 || ^7.0",
+        "symfony/routing": "^6.4 || ^7.0",
         "bacon/bacon-qr-code": "^2.0",
         "doctrine/dbal": "^2.11 || ^3"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "contao/calendar-bundle": "^4.4",
-        "contao/faq-bundle": "^4.4",
-        "contao/news-bundle": "^4.4",
-        "contao/test-case": "^4.0",
-        "symfony-cmf/routing": "^2.1"
+        "contao/test-case": "^5.3",
+        "phpunit/phpunit": "^9.6",
+        "terminal42/contao-build-tools": "dev-main"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"
@@ -61,13 +59,12 @@
     "extra": {
         "contao-manager-plugin": "Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin"
     },
-    "scripts": {
-        "unit-tests": "tools/phpunit/vendor/bin/phpunit --colors=always",
-        "cs-fixer": "tools/ecs/vendor/bin/ecs check src/ tests/ --fix --ansi"
-    },
     "config": {
         "allow-plugins": {
-            "php-http/discovery": true
+            "contao-components/installer": true,
+            "contao/manager-plugin": true,
+            "php-http/discovery": true,
+            "terminal42/contao-build-tools": true
         }
     }
 }

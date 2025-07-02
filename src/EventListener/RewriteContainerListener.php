@@ -21,42 +21,19 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class RewriteContainerListener
 {
-    /**
-     * @var QrCodeGenerator
-     */
-    private $qrCodeGenerator;
+    private readonly Filesystem $fs;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var string
-     */
-    private $cacheDir;
-
-    /**
-     * @var ContaoFramework
-     */
-    private $framework;
-
-    /**
-     * @var Filesystem
-     */
-    private $fs;
-
-    public function __construct(QrCodeGenerator $qrCodeGenerator, RouterInterface $router, string $cacheDir, ContaoFramework $framework, Filesystem $fs = null)
-    {
+    public function __construct(
+        private readonly QrCodeGenerator $qrCodeGenerator,
+        private readonly RouterInterface $router,
+        private readonly string $cacheDir,
+        private readonly ContaoFramework $framework,
+        Filesystem|null $fs = null,
+    ) {
         if (null === $fs) {
             $fs = new Filesystem();
         }
-
-        $this->qrCodeGenerator = $qrCodeGenerator;
-        $this->router = $router;
-        $this->cacheDir = $cacheDir;
         $this->fs = $fs;
-        $this->framework = $framework;
     }
 
     /**
@@ -69,10 +46,6 @@ class RewriteContainerListener
 
     /**
      * On inactive save callback.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
      */
     public function onInactiveSaveCallback($value)
     {
@@ -83,10 +56,6 @@ class RewriteContainerListener
 
     /**
      * On name save callback.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
      */
     public function onNameSaveCallback($value, DataContainer $dataContainer)
     {
@@ -96,7 +65,7 @@ class RewriteContainerListener
         }
 
         if ('' === $value) {
-            throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $dataContainer->field));
+            throw new \InvalidArgumentException(\sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $dataContainer->field));
         }
 
         return $value;
@@ -113,7 +82,7 @@ class RewriteContainerListener
                     throw new \RuntimeException();
                 }
             } catch (\Exception $e) {
-                throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements']['invalid'], $regex['key']), 0, $e);
+                throw new \InvalidArgumentException(\sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['requestRequirements']['invalid'], $regex['key']), 0, $e);
             }
         }
 
@@ -128,16 +97,16 @@ class RewriteContainerListener
         if (410 === (int) $row['responseCode']) {
             $response = $row['responseCode'];
         } else {
-            $response = sprintf('%s, %s', $row['responseUri'], $row['responseCode']);
+            $response = \sprintf('%s, %s', $row['responseUri'], $row['responseCode']);
         }
 
-        return sprintf(
+        return \sprintf(
             '%s <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[%s &rarr; %s (%s: %s)]</span>',
             $row['name'],
             $row['requestPath'],
             $response,
             $GLOBALS['TL_LANG']['tl_url_rewrite']['priority'][0],
-            $row['priority']
+            $row['priority'],
         );
     }
 
@@ -162,18 +131,18 @@ class RewriteContainerListener
     {
         $buffer = '';
 
-        if (is_array($GLOBALS['TL_LANG']['tl_url_rewrite']['examplesRef'] ?? null)) {
+        if (\is_array($GLOBALS['TL_LANG']['tl_url_rewrite']['examplesRef'] ?? null)) {
             foreach ($GLOBALS['TL_LANG']['tl_url_rewrite']['examplesRef'] as $i => $example) {
-                $buffer .= sprintf(
+                $buffer .= \sprintf(
                     '<h3>%s. %s</h3><pre style="margin-top:.5rem;padding:1rem;background:#7c7c9e12;font-size:.75rem;">%s</pre>',
                     $i + 1,
                     $example[0],
-                    $example[1]
+                    $example[1],
                 );
             }
         }
 
-        return sprintf('<div class="widget long">%s</div>', $buffer);
+        return \sprintf('<div class="widget long">%s</div>', $buffer);
     }
 
     /**
@@ -185,7 +154,7 @@ class RewriteContainerListener
             $icon = 'invisible.svg';
         }
 
-        return '<a href="'.Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.StringUtil::specialchars($title).'" onclick="Backend.getScrollOffset();return AjaxRequest.toggleField(this,true)">'.Image::getHtml($icon, $label, 'data-icon="' . Image::getPath('visible.svg') . '" data-icon-disabled="' . Image::getPath('invisible.svg') . '" data-state="' . ($row['inactive'] ? 0 : 1) . '"') . '</a> ';
+        return '<a href="'.Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.StringUtil::specialchars($title).'" onclick="Backend.getScrollOffset();return AjaxRequest.toggleField(this,true)">'.Image::getHtml($icon, $label, 'data-icon="'.Image::getPath('visible.svg').'" data-icon-disabled="'.Image::getPath('invisible.svg').'" data-state="'.($row['inactive'] ? 0 : 1).'"').'</a> ';
     }
 
     /**
@@ -242,7 +211,7 @@ class RewriteContainerListener
             foreach (['generator_cache_class', 'matcher_cache_class'] as $option) {
                 $cacheClasses[] = $router->getOption($option);
             }
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             $cacheClasses = ['url_generating_routes', 'url_matching_routes'];
         }
 

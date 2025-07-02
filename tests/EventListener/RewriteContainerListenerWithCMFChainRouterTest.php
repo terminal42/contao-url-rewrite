@@ -12,7 +12,6 @@ class RewriteContainerListenerWithCMFChainRouterTest extends AbstractContainerLi
     protected function getRouter()
     {
         $router = $this->createMock(Router::class);
-
         $router
             ->method('getOption')
             ->willReturn('CacheClassOld')

@@ -9,23 +9,11 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class BundleConfigProvider implements ConfigProviderInterface
 {
-    /**
-     * @var array
-     */
-    private $entries = [];
-
-    /**
-     * BundleConfigProvider constructor.
-     */
-    public function __construct(array $entries = [])
+    public function __construct(private array $entries = [])
     {
-        $this->entries = $entries;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function find(string $id): ?RewriteConfigInterface
+    public function find(string $id): RewriteConfigInterface|null
     {
         if (!\array_key_exists($id, $this->entries)) {
             return null;
@@ -34,9 +22,6 @@ class BundleConfigProvider implements ConfigProviderInterface
         return $this->createConfig($id, $this->entries[$id]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findAll(): array
     {
         if (0 === \count($this->entries)) {
@@ -57,7 +42,7 @@ class BundleConfigProvider implements ConfigProviderInterface
     /**
      * Create the config.
      */
-    private function createConfig(string $id, array $data): ?RewriteConfig
+    private function createConfig(string $id, array $data): RewriteConfig|null
     {
         if (!isset($data['request']['path'], $data['response']['code'])) {
             return null;

@@ -25,7 +25,6 @@ class DatabaseConfigProviderTest extends TestCase
     public function testFind($row, $expected): void
     {
         $connection = $this->createMock(Connection::class);
-
         $connection
             ->method('fetchAssociative')
             ->willReturn($row)
@@ -55,7 +54,7 @@ class DatabaseConfigProviderTest extends TestCase
         $this->assertSame($expected, $provider->find('foobar'));
     }
 
-    public function findDataProvider()
+    public static function findDataProvider(): iterable
     {
         return [
             'Row not found' => [
@@ -138,7 +137,6 @@ class DatabaseConfigProviderTest extends TestCase
     public function testFindAll(): void
     {
         $connection = $this->createMock(Connection::class);
-
         $connection
             ->method('fetchAllAssociative')
             ->willReturn([
@@ -167,7 +165,6 @@ class DatabaseConfigProviderTest extends TestCase
     public function testFindAllNoRecords(): void
     {
         $connection = $this->createMock(Connection::class);
-
         $connection
             ->method('fetchAllAssociative')
             ->willReturn([])
@@ -184,7 +181,6 @@ class DatabaseConfigProviderTest extends TestCase
     public function testConnectionException($method, $connMethod, $exception, $expected): void
     {
         $connection = $this->createMock(Connection::class);
-
         $connection
             ->method($connMethod)
             ->willThrowException($exception)
@@ -199,7 +195,7 @@ class DatabaseConfigProviderTest extends TestCase
         $this->assertSame($expected, $provider->$method('foobar'));
     }
 
-    public function connectionExceptionDataProvider()
+    public function connectionExceptionDataProvider(): iterable
     {
         $pdoException = $this->createMock(\PDOException::class);
         $connectionException = $this->createMock(ConnectionException::class);

@@ -14,7 +14,7 @@ interface ConfigProviderInterface
      *
      * @throws TemporarilyUnavailableConfigProviderException
      */
-    public function find(string $id): ?RewriteConfigInterface;
+    public function find(string $id): RewriteConfigInterface|null;
 
     /**
      * Find all configs.

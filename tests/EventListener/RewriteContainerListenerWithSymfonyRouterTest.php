@@ -11,7 +11,6 @@ class RewriteContainerListenerWithSymfonyRouterTest extends AbstractContainerLis
     protected function getRouter()
     {
         $router = $this->createMock(Router::class);
-
         $router
             ->method('getOption')
             ->willReturn('CacheClassOld')

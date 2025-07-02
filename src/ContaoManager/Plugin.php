@@ -17,9 +17,6 @@ use Terminal42\UrlRewriteBundle\Terminal42UrlRewriteBundle;
 
 class Plugin implements BundlePluginInterface, RoutingPluginInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getBundles(ParserInterface $parser): array
     {
         return [
@@ -27,12 +24,9 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
+    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): RouteCollection|null
     {
-        $config = '@Terminal42UrlRewriteBundle/Resources/config/routing.yml';
+        $config = '@Terminal42UrlRewriteBundle/config/routing.yml';
         $loader = $resolver->resolve($config, 'yaml');
 
         if ($loader instanceof YamlFileLoader) {

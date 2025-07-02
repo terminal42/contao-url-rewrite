@@ -12,38 +12,13 @@ class ConfigProviderPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
-    /**
-     * @var string
-     */
-    private $alias;
-
-    /**
-     * @var string
-     */
-    private $chain;
-
-    /**
-     * @var string
-     */
-    private $tag;
-
-    /**
-     * ConfigProviderPass constructor.
-     *
-     * @param string $alias
-     * @param string $chain
-     * @param        $tag
-     */
-    public function __construct($alias, $chain, $tag)
-    {
-        $this->alias = $alias;
-        $this->chain = $chain;
-        $this->tag = $tag;
+    public function __construct(
+        private string $alias,
+        private string $chain,
+        private string $tag,
+    ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         $services = $this->findAndSortTaggedServices($this->tag, $container);

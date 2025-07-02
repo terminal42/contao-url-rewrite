@@ -15,17 +15,8 @@ use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
 
 class QrCodeGenerator
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * QrCodeGenerator constructor.
-     */
-    public function __construct(RouterInterface $router)
+    public function __construct(private readonly RouterInterface $router)
     {
-        $this->router = $router;
     }
 
     /**
@@ -36,9 +27,6 @@ class QrCodeGenerator
         return '' !== $data['requestPath'] && !$data['inactive'];
     }
 
-    /**
-     * Generate the image.
-     */
     public function generateImage(string $url): string
     {
         $renderer = new ImageRenderer(new RendererStyle(180, 0), new SvgImageBackEnd());
@@ -47,9 +35,6 @@ class QrCodeGenerator
         return $writer->writeString($url);
     }
 
-    /**
-     * Generate the URL.
-     */
     public function generateUrl(array $data, array $parameters = []): string
     {
         if (!isset($parameters['host'])) {

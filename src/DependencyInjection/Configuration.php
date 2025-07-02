@@ -10,21 +10,11 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('terminal42_url_rewrite');
-
-        // Keep compatibility with symfony/config < 4.2
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            $rootNode = $treeBuilder->root('terminal42_url_rewrite');
-        }
-
-        $rootNode
+        $treeBuilder
+            ->getRootNode()
             ->children()
                 ->booleanNode('backend_management')
                     ->info('Enable the rewrites management in Contao backend.')

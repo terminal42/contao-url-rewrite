@@ -66,7 +66,7 @@ class UrlRewriteLoaderTest extends TestCase
             $controller = $route->getDefault('_controller');
 
             // Support old and new format with single semicolon
-            if (stripos($controller, '::') !== false) {
+            if (false !== stripos((string) $controller, '::')) {
                 $controller = str_replace('::', ':', $controller);
             }
 
@@ -83,7 +83,7 @@ class UrlRewriteLoaderTest extends TestCase
         }
     }
 
-    public function getRouteCollectionProvider()
+    public static function getRouteCollectionProvider(): iterable
     {
         $config1 = new RewriteConfig('provider.1', 'foo/bar');
 
@@ -121,7 +121,7 @@ class UrlRewriteLoaderTest extends TestCase
                         'requirements' => [
                             'foo' => '\d+',
                             'baz' => '\s+',
-                            'hosts' => '(domain1\.tld|domain2\.tld)'
+                            'hosts' => '(domain1\.tld|domain2\.tld)',
                         ],
                         'host' => '{hosts}',
                         'condition' => '',
@@ -149,7 +149,7 @@ class UrlRewriteLoaderTest extends TestCase
                         'path' => '/foo/baz',
                         'methods' => [],
                         'requirements' => [
-                            'hosts' => '(domain1\.tld|domain2\.tld)'
+                            'hosts' => '(domain1\.tld|domain2\.tld)',
                         ],
                         'host' => '{hosts}',
                         'condition' => 'context.getMethod() in [\'GET\']',
@@ -170,7 +170,6 @@ class UrlRewriteLoaderTest extends TestCase
     private function mockConfigProvider(array $configs = [])
     {
         $provider = $this->createMock(ConfigProviderInterface::class);
-
         $provider
             ->method('findAll')
             ->willReturn($configs)

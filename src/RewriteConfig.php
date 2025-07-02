@@ -6,47 +6,23 @@ namespace Terminal42\UrlRewriteBundle;
 
 class RewriteConfig implements RewriteConfigInterface
 {
-    /**
-     * @var string
-     */
-    private $identifier;
+    private string $requestPath = '';
 
-    /**
-     * @var string
-     */
-    private $requestPath = '';
+    private array $requestHosts = [];
 
-    /**
-     * @var array
-     */
-    private $requestHosts = [];
+    private array $requestRequirements = [];
 
-    /**
-     * @var array
-     */
-    private $requestRequirements = [];
+    private string|null $requestCondition = null;
 
-    /**
-     * @var string|null
-     */
-    private $requestCondition;
+    private int $responseCode = 301;
 
-    /**
-     * @var int
-     */
-    private $responseCode = 301;
+    private string|null $responseUri = null;
 
-    /**
-     * @var string|null
-     */
-    private $responseUri;
-
-    /**
-     * RewriteConfig constructor.
-     */
-    public function __construct(string $identifier, string $requestPath, int $responseCode = 301)
-    {
-        $this->identifier = $identifier;
+    public function __construct(
+        private string $identifier,
+        string $requestPath,
+        int $responseCode = 301,
+    ) {
         $this->setRequestPath($requestPath);
         $this->setResponseCode($responseCode);
     }
@@ -56,9 +32,6 @@ class RewriteConfig implements RewriteConfigInterface
         return $this->identifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
@@ -94,7 +67,7 @@ class RewriteConfig implements RewriteConfigInterface
         $this->requestRequirements = $requestRequirements;
     }
 
-    public function getRequestCondition(): ?string
+    public function getRequestCondition(): string|null
     {
         return $this->requestCondition;
     }
@@ -118,21 +91,18 @@ class RewriteConfig implements RewriteConfigInterface
     public function setResponseCode(int $responseCode): void
     {
         if (!\in_array($responseCode, self::VALID_RESPONSE_CODES, true)) {
-            throw new \InvalidArgumentException(sprintf('Invalid response code: %s', $responseCode));
+            throw new \InvalidArgumentException(\sprintf('Invalid response code: %s', $responseCode));
         }
 
         $this->responseCode = $responseCode;
     }
 
-    public function getResponseUri(): ?string
+    public function getResponseUri(): string|null
     {
         return $this->responseUri;
     }
 
-    /**
-     * @param string|null $responseUri
-     */
-    public function setResponseUri(string $responseUri): void
+    public function setResponseUri(string|null $responseUri): void
     {
         $this->responseUri = $responseUri;
     }

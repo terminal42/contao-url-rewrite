@@ -45,14 +45,12 @@ class PluginTest extends TestCase
     public function testGetRouteCollection(): void
     {
         $loader = $this->createMock(YamlFileLoader::class);
-
         $loader
             ->method('load')
             ->willReturn(new RouteCollection())
         ;
 
         $resolver = $this->createMock(LoaderResolver::class);
-
         $resolver
             ->method('resolve')
             ->willReturn($loader)
@@ -63,13 +61,12 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(RouteCollection::class, $plugin->getRouteCollection($resolver, $this->createMock(Kernel::class)));
     }
 
-    public function testGetRouteCollectionNull(): void
+    public function testGetRouteCollectionFalse(): void
     {
         $resolver = $this->createMock(LoaderResolver::class);
-
         $resolver
             ->method('resolve')
-            ->willReturn(null)
+            ->willReturn(false)
         ;
 
         $plugin = new Plugin();

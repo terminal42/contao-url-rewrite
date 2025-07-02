@@ -1,6 +1,6 @@
 
 <div id="tl_buttons">
-    <a href="<?= \Contao\StringUtil::ampersand($this->backUrl) ?>" class="header_back" title="<?= \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
+    <a href="<?= Contao\StringUtil::ampersand($this->backUrl) ?>" class="header_back" title="<?= Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
 </div>
 
 <div class="maintenance_active">

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Terminal42\UrlRewriteBundle;
 
+/**
+ * @internal This is an internal interface, you are not supposed do add your own configurations at the moment.
+ */
 interface RewriteConfigInterface
 {
     public const VALID_RESPONSE_CODES = [301, 302, 303, 307, 410];
@@ -18,9 +21,9 @@ interface RewriteConfigInterface
 
     public function getRequestRequirements(): array;
 
-    public function getRequestCondition(): ?string;
+    public function getRequestCondition(): string|null;
 
     public function getResponseCode(): int;
 
-    public function getResponseUri(): ?string;
+    public function getResponseUri(): string|null;
 }

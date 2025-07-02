@@ -10,29 +10,20 @@ class ChainConfigProvider implements ConfigProviderInterface
 {
     private const IDENTIFIER_SEPARATOR = '.';
 
-    /**
-     * @var array
-     */
-    private $providers = [];
+    private array $providers = [];
 
-    /**
-     * Add the config provider.
-     */
     public function addProvider(ConfigProviderInterface $provider): void
     {
         $this->providers[] = $provider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function find(string $id): ?RewriteConfigInterface
+    public function find(string $id): RewriteConfigInterface|null
     {
         [$providerIdentifier, $providerRewriteId] = explode(self::IDENTIFIER_SEPARATOR, $id);
 
         /** @var ConfigProviderInterface $provider */
         foreach ($this->providers as $provider) {
-            if ($providerIdentifier === static::getProviderIdentifier(get_class($provider)) && null !== ($config = $provider->find($providerRewriteId))) {
+            if ($providerIdentifier === static::getProviderIdentifier($provider::class) && null !== ($config = $provider->find($providerRewriteId))) {
                 return $config;
             }
         }
@@ -40,9 +31,6 @@ class ChainConfigProvider implements ConfigProviderInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findAll(): array
     {
         $configs = [];
@@ -53,7 +41,7 @@ class ChainConfigProvider implements ConfigProviderInterface
 
             /** @var RewriteConfigInterface $config */
             foreach ($providerConfigs as $config) {
-                $config->setIdentifier(static::getConfigIdentifier(get_class($provider), $config->getIdentifier()));
+                $config->setIdentifier(static::getConfigIdentifier($provider::class, $config->getIdentifier()));
             }
 
             $configs = array_merge($configs, $providerConfigs);
@@ -76,8 +64,7 @@ class ChainConfigProvider implements ConfigProviderInterface
     private static function getProviderIdentifier(string $providerClass): string
     {
         $provider = str_replace('\\', '_', $providerClass);
-        $provider = strtolower($provider);
 
-        return $provider;
+        return strtolower($provider);
     }
 }

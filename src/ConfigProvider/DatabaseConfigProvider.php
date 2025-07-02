@@ -15,27 +15,15 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class DatabaseConfigProvider implements ConfigProviderInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * DatabaseConfigProvider constructor.
-     */
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function find(string $id): ?RewriteConfigInterface
+    public function find(string $id): RewriteConfigInterface|null
     {
         try {
             $data = $this->connection->fetchAssociative('SELECT * FROM tl_url_rewrite WHERE id=? AND inactive=?', [$id, 0]);
-        } catch (\PDOException | ConnectionException | TableNotFoundException | InvalidFieldNameException $e) {
+        } catch (\PDOException|ConnectionException|TableNotFoundException|InvalidFieldNameException $e) {
             throw new TemporarilyUnavailableConfigProviderException($e->getMessage(), $e->getCode(), $e);
         }
 
@@ -46,14 +34,11 @@ class DatabaseConfigProvider implements ConfigProviderInterface
         return $this->createConfig($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findAll(): array
     {
         try {
             $records = $this->connection->fetchAllAssociative('SELECT * FROM tl_url_rewrite WHERE inactive=? ORDER BY priority DESC', [0]);
-        } catch (\PDOException | ConnectionException | TableNotFoundException | InvalidFieldNameException $e) {
+        } catch (\PDOException|ConnectionException|TableNotFoundException|InvalidFieldNameException) {
             return [];
         }
 
@@ -75,7 +60,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     /**
      * Create the config.
      */
-    private function createConfig(array $data): ?RewriteConfig
+    private function createConfig(array $data): RewriteConfig|null
     {
         if (!isset($data['id'], $data['type'], $data['requestPath'], $data['responseCode'])) {
             return null;
@@ -116,7 +101,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
                 break;
             // Unsupported type
             default:
-                throw new \RuntimeException(sprintf('Unsupported database record config type: %s', $data['type']));
+                throw new \RuntimeException(\sprintf('Unsupported database record config type: %s', $data['type']));
         }
 
         return $config;

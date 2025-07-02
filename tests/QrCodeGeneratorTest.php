@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Terminal42\UrlRewriteBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
-use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider;
 use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
 use Terminal42\UrlRewriteBundle\QrCodeGenerator;
@@ -17,25 +17,20 @@ use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
 class QrCodeGeneratorTest extends TestCase
 {
-    /**
-     * @var QrCodeGenerator
-     */
-    private $qrCodeGenerator;
+    private QrCodeGenerator $qrCodeGenerator;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private Router $router;
 
     protected function setUp(): void
     {
-        $this->router = $this->createMock(Router::class);
-        $this->qrCodeGenerator = new QrCodeGenerator($this->router);
-    }
+        $loader = $this->createMock(LoaderInterface::class);
+        $loader
+            ->method('load')
+            ->willReturn($this->getRouteCollection())
+        ;
 
-    public function testInstantiation(): void
-    {
-        $this->assertInstanceOf(QrCodeGenerator::class, $this->qrCodeGenerator);
+        $this->router = new Router($loader, 'foo');
+        $this->qrCodeGenerator = new QrCodeGenerator($this->router);
     }
 
     public function testValidate(): void
@@ -56,28 +51,6 @@ class QrCodeGeneratorTest extends TestCase
 
     public function testGenerateUrl(): void
     {
-        $routeIncorrect = new Route('foo/baz');
-
-        $routeCorrect1 = new Route('foo/bar');
-        $routeCorrect1->setHost('domain.tld');
-        $routeCorrect1->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, '123'));
-
-        $routeCorrect2 = new Route('foo/bar');
-        $routeCorrect2->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, '456'));
-
-        $this->router
-            ->method('getRouteCollection')
-            ->willReturn([666 => $routeIncorrect, 123 => $routeCorrect1, 456 => $routeCorrect2])
-        ;
-        $this->router
-            ->method('getContext')
-            ->willReturn(new RequestContext())
-        ;
-        $this->router
-            ->method('generate')
-            ->willReturn('https://domain.tld/foo/bar')
-        ;
-
         $this->assertSame('https://domain.tld/foo/bar', $this->qrCodeGenerator->generateUrl(['id' => 123], ['host' => 'domain.tld', 'scheme' => 'https']));
         $this->assertSame('https://domain.tld/foo/bar', $this->qrCodeGenerator->generateUrl(['id' => 456], ['host' => 'domain.tld']));
     }
@@ -88,5 +61,24 @@ class QrCodeGeneratorTest extends TestCase
         $this->expectExceptionMessage('The parameter "host" is mandatory');
 
         $this->qrCodeGenerator->generateUrl([]);
+    }
+
+    private function getRouteCollection(): RouteCollection
+    {
+        $routeIncorrect = new Route('foo/baz');
+
+        $routeCorrect1 = new Route('foo/bar');
+        $routeCorrect1->setHost('domain.tld');
+        $routeCorrect1->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, '123'));
+
+        $routeCorrect2 = new Route('foo/bar');
+        $routeCorrect2->setDefault(UrlRewriteLoader::ATTRIBUTE_NAME, ChainConfigProvider::getConfigIdentifier(DatabaseConfigProvider::class, '456'));
+
+        $collection = new RouteCollection();
+        $collection->add('route_incorrect', $routeIncorrect);
+        $collection->add('terminal42_urlrewritebundle_configprovider_databaseconfigprovider.123', $routeCorrect1);
+        $collection->add('terminal42_urlrewritebundle_configprovider_databaseconfigprovider.456', $routeCorrect2);
+
+        return $collection;
     }
 }

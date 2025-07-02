@@ -12,35 +12,19 @@ use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
 class UrlRewriteLoader extends Loader
 {
-    /**
-     * Attribute name.
-     */
     public const ATTRIBUTE_NAME = '_url_rewrite';
 
-    /**
-     * @var ConfigProviderInterface
-     */
-    private $configProvider;
-
-    /**
-     * Has been already loaded?
-     *
-     * @var bool
-     */
-    private $loaded = false;
+    private bool $loaded = false;
 
     /**
      * @noinspection MagicMethodsValidityInspection
      * @noinspection PhpMissingParentConstructorInspection
      */
-    public function __construct(ConfigProviderInterface $configProvider)
+    public function __construct(private readonly ConfigProviderInterface $configProvider)
     {
-        // Do not call parent constructor, it does not exist in Symfony < 5
-
-        $this->configProvider = $configProvider;
     }
 
-    public function load($resource, $type = null): RouteCollection
+    public function load(mixed $resource, $type = null): RouteCollection
     {
         if (true === $this->loaded) {
             throw new \RuntimeException('Do not add the "terminal42 url rewrite" loader twice');
@@ -67,14 +51,11 @@ class UrlRewriteLoader extends Loader
         return $collection;
     }
 
-    public function supports($resource, $type = null): bool
+    public function supports(mixed $resource, $type = null): bool
     {
         return 'terminal42_url_rewrite' === $type;
     }
 
-    /**
-     * Generate the routes.
-     */
     private function generateRoutes(RewriteConfigInterface $config): \Generator
     {
         $hosts = $config->getRequestHosts();
@@ -82,7 +63,7 @@ class UrlRewriteLoader extends Loader
         if (\count($hosts) > 0) {
             $hosts = array_map('preg_quote', $hosts);
             $hosts = implode('|', $hosts);
-            $hosts = sprintf('(%s)', $hosts);
+            $hosts = \sprintf('(%s)', $hosts);
 
             yield $this->createRoute($config, '{hosts}', ['hosts' => $hosts]);
         } else {
@@ -90,10 +71,7 @@ class UrlRewriteLoader extends Loader
         }
     }
 
-    /**
-     * Create the route object.
-     */
-    private function createRoute(RewriteConfigInterface $config, string $host = null, array $requirements = []): ?Route
+    private function createRoute(RewriteConfigInterface $config, string|null $host = null, array $requirements = []): Route|null
     {
         if (!$config->getRequestPath()) {
             return null;
@@ -105,7 +83,7 @@ class UrlRewriteLoader extends Loader
                 if (false === preg_match('('.$regex.')', '')) {
                     return null;
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return null;
             }
         }

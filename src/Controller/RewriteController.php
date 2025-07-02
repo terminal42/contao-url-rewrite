@@ -16,46 +16,31 @@ use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
 class RewriteController
 {
-    /**
-     * @var ConfigProviderInterface
-     */
-    private $configProvider;
-
-    /**
-     * @var InsertTagParser
-     */
-    private $insertTagParser;
-
-    /**
-     * RewriteController constructor.
-     */
-    public function __construct(ConfigProviderInterface $configProvider, InsertTagParser $insertTagParser)
-    {
-        $this->configProvider = $configProvider;
-        $this->insertTagParser = $insertTagParser;
+    public function __construct(
+        private readonly ConfigProviderInterface $configProvider,
+        private readonly InsertTagParser $insertTagParser,
+    ) {
     }
 
     /**
-     * Index action.
-     *
      * @throws RouteNotFoundException
      */
     public function indexAction(Request $request): Response
     {
         if (!$request->attributes->has(UrlRewriteLoader::ATTRIBUTE_NAME)) {
-            throw new RouteNotFoundException(sprintf('The "%s" attribute is missing', UrlRewriteLoader::ATTRIBUTE_NAME));
+            throw new RouteNotFoundException(\sprintf('The "%s" attribute is missing', UrlRewriteLoader::ATTRIBUTE_NAME));
         }
 
         $rewriteId = $request->attributes->get(UrlRewriteLoader::ATTRIBUTE_NAME);
 
         try {
             $config = $this->configProvider->find((string) $rewriteId);
-        } catch (TemporarilyUnavailableConfigProviderException $e) {
+        } catch (TemporarilyUnavailableConfigProviderException) {
             return new Response(Response::$statusTexts[503], 503);
         }
 
         if (null === $config) {
-            throw new RouteNotFoundException(sprintf('URL rewrite config ID %s does not exist', $rewriteId));
+            throw new RouteNotFoundException(\sprintf('URL rewrite config ID %s does not exist', $rewriteId));
         }
 
         $responseCode = $config->getResponseCode();
@@ -74,7 +59,7 @@ class RewriteController
     /**
      * Generate the URI.
      */
-    private function generateUri(Request $request, RewriteConfigInterface $config): ?string
+    private function generateUri(Request $request, RewriteConfigInterface $config): string|null
     {
         if (null === ($uri = $config->getResponseUri())) {
             return null;
@@ -87,8 +72,8 @@ class RewriteController
         $uri = preg_replace('@(?<!http:|https:|^)/+@', '/', $uri);
 
         // Make the URL absolute if it's not yet already
-        if (!preg_match('@^(https?:)?//@', $uri)) {
-            $uri = $request->getSchemeAndHttpHost().$request->getBasePath().'/'.ltrim($uri, '/');
+        if (!preg_match('@^(https?:)?//@', (string) $uri)) {
+            $uri = $request->getSchemeAndHttpHost().$request->getBasePath().'/'.ltrim((string) $uri, '/');
         }
 
         return $uri;

@@ -15,7 +15,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
@@ -24,46 +24,15 @@ use Terminal42\UrlRewriteBundle\QrCodeGenerator;
 
 class QrCodeController
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @var QrCodeGenerator
-     */
-    private $qrCodeGenerator;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var UriSigner
-     */
-    private $uriSigner;
-
-    /**
-     * QrCodeController constructor.
-     */
-    public function __construct(Connection $connection, QrCodeGenerator $qrCodeGenerator, RequestStack $requestStack, RouterInterface $router, UriSigner $uriSigner)
-    {
-        $this->connection = $connection;
-        $this->qrCodeGenerator = $qrCodeGenerator;
-        $this->requestStack = $requestStack;
-        $this->router = $router;
-        $this->uriSigner = $uriSigner;
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly QrCodeGenerator $qrCodeGenerator,
+        private readonly RequestStack $requestStack,
+        private readonly RouterInterface $router,
+        private readonly UriSigner $uriSigner,
+    ) {
     }
 
-    /**
-     * Index view.
-     */
     public function index(): Response
     {
         if (
@@ -95,9 +64,7 @@ class QrCodeController
         return $template->getResponse();
     }
 
-    /**
-     * @Route("/url_rewrite_qr_code/{url}", name="url_rewrite_qr_code", methods={"GET"})
-     */
+    #[Route('/url_rewrite_qr_code/{url}', 'url_rewrite_qr_code', methods: ['GET'])]
     public function qrCode(Request $request, string $url): Response
     {
         if (!$this->uriSigner->check($request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo().(null !== ($qs = $request->server->get('QUERY_STRING')) ? '?'.$qs : ''))) {
@@ -116,9 +83,6 @@ class QrCodeController
         return $response;
     }
 
-    /**
-     * Add QR code to the template.
-     */
     private function addQrCodeToTemplate(Request $request, BackendTemplate $template, array $rewriteData, array $routeParameters): void
     {
         try {
@@ -133,7 +97,7 @@ class QrCodeController
             } else {
                 $template->error = $GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['routeError'];
             }
-        } catch (MissingMandatoryParametersException | InvalidParameterException $e) {
+        } catch (MissingMandatoryParametersException|InvalidParameterException $e) {
             $template->error = $e->getMessage();
         }
     }
@@ -146,10 +110,14 @@ class QrCodeController
         $formFields = [];
 
         // Add the scheme form field
-        $formFields['scheme'] = new $GLOBALS['BE_FFL']['select'](Widget::getAttributesFromDca([
-            'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['scheme'],
-            'options' => ['http', 'https'],
-        ], 'scheme', Input::post('scheme') ?: $request->getScheme()));
+        $formFields['scheme'] = new $GLOBALS['BE_FFL']['select'](Widget::getAttributesFromDca(
+            [
+                'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['scheme'],
+                'options' => ['http', 'https'],
+            ],
+            'scheme',
+            Input::post('scheme') ?: $request->getScheme(),
+        ));
 
         // Determine the host
         if (\is_array($hosts = StringUtil::deserialize($rewriteData['requestHosts'])) && \count($hosts = array_filter($hosts)) > 0) {
@@ -158,18 +126,26 @@ class QrCodeController
                 $routeParameters['host'] = $hosts[0];
             } else {
                 // Generate a select menu field for host
-                $formFields['host'] = new $GLOBALS['BE_FFL']['select'](Widget::getAttributesFromDca([
-                    'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['host'],
-                    'options' => $hosts,
-                    'eval' => ['mandatory' => true, 'includeBlankOption' => true],
-                ], 'host', Input::post('host')));
+                $formFields['host'] = new $GLOBALS['BE_FFL']['select'](Widget::getAttributesFromDca(
+                    [
+                        'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['host'],
+                        'options' => $hosts,
+                        'eval' => ['mandatory' => true, 'includeBlankOption' => true],
+                    ],
+                    'host',
+                    Input::post('host'),
+                ));
             }
         } else {
             // Generate a text field for host
-            $formFields['host'] = new $GLOBALS['BE_FFL']['text'](Widget::getAttributesFromDca([
-                'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['host'],
-                'eval' => ['mandatory' => true, 'decodeEntities' => true, 'rgxp' => 'url'],
-            ], 'host', Input::post('host')));
+            $formFields['host'] = new $GLOBALS['BE_FFL']['text'](Widget::getAttributesFromDca(
+                [
+                    'label' => &$GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['host'],
+                    'eval' => ['mandatory' => true, 'decodeEntities' => true, 'rgxp' => 'url'],
+                ],
+                'host',
+                Input::post('host'),
+            ));
         }
 
         $requirements = StringUtil::deserialize($rewriteData['requestRequirements']);
@@ -180,10 +156,14 @@ class QrCodeController
                 if ('' !== $requirement['key'] && '' !== $requirement['value']) {
                     $fieldName = 'requirement_'.$requirement['key'];
 
-                    $formFields[$fieldName] = new $GLOBALS['BE_FFL']['text'](Widget::getAttributesFromDca([
-                        'label' => sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['requirement'], $requirement['key'], $requirement['value']),
-                        'eval' => ['mandatory' => true, 'urlRewriteRequirement' => $requirement],
-                    ], $fieldName, Input::post($fieldName)));
+                    $formFields[$fieldName] = new $GLOBALS['BE_FFL']['text'](Widget::getAttributesFromDca(
+                        [
+                            'label' => \sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['requirement'], $requirement['key'], $requirement['value']),
+                            'eval' => ['mandatory' => true, 'urlRewriteRequirement' => $requirement],
+                        ],
+                        $fieldName,
+                        Input::post($fieldName),
+                    ));
 
                     // Set route parameter to null value to indicate it's mandatory
                     $routeParameters[$requirement['key']] = null;
@@ -207,9 +187,6 @@ class QrCodeController
         return $formFields;
     }
 
-    /**
-     * Process the form.
-     */
     private function processForm(array $formFields, array $routeParameters): array
     {
         /** @var Widget $formField */
@@ -217,8 +194,8 @@ class QrCodeController
             $formField->validate();
 
             // Validate the requirement regexp, if any
-            if ($formField->urlRewriteRequirement && !preg_match('/^'.$formField->urlRewriteRequirement['value'].'$/', $formField->value)) {
-                $formField->addError(sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['requirementError'], $formField->urlRewriteRequirement['value']));
+            if ($formField->urlRewriteRequirement && !preg_match('/^'.$formField->urlRewriteRequirement['value'].'$/', (string) $formField->value)) {
+                $formField->addError(\sprintf($GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['requirementError'], $formField->urlRewriteRequirement['value']));
             }
 
             // Return an empty array if at least one field has an error

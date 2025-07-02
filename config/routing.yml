@@ -1,6 +1,6 @@
 controllers:
-    resource: ../../Controller/
-    type: annotation
+    resource: ../src/Controller/
+    type: attribute
 
 terminal42_url_rewrite:
     resource: .
