@@ -3,7 +3,7 @@
     <file datatype="php" original="src/Resources/contao/languages/en/modules.php" source-language="en">
         <body>
             <trans-unit id="MOD.url_rewrites.0">
-                <source>URL rewrites</source>
+                <source>URL redirects</source>
             </trans-unit>
         </body>
     </file>

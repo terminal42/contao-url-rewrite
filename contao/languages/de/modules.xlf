@@ -3,8 +3,8 @@
     <file datatype="php" original="src/Resources/contao/languages/en/modules.php" source-language="en" target-language="de">
         <body>
             <trans-unit id="MOD.url_rewrites.0">
-                <source>URL rewrites</source>
-                <target>URL Umschreiberegeln</target>
+                <source>URL redirects</source>
+                <target>URL Umleitungsregeln</target>
             </trans-unit>
         </body>
     </file>

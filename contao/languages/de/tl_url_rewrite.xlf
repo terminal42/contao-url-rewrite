@@ -7,7 +7,7 @@
                 <target>Interne Bezeichnung</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.name.1">
-                <source>Please enter the rewrite internal name (visible only in backend).</source>
+                <source>Please enter the internal name (visible only in backend) for this redirect.</source>
                 <target>Hier können Sie eine interne Bezeichnung erfassen (nur im Backend ersichtlich).</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.type.0">
@@ -39,7 +39,7 @@
                 <target>Umschreiberegel deaktivieren</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.inactive.1">
-                <source>Deactivate the rewrite rule. It will not be loaded into the router configuration.</source>
+                <source>Deactivate the redirect rule. It will not be loaded into the router configuration.</source>
                 <target>Deaktiviert die Umschreiberegel. Sie wird nicht in die Routerkonfiguration geladen.</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.requestHosts.0">
@@ -116,7 +116,7 @@
             </trans-unit>
 
             <trans-unit id="tl_url_rewrite.name_legend">
-                <source>Rewrite name</source>
+                <source>Redirect name</source>
                 <target>Bezeichnung</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.request_legend">
@@ -131,13 +131,12 @@
                 <source>Examples</source>
                 <target>Beispiele</target>
             </trans-unit>
-
             <trans-unit id="tl_url_rewrite.new.0">
                 <source>New rule</source>
                 <target>Neue Regel</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.new.1">
-                <source>Create a new rewrite rule</source>
+                <source>Create a new redirect rule</source>
                 <target>Eine neue Regel anlegen</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.show.0">
@@ -145,7 +144,7 @@
                 <target>Regel-Details</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.show.1">
-                <source>Show the details of rewrite rule ID %s</source>
+                <source>Show the details of redirect rule ID %s</source>
                 <target>Details der Regel ID %s anzeigen</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.edit.0">
@@ -153,7 +152,7 @@
                 <target>Regel editieren</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.edit.1">
-                <source>Edit rewrite rule ID %s</source>
+                <source>Edit redirect rule ID %s</source>
                 <target>Regel ID %s editieren</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.copy.0">
@@ -161,7 +160,7 @@
                 <target>Regel duplizieren</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.copy.1">
-                <source>Duplicate rewrite rule ID %s</source>
+                <source>Duplicate redirect rule ID %s</source>
                 <target>Regel ID %s duplizieren</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.delete.0">
@@ -169,7 +168,7 @@
                 <target>Regel löschen</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.delete.1">
-                <source>Delete rewrite rule ID %s</source>
+                <source>Delete redirect rule ID %s</source>
                 <target>Regel ID %s löschen</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.toggle.0">
@@ -177,7 +176,7 @@
                 <target>Regel aktivieren/deaktivieren</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.toggle.1">
-                <source>Activate/deactivate rewrite rule ID %s</source>
+                <source>Activate/deactivate redirect rule ID %s</source>
                 <target>Regel ID %s aktivieren/deaktivieren</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.qrCode.0">
@@ -284,7 +283,7 @@ Resultat: domain.tld/news/123 → domain.tld/news-reader/foobar-123.html
 Resultat: domain.tld/news/foobar → 404 Page Not Found</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.2.0">
-                <source>Rewrite legacy URLs with query string:</source>
+                <source>Redirect legacy URLs with query string:</source>
                 <target>Alte URLs mit Query Parameter umschreiben:</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.2.1">
@@ -304,7 +303,7 @@ Antwort-Umleitungs-URL: {{link_url::{page}|absolute}}
 Resultat: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.3.0">
-                <source>Rewrite URLs including slashes (without query string) to new domain:</source>
+                <source>Redirect URLs including slashes (without query string) to new domain:</source>
                 <target>Alle URLs inklusive Slashes (ohne Query Parameter) zu neuer Domain umschreiben:</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.3.1">
