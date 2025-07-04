@@ -88,7 +88,7 @@
             </trans-unit>
             <trans-unit id="tl_url_rewrite.conditionalResponseUri.1">
                 <source>Just like for the request conditions, use Symfony's Expression Language (e.g. &lt;em&gt;request.getPreferredLanguage() starts with 'de'&lt;/em&gt;) as key and as the value, use dynamic redirect URLs. If no condition matches, the regular redirect URL acts as a fallback. This way you can e.g. forward differently depending on the browser language.</source>
-                <target>Genau wie bei den Anfrage-Bedingungen verwenden Sie die Symfony Expression Language (z.&nbsp;B. <em>request.getPreferredLanguage() starts with 'de'</em>) als Schlüssel und dynamische Antwort-Umleitungs-URLs als Wert. Wenn keine Bedingung zutrifft, wird die reguläre Antwort-Umleitungs-URL als Fallback verwendet. So können Sie z.&nbsp;B. je nach Browsersprache unterschiedlich weiterleiten.</target>
+                <target>Genau wie bei den Anfrage-Bedingungen verwenden Sie die Symfony Expression Language (z. B. <em>request.getPreferredLanguage() starts with 'de'</em>) als Schlüssel und dynamische Antwort-Umleitungs-URLs als Wert. Wenn keine Bedingung zutrifft, wird die reguläre Antwort-Umleitungs-URL als Fallback verwendet. So können Sie z. B. je nach Browsersprache unterschiedlich weiterleiten.</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.responseCode.1">
                 <source>Here you can select the response status code.</source>
