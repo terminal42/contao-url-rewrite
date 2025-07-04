@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\UrlRewriteBundle\Controller;
 
 use Contao\CoreBundle\InsertTag\InsertTagParser;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ class RewriteController
     public function __construct(
         private readonly ConfigProviderInterface $configProvider,
         private readonly InsertTagParser $insertTagParser,
+        private readonly ExpressionLanguage $expressionLanguage,
     ) {
     }
 
@@ -61,7 +63,7 @@ class RewriteController
      */
     private function generateUri(Request $request, RewriteConfigInterface $config): string|null
     {
-        if (null === ($uri = $config->getResponseUri())) {
+        if (null === ($uri = $this->findBestUri($request, $config))) {
             return null;
         }
 
@@ -113,5 +115,16 @@ class RewriteController
         }
 
         return $this->insertTagParser->replaceInline($uri);
+    }
+
+    private function findBestUri(Request $request, RewriteConfigInterface $config): string|null
+    {
+        foreach ($config->getConditionalResponseUris() as $condition => $uri) {
+            if ($this->expressionLanguage->evaluate($condition, ['request' => $request])) {
+                return $uri;
+            }
+        }
+
+        return $config->getResponseUri();
     }
 }

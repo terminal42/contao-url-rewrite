@@ -1,10 +1,14 @@
 services:
+    terminal42_url_rewrite.expression_language:
+        class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
+
     terminal42_url_rewrite.rewrite_controller:
         class: Terminal42\UrlRewriteBundle\Controller\RewriteController
         public: true
         arguments:
             - "@terminal42_url_rewrite.provider"
             - "@contao.insert_tag.parser"
+            - "@terminal42_url_rewrite.expression_language"
 
     terminal42_url_rewrite.qr_code_controller:
         class: Terminal42\UrlRewriteBundle\Controller\QrCodeController

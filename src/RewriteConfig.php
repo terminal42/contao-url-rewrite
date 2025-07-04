@@ -16,6 +16,11 @@ class RewriteConfig implements RewriteConfigInterface
 
     private int $responseCode = 301;
 
+    /**
+     * @var array<string, string>
+     */
+    private array $conditionalResponseUris = [];
+
     private string|null $responseUri = null;
 
     private bool $keepQueryParams = false;
@@ -117,5 +122,18 @@ class RewriteConfig implements RewriteConfigInterface
     public function keepQueryParams(): bool
     {
         return $this->keepQueryParams;
+    }
+
+    /**
+     * @param array<string, string> $conditionalResponseUris
+     */
+    public function setConditionalResponseUris(array $conditionalResponseUris): void
+    {
+        $this->conditionalResponseUris = $conditionalResponseUris;
+    }
+
+    public function getConditionalResponseUris(): array
+    {
+        return $this->conditionalResponseUris;
     }
 }

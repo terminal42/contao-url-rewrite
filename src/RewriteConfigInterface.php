@@ -25,6 +25,14 @@ interface RewriteConfigInterface
 
     public function getResponseCode(): int;
 
+    /**
+     * Returns a key value array where the key is the expression language condition, and the
+     * value is the response URI in the same format as getResponseUri().
+     *
+     * @return array<string, string>
+     */
+    public function getConditionalResponseUris(): array;
+
     public function getResponseUri(): string|null;
 
     public function keepQueryParams(): bool;

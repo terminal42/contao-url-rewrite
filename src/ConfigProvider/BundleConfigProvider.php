@@ -65,6 +65,9 @@ class BundleConfigProvider implements ConfigProviderInterface
             $config->setRequestRequirements($data['request']['requirements']);
         }
 
+        // Conditional response URIs
+        $config->setConditionalResponseUris($data['response']['conditionalUris'] ?? []);
+
         // Response URI
         if (isset($data['response']['uri'])) {
             $config->setResponseUri($data['response']['uri']);

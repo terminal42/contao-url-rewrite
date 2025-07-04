@@ -7,7 +7,7 @@ terminal42_url_rewrite:
 
         -
             request: { path: 'news/{news}', requirements: {news: '\d+'} }
-            response: { code: 301, uri: '{{news_url::{news}|absolute}}' }
+            response: { code: 301, uri: '{{news_url::{news}::absolute}}' }
 
         -
             request:
@@ -15,5 +15,7 @@ terminal42_url_rewrite:
                 hosts: ['localhost']
                 condition: "context.getMethod() == 'GET' and request.query.has('page')"
             response:
-                uri: '{{link_url::{page}|absolute}}'
+                conditionalUris:
+                    "request.getPreferredLanguage() starts with 'de'": '{{link_url::42::absolute}}'
+                uri: '{{link_url::{page}::absolute}}'
                 keepQueryParams: true

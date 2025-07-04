@@ -34,6 +34,7 @@ class ConfigurationTest extends TestCase
                     'response' => [
                         'code' => 303,
                         'uri' => 'https://www.google.com/maps?q={address}',
+                        'conditionalUris' => [],
                         'keepQueryParams' => false,
                     ],
                 ],
@@ -45,7 +46,8 @@ class ConfigurationTest extends TestCase
                     ],
                     'response' => [
                         'code' => 301,
-                        'uri' => '{{news_url::{news}|absolute}}',
+                        'uri' => '{{news_url::{news}::absolute}}',
+                        'conditionalUris' => [],
                         'keepQueryParams' => false,
                     ],
                 ],
@@ -57,7 +59,10 @@ class ConfigurationTest extends TestCase
                         'requirements' => [],
                     ],
                     'response' => [
-                        'uri' => '{{link_url::{page}|absolute}}',
+                        'conditionalUris' => [
+                            "request.getPreferredLanguage() starts with 'de'" => '{{link_url::42::absolute}}',
+                        ],
+                        'uri' => '{{link_url::{page}::absolute}}',
                         'keepQueryParams' => true,
                         'code' => 301,
                     ],

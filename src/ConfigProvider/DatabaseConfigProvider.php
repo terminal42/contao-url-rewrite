@@ -73,6 +73,9 @@ class DatabaseConfigProvider implements ConfigProviderInterface
             $config->setRequestHosts(StringUtil::deserialize($data['requestHosts'], true));
         }
 
+        // Conditional response URIs
+        $config->setConditionalResponseUris(self::parseKeyValueWizardValue($data['conditionalResponseUri'] ?? null));
+
         // Response URI
         if (isset($data['responseUri'])) {
             $config->setResponseUri($data['responseUri']);
@@ -86,17 +89,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
         switch ($data['type']) {
             // Basic type
             case 'basic':
-                if (isset($data['requestRequirements'])) {
-                    $requirements = [];
-
-                    foreach (StringUtil::deserialize($data['requestRequirements'], true) as $requirement) {
-                        if ('' !== $requirement['key'] && '' !== $requirement['value']) {
-                            $requirements[$requirement['key']] = $requirement['value'];
-                        }
-                    }
-
-                    $config->setRequestRequirements($requirements);
-                }
+                $config->setRequestRequirements(self::parseKeyValueWizardValue($data['requestRequirements'] ?? null));
                 break;
             // Expert type
             case 'expert':
@@ -110,5 +103,21 @@ class DatabaseConfigProvider implements ConfigProviderInterface
         }
 
         return $config;
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    private static function parseKeyValueWizardValue(string|null $value): array
+    {
+        $parsed = [];
+
+        foreach (StringUtil::deserialize($value, true) as $row) {
+            if ('' !== $row['key'] && '' !== $row['value']) {
+                $parsed[$row['key']] = $row['value'];
+            }
+        }
+
+        return $parsed;
     }
 }

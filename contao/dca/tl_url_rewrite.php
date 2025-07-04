@@ -67,10 +67,10 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
 
     // Subpalettes
     'subpalettes' => [
-        'responseCode_301' => 'responseUri,keepQueryParams',
-        'responseCode_302' => 'responseUri,keepQueryParams',
-        'responseCode_303' => 'responseUri,keepQueryParams',
-        'responseCode_307' => 'responseUri,keepQueryParams',
+        'responseCode_301' => 'conditionalResponseUri,responseUri,keepQueryParams',
+        'responseCode_302' => 'conditionalResponseUri,responseUri,keepQueryParams',
+        'responseCode_303' => 'conditionalResponseUri,responseUri,keepQueryParams',
+        'responseCode_307' => 'conditionalResponseUri,responseUri,keepQueryParams',
     ],
 
     // Fields
@@ -167,6 +167,11 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'options_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'getResponseCodes'],
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'integer', 'unsigned' => true],
+        ],
+        'conditionalResponseUri' => [
+            'inputType' => 'keyValueWizard',
+            'eval' => ['decodeEntities' => true, 'tl_class' => 'clr'],
+            'sql' => ['type' => 'blob', 'notnull' => false],
         ],
         'responseUri' => [
             'search' => true,
