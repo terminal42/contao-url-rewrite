@@ -106,7 +106,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @return array<string,string>
+     * @return array<string, string>
      */
     private static function parseKeyValueWizardValue(string|null $value): array
     {

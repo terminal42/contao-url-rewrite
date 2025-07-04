@@ -41,6 +41,7 @@
         "contao/manager-plugin": "^2.0",
         "contao/test-case": "^5.3",
         "phpunit/phpunit": "^9.6",
+        "symfony/yaml": "^6.4 || ^7.0",
         "terminal42/contao-build-tools": "dev-main"
     },
     "conflict": {
