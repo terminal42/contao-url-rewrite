@@ -124,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
         ],
         'inactive' => [
-            'toggle' => true,
+            'reverseToggle' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
