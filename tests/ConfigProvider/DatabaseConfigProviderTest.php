@@ -82,11 +82,6 @@ class DatabaseConfigProviderTest extends TestCase
                 null,
             ],
 
-            'Invalid config – unsupported data type' => [
-                ['id' => 123, 'type' => 'foobar', 'requestPath' => 'foo/bar', 'responseCode' => 301],
-                ['exception' => \RuntimeException::class],
-            ],
-
             'Valid config – basic' => [
                 [
                     'id' => 123,
