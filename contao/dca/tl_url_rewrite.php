@@ -59,18 +59,10 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
 
     // Palettes
     'palettes' => [
-        '__selector__' => ['type', 'responseCode'],
+        '__selector__' => ['type'],
         'default' => '{name_legend},name,type,priority,comment,inactive',
-        'basic' => '{name_legend},name,type,priority,comment,inactive;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode;{examples_legend},examples',
-        'expert' => '{name_legend},name,type,priority,comment,inactive;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode;{examples_legend},examples',
-    ],
-
-    // Subpalettes
-    'subpalettes' => [
-        'responseCode_301' => 'conditionalResponseUri,responseUri,keepQueryParams',
-        'responseCode_302' => 'conditionalResponseUri,responseUri,keepQueryParams',
-        'responseCode_303' => 'conditionalResponseUri,responseUri,keepQueryParams',
-        'responseCode_307' => 'conditionalResponseUri,responseUri,keepQueryParams',
+        'basic' => '{name_legend},name,type,priority,comment,inactive;{request_legend},requestHosts,requestPath,requestRequirements;{response_legend},responseCode,responseUri,keepQueryParams;{examples_legend},examples',
+        'expert' => '{name_legend},name,type,priority,comment,inactive;{request_legend},requestHosts,requestPath,requestCondition;{response_legend},responseCode,conditionalResponseUri,responseUri,keepQueryParams;{examples_legend},examples',
     ],
 
     // Fields
@@ -165,7 +157,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'flag' => DataContainer::SORT_ASC,
             'inputType' => 'select',
             'options_callback' => ['terminal42_url_rewrite.listener.rewrite_container', 'getResponseCodes'],
-            'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
+            'eval' => ['tl_class' => 'w50'],
             'sql' => ['type' => 'integer', 'unsigned' => true],
         ],
         'conditionalResponseUri' => [
