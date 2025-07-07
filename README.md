@@ -5,7 +5,7 @@ The extension provides a new way for Contao to set various URL rewrites. The ava
 - Bundle config provider – the entries are taken from `config.yml` file
 - Database provider – the entries are taken from backend module
 
-Behind the scenes the rules are added as routes to the internal application router which allows to use all the features
+Behind the scenes, the rules are added as routes to the internal application router which allows to use all the features
 provided by the Symfony Routing component.
 
 ## Installation
@@ -72,7 +72,6 @@ imports:
 1. Find address on Google Maps:
 
 ```
-Type: basic
 Path restriction: find/{address}
 Response code: 303 See Other
 Response URI: https://www.google.com/maps?q={address}
@@ -83,7 +82,6 @@ Result: domain.tld/find/Switzerland → https://www.google.com/maps?q=Switzerlan
 2. Redirect to a specific news entry:
 
 ```
-Type: basic
 Path restriction: news/{news}
 Requirements: [news => \d+]
 Response code: 301 Moved Permanently
@@ -96,7 +94,6 @@ Result: domain.tld/news/foobar → 404 Page Not Found
 3. Rewrite legacy URLs with query string:
 
 ```
-Type: expert
 Path restriction: home.php
 Request condition: context.getMethod() == 'GET' and request.query.has('page')
 Response code: 301 Moved Permanently
@@ -108,7 +105,6 @@ Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html
 4. Rewrite URLs including slashes (without query string) to new domain:
 
 ```
-Type: basic
 Hosts restriction: [domain.com]
 Path restriction: /{wildcard}
 Requirements: [wildcard => .*]

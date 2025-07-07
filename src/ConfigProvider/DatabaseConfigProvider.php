@@ -86,20 +86,12 @@ class DatabaseConfigProvider implements ConfigProviderInterface
             $config->setKeepQueryParams(true);
         }
 
-        switch ($data['type']) {
-            // Basic type
-            case 'basic':
-                $config->setRequestRequirements(self::parseKeyValueWizardValue($data['requestRequirements'] ?? null));
-                break;
-            // Expert type
-            case 'expert':
-                if (isset($data['requestCondition'])) {
-                    $config->setRequestCondition($data['requestCondition']);
-                }
-                break;
-            // Unsupported type
-            default:
-                throw new \RuntimeException(\sprintf('Unsupported database record config type: %s', $data['type']));
+        // Request requirements
+        $config->setRequestRequirements(self::parseKeyValueWizardValue($data['requestRequirements'] ?? null));
+
+        // Request condition
+        if (isset($data['requestCondition'])) {
+            $config->setRequestCondition($data['requestCondition']);
         }
 
         return $config;

@@ -8,12 +8,6 @@
             <trans-unit id="tl_url_rewrite.name.1">
                 <source>Please enter the internal name (visible only in backend) for this redirect.</source>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.type.0">
-                <source>Type</source>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.type.1">
-                <source>Here you can choose the type.</source>
-            </trans-unit>
             <trans-unit id="tl_url_rewrite.priority.0">
                 <source>Priority</source>
             </trans-unit>
@@ -141,20 +135,6 @@
             <trans-unit id="tl_url_rewrite.qrCode.1">
                 <source>Generate QR code for rule ID %s</source>
             </trans-unit>
-
-            <trans-unit id="tl_url_rewrite.typeRef.basic.0">
-                <source>Basic</source>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.typeRef.basic.1">
-                <source>Allows to define the request matching using the basic Symfony routing features.</source>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.typeRef.expert.0">
-                <source>Expert</source>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.typeRef.expert.1">
-                <source>Allows to define the request condition using the &lt;a href=&quot;https://symfony.com/doc/current/components/expression_language.html&quot; target=&quot;_blank&quot;>Expression Language&lt;/a&gt;. For more information please &lt;a href=&quot;https://symfony.com/doc/current/routing/conditions.html&quot; target=&quot;_blank&quot;>visit this link&lt;/a&gt;.</source>
-            </trans-unit>
-
             <trans-unit id="tl_url_rewrite.qrCodeRef.headline">
                 <source>Generate QR code</source>
             </trans-unit>
@@ -187,8 +167,7 @@
                 <source>Find address on Google Maps:</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.0.1">
-                <source>Type: basic
-Path restriction: find/{address}
+                <source>Path restriction: find/{address}
 Response code: 303 See Other
 Response redirect URL: https://www.google.com/maps?q={address}
 ---
@@ -198,8 +177,7 @@ Result: domain.tld/find/Switzerland → https://www.google.com/maps?q=Switzerlan
                 <source>Redirect to a specific news entry:</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.1.1">
-                <source>Type: basic
-Path restriction: news/{news}
+                <source>Path restriction: news/{news}
 Requirements: [news => \d+]
 Response code: 301 Moved Permanently
 Response redirect URL: {{news_url::{news}|absolute}}
@@ -211,8 +189,7 @@ Result: domain.tld/news/foobar → 404 Page Not Found</source>
                 <source>Redirect legacy URLs with query string:</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.2.1">
-                <source>Type: expert
-Path restriction: home.php
+                <source>Path restriction: home.php
 Request condition: context.getMethod() == 'GET' and request.query.has('page')
 Response code: 301 Moved Permanently
 Response redirect URL: {{link_url::{page}|absolute}}
@@ -223,8 +200,7 @@ Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</source>
                 <source>Redirect URLs including slashes (without query string) to new domain:</source>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.3.1">
-                <source>Type: basic
-Hosts restriction: [domain.com]
+                <source>Hosts restriction: [domain.com]
 Path restriction: /{wildcard}
 Requirements: [wildcard => .*]
 Response code: 301 Moved Permanently

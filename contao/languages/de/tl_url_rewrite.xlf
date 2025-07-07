@@ -10,14 +10,6 @@
                 <source>Please enter the internal name (visible only in backend) for this redirect.</source>
                 <target>Hier können Sie eine interne Bezeichnung erfassen (nur im Backend ersichtlich).</target>
             </trans-unit>
-            <trans-unit id="tl_url_rewrite.type.0">
-                <source>Type</source>
-                <target>Typ</target>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.type.1">
-                <source>Here you can choose the type.</source>
-                <target>Wählen Sie hier den Typen der Umleitung aus.</target>
-            </trans-unit>
             <trans-unit id="tl_url_rewrite.priority.0">
                 <source>Priority</source>
                 <target>Priorität</target>
@@ -187,24 +179,6 @@
                 <source>Generate QR code for rule ID %s</source>
                 <target>QR-Code für Regel ID %s generieren</target>
             </trans-unit>
-
-            <trans-unit id="tl_url_rewrite.typeRef.basic.0">
-                <source>Basic</source>
-                <target>Einfach</target>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.typeRef.basic.1">
-                <source>Allows to define the request matching using the basic Symfony routing features.</source>
-                <target>Erlaubt die Anfrage-Zuordnung auf Basis von einfachen Symfony Routing Funktionen.</target>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.typeRef.expert.0">
-                <source>Expert</source>
-                <target>Komplex</target>
-            </trans-unit>
-            <trans-unit id="tl_url_rewrite.typeRef.expert.1">
-                <source>Allows to define the request condition using the &lt;a href=&quot;https://symfony.com/doc/current/components/expression_language.html&quot; target=&quot;_blank&quot;>Expression Language&lt;/a&gt;. For more information please &lt;a href=&quot;https://symfony.com/doc/current/routing/conditions.html&quot; target=&quot;_blank&quot;>visit this link&lt;/a&gt;.</source>
-                <target>Erlaubt die Anfrage-Zuordnung auf Basis der Symfony &lt;a href=&quot;https://symfony.com/doc/current/components/expression_language.html&quot; target=&quot;_blank&quot;>Expression Language&lt;/a&gt;. Für weitere Informationen &lt;a href=&quot;https://symfony.com/doc/current/routing/conditions.html&quot; target=&quot;_blank&quot;>besuchen Sie bitte diese Seite&lt;/a&gt;.</target>
-            </trans-unit>
-
             <trans-unit id="tl_url_rewrite.qrCodeRef.headline">
                 <source>Generate QR code</source>
                 <target>QR-Code generieren</target>
@@ -247,14 +221,12 @@
                 <target>Adresse auf Google Maps finden:</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.0.1">
-                <source>Type: basic
-Path restriction: find/{address}
+                <source>Path restriction: find/{address}
 Response code: 303 See Other
 Response redirect URL: https://www.google.com/maps?q={address}
 ---
 Result: domain.tld/find/Switzerland → https://www.google.com/maps?q=Switzerland</source>
-                <target>Typ: einfach
-Pfad-Einschränkung: find/{address}
+                <target>Pfad-Einschränkung: find/{address}
 Antwort-Statuscode: 303 See Other
 Antwort-Umleitungs-URL: https://www.google.com/maps?q={address}
 ---
@@ -265,16 +237,14 @@ Resultat: domain.tld/find/Schweiz → https://www.google.com/maps?q=Schweiz</tar
                 <target>Zu einem bestimmten News-Artikel weiterleiten:</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.1.1">
-                <source>Type: basic
-Path restriction: news/{news}
+                <source>Path restriction: news/{news}
 Requirements: [news => \d+]
 Response code: 301 Moved Permanently
 Response redirect URL: {{news_url::{news}|absolute}}
 ---
 Result: domain.tld/news/123 → domain.tld/news-reader/foobar-123.html
 Result: domain.tld/news/foobar → 404 Page Not Found</source>
-                <target>Typ: einfach
-Pfad-Einschränkung: news/{news}
+                <target>Pfad-Einschränkung: news/{news}
 Extra-Anforderungen: [news => \d+]
 Antwort-Statuscode: 301 Moved Permanently
 Antwort-Umleitungs-URL: {{news_url::{news}|absolute}}
@@ -287,15 +257,13 @@ Resultat: domain.tld/news/foobar → 404 Page Not Found</target>
                 <target>Alte URLs mit Query Parameter umschreiben:</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.2.1">
-                <source>Type: expert
-Path restriction: home.php
+                <source>Path restriction: home.php
 Request condition: context.getMethod() == 'GET' and request.query.has('page')
 Response code: 301 Moved Permanently
 Response redirect URL: {{link_url::{page}|absolute}}
 ---
 Result: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</source>
-                <target>Typ: komplex
-Pfad-Einschränkung: home.php
+                <target>Pfad-Einschränkung: home.php
 Anfrage-Bedingung: context.getMethod() == 'GET' and request.query.has('page')
 Antwort-Statuscode: 301 Moved Permanently
 Antwort-Umleitungs-URL: {{link_url::{page}|absolute}}
@@ -307,16 +275,14 @@ Resultat: domain.tld/home.php?page=123 → domain.tld/foobar-123.html</target>
                 <target>Alle URLs inklusive Slashes (ohne Query Parameter) zu neuer Domain umschreiben:</target>
             </trans-unit>
             <trans-unit id="tl_url_rewrite.examplesRef.3.1">
-                <source>Type: basic
-Hosts restriction: [domain.com]
+                <source>Hosts restriction: [domain.com]
 Path restriction: /{wildcard}
 Requirements: [wildcard => .*]
 Response code: 301 Moved Permanently
 Response redirect URL: https://domain.tld/{wildcard}
 ---
 Result: domain.com/blog/test → https://domain.tld/blog/test</source>
-                <target>Typ: einfach
-Host-Einschränkung: [domain.com]
+                <target>Host-Einschränkung: [domain.com]
 Pfad-Einschränkung: /{wildcard}
 Extra-Anforderungen: [wildcard => .*]
 Antwort-Statuscode: 301 Moved Permanently
