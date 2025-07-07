@@ -82,7 +82,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
         }
 
         // Keep query parameters
-        if (isset($data['keepQueryParams'])) {
+        if ($data['keepQueryParams'] ?? false) {
             $config->setKeepQueryParams(true);
         }
 
