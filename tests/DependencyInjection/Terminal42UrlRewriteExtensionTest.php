@@ -24,7 +24,6 @@ class Terminal42UrlRewriteExtensionTest extends TestCase
         $this->assertTrue($container->getParameter('terminal42_url_rewrite.backend_management'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.provider.database'));
 
-        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.insert_tags'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.rewrite_container'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.rewrite_controller'));
     }
@@ -38,7 +37,6 @@ class Terminal42UrlRewriteExtensionTest extends TestCase
         $this->assertFalse($container->getParameter('terminal42_url_rewrite.backend_management'));
         $this->assertFalse($container->hasDefinition('terminal42_url_rewrite.provider.database'));
 
-        $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.insert_tags'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.listener.rewrite_container'));
         $this->assertTrue($container->hasDefinition('terminal42_url_rewrite.rewrite_controller'));
     }

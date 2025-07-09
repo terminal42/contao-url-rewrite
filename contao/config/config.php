@@ -15,8 +15,3 @@ if (System::getContainer()->getParameter('terminal42_url_rewrite.backend_managem
         'stylesheet' => ['bundles/terminal42urlrewrite/style.css'],
     ];
 }
-
-/*
- * Hooks
- */
-$GLOBALS['TL_HOOKS']['insertTagFlags'][] = ['terminal42_url_rewrite.listener.insert_tags', 'onInsertTagFlags'];

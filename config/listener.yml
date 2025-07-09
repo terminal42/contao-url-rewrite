@@ -1,10 +1,4 @@
 services:
-    terminal42_url_rewrite.listener.insert_tags:
-        class: Terminal42\UrlRewriteBundle\EventListener\InsertTagsListener
-        public: true
-        arguments:
-            - "@contao.framework"
-
     terminal42_url_rewrite.listener.rewrite_container:
         class: Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener
         public: true
