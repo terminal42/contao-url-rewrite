@@ -63,29 +63,23 @@ class DatabaseConfigProviderTest extends TestCase
             ],
 
             'Invalid config – missing ID' => [
-                ['type' => 'basic', 'requestPath' => 'foo/bar', 'responseCode' => 301],
-                null,
-            ],
-
-            'Invalid config – missing type' => [
-                ['id' => 123, 'requestPath' => 'foo/bar', 'responseCode' => 301],
+                ['requestPath' => 'foo/bar', 'responseCode' => 301],
                 null,
             ],
 
             'Invalid config – missing request path' => [
-                ['id' => 123, 'type' => 'basic', 'responseCode' => 301],
+                ['id' => 123, 'responseCode' => 301],
                 null,
             ],
 
             'Invalid config – missing response code' => [
-                ['id' => 123, 'type' => 'basic', 'requestPath' => 'foo/bar'],
+                ['id' => 123, 'requestPath' => 'foo/bar'],
                 null,
             ],
 
             'Valid config – basic' => [
                 [
                     'id' => 123,
-                    'type' => 'basic',
                     'requestPath' => 'foo/bar',
                     'requestHosts' => serialize(['domain1.tld', 'domain2.tld']),
                     'requestRequirements' => serialize([
@@ -109,7 +103,6 @@ class DatabaseConfigProviderTest extends TestCase
             'Valid config – expert' => [
                 [
                     'id' => 123,
-                    'type' => 'expert',
                     'requestPath' => 'foo/bar',
                     'requestHosts' => serialize(['domain1.tld', 'domain2.tld']),
                     'requestCondition' => "request.query.has('foobar')",
@@ -137,14 +130,6 @@ class DatabaseConfigProviderTest extends TestCase
             ->willReturn([
                 [
                     'id' => 123,
-                    'type' => 'basic',
-                    'requestPath' => 'foo/bar',
-                    'responseUri' => 'foo/baz',
-                    'responseCode' => 301,
-                ],
-                [
-                    'id' => 456,
-                    'type' => 'expert',
                     'requestPath' => 'foo/bar',
                     'responseUri' => 'foo/baz',
                     'responseCode' => 301,
@@ -154,7 +139,7 @@ class DatabaseConfigProviderTest extends TestCase
 
         $provider = new DatabaseConfigProvider($connection);
 
-        $this->assertCount(2, $provider->findAll());
+        $this->assertCount(1, $provider->findAll());
     }
 
     public function testFindAllNoRecords(): void

@@ -62,7 +62,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
      */
     private function createConfig(array $data): RewriteConfig|null
     {
-        if (!isset($data['id'], $data['type'], $data['requestPath'], $data['responseCode'])) {
+        if (!isset($data['id'], $data['requestPath'], $data['responseCode'])) {
             return null;
         }
 
