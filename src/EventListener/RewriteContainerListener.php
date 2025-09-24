@@ -156,7 +156,7 @@ class RewriteContainerListener
         return \sprintf('<div class="widget long">%s</div>', $buffer);
     }
 
-    #[AsCallback('tl_url_rewrite', 'list.global_operations.qrCode.button')]
+    #[AsCallback('tl_url_rewrite', 'list.operations.qrCode.button')]
     public function onQrCodeButtonCallback(array $row, string $href, string $label, string $title, string $icon, string $attributes): string
     {
         return $this->qrCodeGenerator->validate($row) ? '<a href="'.Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)).' ';
