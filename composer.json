@@ -34,7 +34,7 @@
         "symfony/http-foundation": "^6.4 || ^7.0",
         "symfony/http-kernel": "^6.4 || ^7.0",
         "symfony/routing": "^6.4 || ^7.0",
-        "bacon/bacon-qr-code": "^2.0",
+        "bacon/bacon-qr-code": "^2.0 || ^3.0",
         "doctrine/dbal": "^2.11 || ^3"
     },
     "require-dev": {
@@ -62,9 +62,9 @@
     },
     "config": {
         "allow-plugins": {
-            "contao-components/installer": true,
-            "contao/manager-plugin": true,
-            "php-http/discovery": true,
+            "contao-components/installer": false,
+            "contao/manager-plugin": false,
+            "php-http/discovery": false,
             "terminal42/contao-build-tools": true
         }
     }
