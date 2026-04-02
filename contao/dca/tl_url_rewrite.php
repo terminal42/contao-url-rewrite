@@ -94,6 +94,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
         ],
         'requestPath' => [
             'search' => true,
+            'backendSearch' => false,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'tl_class' => 'long clr'],
             'sql' => ['type' => 'string', 'default' => ''],
@@ -124,6 +125,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
         ],
         'responseUri' => [
             'search' => true,
+            'backendSearch' => false,
             'inputType' => 'text',
             'eval' => [
                 'decodeEntities' => true,
