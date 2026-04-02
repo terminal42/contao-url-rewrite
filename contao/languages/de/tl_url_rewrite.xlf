@@ -2,6 +2,10 @@
 <xliff version="1.1">
     <file datatype="php" original="src/Resources/contao/languages/en/tl_url_rewrite.php" source-language="en" target-language="de">
         <body>
+            <trans-unit id="tl_url_rewrite.tableLabel">
+                <source>URL redirect</source>
+                <target>URL Umleitungsregel</target>
+            </trans-unit>
             <trans-unit id="tl_url_rewrite.name.0">
                 <source>Internal name</source>
                 <target>Interne Bezeichnung</target>
