@@ -35,7 +35,7 @@
         "symfony/http-kernel": "^6.4 || ^7.0",
         "symfony/routing": "^6.4 || ^7.0",
         "bacon/bacon-qr-code": "^2.0 || ^3.0",
-        "doctrine/dbal": "^2.11 || ^3"
+        "doctrine/dbal": "^2.11 || ^3.0 || ^4.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
