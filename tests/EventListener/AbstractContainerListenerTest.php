@@ -33,11 +33,6 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
     protected $cacheDir;
 
     /**
-     * @var QrCodeGenerator
-     */
-    protected $qrCodeGenerator;
-
-    /**
      * @var RouterInterface
      */
     protected $router;
@@ -54,19 +49,17 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
         $this->fs = new Filesystem();
         $this->fs->mkdir($this->cacheDir);
 
-        $this->qrCodeGenerator = $this->createMock(QrCodeGenerator::class);
-
         $this->router = $this->getRouter();
 
         $this->inputAdapter = $this->mockAdapter(['post']);
         $framework = $this->mockContaoFramework([Input::class => $this->inputAdapter]);
 
         $this->listener = new RewriteContainerListener(
-            $this->qrCodeGenerator,
+            $this->createStub(QrCodeGenerator::class),
             $this->router,
             $this->cacheDir,
             $framework,
-            $this->createMock(ExpressionFunctionProviderInterface::class),
+            $this->createStub(ExpressionFunctionProviderInterface::class),
         );
     }
 
@@ -104,10 +97,24 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
         $GLOBALS['TL_LANG']['ERR']['mandatory'] = '';
 
         $dataContainer = $this->createMock(DataContainer::class);
+        $matcher = $this->exactly(2);
         $dataContainer
+            ->expects($matcher)
             ->method('__get')
-            ->withConsecutive(['activeRecord'], ['field'])
-            ->willReturnOnConsecutiveCalls((object) ['requestPath' => ''], 'field')
+            ->willReturnCallback(
+                function (...$parameters) use ($matcher) {
+                    if (1 === $matcher->getInvocationCount()) {
+                        $this->assertSame('activeRecord', $parameters[0]);
+
+                        return (object) ['requestPath' => ''];
+                    }
+                    if (2 === $matcher->getInvocationCount()) {
+                        $this->assertSame('field', $parameters[0]);
+
+                        return 'field';
+                    }
+                },
+            )
         ;
 
         $this->expectException(\InvalidArgumentException::class);
@@ -126,26 +133,25 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
 
     public static function onGenerateLabelDataProvider(): iterable
     {
-        return [
-            301 => [
-                [
-                    'name' => 'Foobar',
-                    'requestPath' => 'foo/bar',
-                    'responseUri' => 'http://domain.tld/baz/{bar}',
-                    'responseCode' => 301,
-                    'priority' => 0,
-                ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301 (Priority: 0)]</span>',
+        yield 301 => [
+            [
+                'name' => 'Foobar',
+                'requestPath' => 'foo/bar',
+                'responseUri' => 'http://domain.tld/baz/{bar}',
+                'responseCode' => 301,
+                'priority' => 0,
             ],
-            410 => [
-                [
-                    'name' => 'Foobar',
-                    'requestPath' => 'foo/bar',
-                    'responseCode' => 410,
-                    'priority' => 10,
-                ],
-                'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410 (Priority: 10)]</span>',
+            'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; http://domain.tld/baz/{bar}, 301 (Priority: 0)]</span>',
+        ];
+
+        yield 410 => [
+            [
+                'name' => 'Foobar',
+                'requestPath' => 'foo/bar',
+                'responseCode' => 410,
+                'priority' => 10,
             ],
+            'Foobar <span style="padding-left:3px;color:#b3b3b3;word-break:break-all;">[foo/bar &rarr; 410 (Priority: 10)]</span>',
         ];
     }
 

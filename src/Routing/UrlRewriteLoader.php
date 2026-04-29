@@ -61,7 +61,7 @@ class UrlRewriteLoader extends Loader
         $hosts = $config->getRequestHosts();
 
         if (\count($hosts) > 0) {
-            $hosts = array_map('preg_quote', $hosts);
+            $hosts = array_map(preg_quote(...), $hosts);
             $hosts = implode('|', $hosts);
             $hosts = \sprintf('(%s)', $hosts);
 

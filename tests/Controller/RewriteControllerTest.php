@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\UrlRewriteBundle\Tests\Controller;
 
 use Contao\CoreBundle\InsertTag\InsertTagParser;
+use Contao\CoreBundle\InsertTag\ParsedSequence;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -17,12 +18,12 @@ use Terminal42\UrlRewriteBundle\Controller\RewriteController;
 use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderException;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
 
-class RewriteControllerTest extends TestCase
+final class RewriteControllerTest extends TestCase
 {
     public function testIndexActionNoUrlRewriteAttribute(): void
     {
-        $controller = new RewriteController($this->mockConfigProvider(), $this->mockInsertTagParser(), $this->createMock(ExpressionLanguage::class));
-        $request = $this->mockRequest(null);
+        $controller = new RewriteController($this->mockConfigProvider(), $this->mockInsertTagParser(), $this->createStub(ExpressionLanguage::class));
+        $request = $this->mockRequest();
 
         $this->expectException(RouteNotFoundException::class);
         $controller->indexAction($request);
@@ -31,7 +32,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionNoUrlRewriteRecord(): void
     {
         $provider = $this->mockConfigProvider();
-        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createMock(ExpressionLanguage::class));
+        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createStub(ExpressionLanguage::class));
         $request = $this->mockRequest(1);
 
         $this->expectException(RouteNotFoundException::class);
@@ -44,7 +45,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionRedirect($provided, $expected): void
     {
         $provider = $this->mockConfigProvider($provided[0]);
-        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createMock(ExpressionLanguage::class));
+        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createStub(ExpressionLanguage::class));
         $request = $this->mockRequest(1, $provided[1], $provided[2]);
         $response = $controller->indexAction($request);
 
@@ -90,7 +91,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionGone(): void
     {
         $provider = $this->mockConfigProvider(new RewriteConfig('1', 'foobar', 410));
-        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createMock(ExpressionLanguage::class));
+        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createStub(ExpressionLanguage::class));
         $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
@@ -102,7 +103,7 @@ class RewriteControllerTest extends TestCase
     public function testIndexActionInternalServerError(): void
     {
         $provider = $this->mockConfigProvider(new RewriteConfig('1', 'foobar'));
-        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createMock(ExpressionLanguage::class));
+        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createStub(ExpressionLanguage::class));
         $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
@@ -119,7 +120,7 @@ class RewriteControllerTest extends TestCase
             ->willThrowException(new TemporarilyUnavailableConfigProviderException())
         ;
 
-        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createMock(ExpressionLanguage::class));
+        $controller = new RewriteController($provider, $this->mockInsertTagParser(), $this->createStub(ExpressionLanguage::class));
         $request = $this->mockRequest(1);
         $response = $controller->indexAction($request);
 
@@ -188,7 +189,7 @@ class RewriteControllerTest extends TestCase
         $provider = $this->createMock(InsertTagParser::class);
         $provider
             ->method('replaceInline')
-            ->willReturnCallback(static fn ($buffer) => str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer))
+            ->willReturnCallback(static fn (ParsedSequence|string $buffer): string => str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer))
         ;
 
         return $provider;

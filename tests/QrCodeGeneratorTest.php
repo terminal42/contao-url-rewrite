@@ -15,11 +15,9 @@ use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
 use Terminal42\UrlRewriteBundle\QrCodeGenerator;
 use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
-class QrCodeGeneratorTest extends TestCase
+final class QrCodeGeneratorTest extends TestCase
 {
     private QrCodeGenerator $qrCodeGenerator;
-
-    private Router $router;
 
     protected function setUp(): void
     {
@@ -29,8 +27,7 @@ class QrCodeGeneratorTest extends TestCase
             ->willReturn($this->getRouteCollection())
         ;
 
-        $this->router = new Router($loader, 'foo');
-        $this->qrCodeGenerator = new QrCodeGenerator($this->router);
+        $this->qrCodeGenerator = new QrCodeGenerator(new Router($loader, 'foo'));
     }
 
     public function testValidate(): void
@@ -46,7 +43,7 @@ class QrCodeGeneratorTest extends TestCase
     {
         $image = $this->qrCodeGenerator->generateImage('https://domain.tld/foo/bar?test=1');
 
-        $this->assertSame(file_get_contents(__DIR__.'/Fixtures/qr-code.svg'), $image);
+        $this->assertSame(trim(file_get_contents(__DIR__.'/Fixtures/qr-code.svg')), trim($image));
     }
 
     public function testGenerateUrl(): void

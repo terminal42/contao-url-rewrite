@@ -7,7 +7,7 @@ namespace Terminal42\UrlRewriteBundle\Tests;
 use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
 
-class RewriteConfigTest extends TestCase
+final class RewriteConfigTest extends TestCase
 {
     public function testSettersAndGetters(): void
     {

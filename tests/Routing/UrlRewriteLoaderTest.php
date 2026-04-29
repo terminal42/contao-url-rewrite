@@ -12,7 +12,7 @@ use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
 use Terminal42\UrlRewriteBundle\Routing\UrlRewriteLoader;
 
-class UrlRewriteLoaderTest extends TestCase
+final class UrlRewriteLoaderTest extends TestCase
 {
     public function testInstantiation(): void
     {

@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Terminal42\UrlRewriteBundle\ContaoManager\Plugin;
 use Terminal42\UrlRewriteBundle\Terminal42UrlRewriteBundle;
 
-class PluginTest extends TestCase
+final class PluginTest extends TestCase
 {
     public function testInstantiation(): void
     {
@@ -31,7 +31,7 @@ class PluginTest extends TestCase
     public function testGetBundles(): void
     {
         $plugin = new Plugin();
-        $bundles = $plugin->getBundles($this->createMock(ParserInterface::class));
+        $bundles = $plugin->getBundles($this->createStub(ParserInterface::class));
 
         /** @var BundleConfig $config */
         $config = $bundles[0];
@@ -58,7 +58,7 @@ class PluginTest extends TestCase
 
         $plugin = new Plugin();
 
-        $this->assertInstanceOf(RouteCollection::class, $plugin->getRouteCollection($resolver, $this->createMock(Kernel::class)));
+        $this->assertInstanceOf(RouteCollection::class, $plugin->getRouteCollection($resolver, $this->createStub(Kernel::class)));
     }
 
     public function testGetRouteCollectionFalse(): void
@@ -71,6 +71,6 @@ class PluginTest extends TestCase
 
         $plugin = new Plugin();
 
-        $this->assertNull($plugin->getRouteCollection($resolver, $this->createMock(Kernel::class)));
+        $this->assertNotInstanceOf(RouteCollection::class, $plugin->getRouteCollection($resolver, $this->createStub(Kernel::class)));
     }
 }

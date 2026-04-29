@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Terminal42\UrlRewriteBundle\DependencyInjection\Terminal42UrlRewriteExtension;
 
-class Terminal42UrlRewriteExtensionTest extends TestCase
+final class Terminal42UrlRewriteExtensionTest extends TestCase
 {
     public function testInstantiation(): void
     {

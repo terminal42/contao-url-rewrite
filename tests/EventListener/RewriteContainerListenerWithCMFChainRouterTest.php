@@ -7,7 +7,7 @@ namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Component\Routing\Router;
 
-class RewriteContainerListenerWithCMFChainRouterTest extends AbstractContainerListenerTest
+final class RewriteContainerListenerWithCMFChainRouterTest extends AbstractContainerListenerTest
 {
     protected function getRouter()
     {

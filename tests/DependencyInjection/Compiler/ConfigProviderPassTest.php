@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Terminal42\UrlRewriteBundle\DependencyInjection\Compiler\ConfigProviderPass;
 
-class ConfigProviderPassTest extends TestCase
+final class ConfigProviderPassTest extends TestCase
 {
     /**
      * @var ConfigProviderPass

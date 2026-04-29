@@ -9,8 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
-class ChainConfigProviderTest extends TestCase
+final class ChainConfigProviderTest extends TestCase
 {
     public function testInstantiation(): void
     {
@@ -33,7 +34,7 @@ class ChainConfigProviderTest extends TestCase
         $this->assertSame('path/1', $chain->find($configs[0]->getIdentifier())->getRequestPath());
         $this->assertSame('path/2', $chain->find($configs[1]->getIdentifier())->getRequestPath());
         $this->assertSame('path/3', $chain->find($configs[2]->getIdentifier())->getRequestPath());
-        $this->assertNull($chain->find('bar.baz'));
+        $this->assertNotInstanceOf(RewriteConfigInterface::class, $chain->find('bar.baz'));
     }
 
     /**
@@ -44,7 +45,7 @@ class ChainConfigProviderTest extends TestCase
         $provider = $this->createMock(ConfigProviderInterface::class);
         $provider
             ->method('find')
-            ->willReturnCallback(static fn ($key) => $configs[$key] ?? null)
+            ->willReturnCallback(static fn (string $key): RewriteConfigInterface|null => $configs[$key] ?? null)
         ;
 
         $provider

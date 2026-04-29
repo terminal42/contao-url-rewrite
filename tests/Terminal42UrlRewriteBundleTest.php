@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Terminal42\UrlRewriteBundle\DependencyInjection\Compiler\ConfigProviderPass;
 use Terminal42\UrlRewriteBundle\Terminal42UrlRewriteBundle;
 
-class Terminal42UrlRewriteBundleTest extends TestCase
+final class Terminal42UrlRewriteBundleTest extends TestCase
 {
     public function testInstantiation(): void
     {

@@ -35,7 +35,7 @@
         "symfony/http-kernel": "^6.4 || ^7.0",
         "symfony/routing": "^6.4 || ^7.0",
         "bacon/bacon-qr-code": "^2.0 || ^3.0",
-        "doctrine/dbal": "^2.11 || ^3"
+        "doctrine/dbal": "^3.6 || ^4.3"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
@@ -56,6 +56,9 @@
         "psr-4": {
             "Terminal42\\UrlRewriteBundle\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "unit-tests": "@php vendor/bin/phpunit"
     },
     "extra": {
         "contao-manager-plugin": "Terminal42\\UrlRewriteBundle\\ContaoManager\\Plugin"

@@ -6,7 +6,7 @@ namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
 use Symfony\Component\Routing\Router;
 
-class RewriteContainerListenerWithSymfonyRouterTest extends AbstractContainerListenerTest
+final class RewriteContainerListenerWithSymfonyRouterTest extends AbstractContainerListenerTest
 {
     protected function getRouter()
     {

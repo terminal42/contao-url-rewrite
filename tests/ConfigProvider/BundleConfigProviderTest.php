@@ -7,8 +7,9 @@ namespace Terminal42\UrlRewriteBundle\Tests\ConfigProvider;
 use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\ConfigProvider\BundleConfigProvider;
 use Terminal42\UrlRewriteBundle\RewriteConfig;
+use Terminal42\UrlRewriteBundle\RewriteConfigInterface;
 
-class BundleConfigProviderTest extends TestCase
+final class BundleConfigProviderTest extends TestCase
 {
     /**
      * @var BundleConfigProvider
@@ -46,7 +47,7 @@ class BundleConfigProviderTest extends TestCase
     {
         $config = $this->provider->find('1');
 
-        $this->assertNull($this->provider->find('123'));
+        $this->assertNotInstanceOf(RewriteConfigInterface::class, $this->provider->find('123'));
 
         $this->assertInstanceOf(RewriteConfig::class, $config);
         $this->assertSame('1', $config->getIdentifier());

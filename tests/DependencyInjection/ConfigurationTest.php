@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 use Terminal42\UrlRewriteBundle\DependencyInjection\Configuration;
 
-class ConfigurationTest extends TestCase
+final class ConfigurationTest extends TestCase
 {
     public function testInstantiation(): void
     {
