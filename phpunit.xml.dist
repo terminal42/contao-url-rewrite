@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
-         backupGlobals="false"
-         colors="true"
-         processIsolation="false"
-         bootstrap="vendor/autoload.php"
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/12.4/phpunit.xsd"
+        colors="true"
+        bootstrap="vendor/autoload.php"
+        beStrictAboutChangesToGlobalState="true"
 >
     <php>
         <ini name="error_reporting" value="-1" />
@@ -19,12 +18,8 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory>./src</directory>
-            <exclude>
-                <directory>./src/Resources</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+    <extensions>
+        <bootstrap class="Contao\TestCase\ClearCachePhpunitExtension"/>
+        <bootstrap class="Contao\TestCase\WarnXdebugPhpunitExtension"/>
+    </extensions>
 </phpunit>

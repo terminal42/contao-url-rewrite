@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\UrlRewriteBundle\Tests\ConfigProvider;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ChainConfigProvider;
 use Terminal42\UrlRewriteBundle\ConfigProvider\ConfigProviderInterface;
@@ -37,12 +37,9 @@ final class ChainConfigProviderTest extends TestCase
         $this->assertNotInstanceOf(RewriteConfigInterface::class, $chain->find('bar.baz'));
     }
 
-    /**
-     * @return MockObject|ConfigProviderInterface
-     */
-    private function mockProvider(array $configs)
+    private function mockProvider(array $configs): ConfigProviderInterface&Stub
     {
-        $provider = $this->createMock(ConfigProviderInterface::class);
+        $provider = $this->createStub(ConfigProviderInterface::class);
         $provider
             ->method('find')
             ->willReturnCallback(static fn (string $key): RewriteConfigInterface|null => $configs[$key] ?? null)

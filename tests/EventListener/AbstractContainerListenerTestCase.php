@@ -8,6 +8,7 @@ use Contao\CoreBundle\Framework\Adapter;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\TestCase\ContaoTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Terminal42\UrlRewriteBundle\EventListener\RewriteContainerListener;
 use Terminal42\UrlRewriteBundle\QrCodeGenerator;
 
-abstract class AbstractContainerListenerTest extends ContaoTestCase
+abstract class AbstractContainerListenerTestCase extends ContaoTestCase
 {
     /**
      * @var RewriteContainerListener
@@ -38,7 +39,7 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
     protected $router;
 
     /**
-     * @var Input|Adapter|MockObject
+     * @var Input|Adapter<Input>|MockObject
      */
     private $inputAdapter;
 
@@ -51,8 +52,8 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
 
         $this->router = $this->getRouter();
 
-        $this->inputAdapter = $this->mockAdapter(['post']);
-        $framework = $this->mockContaoFramework([Input::class => $this->inputAdapter]);
+        $this->inputAdapter = $this->createAdapterStub(['post']);
+        $framework = $this->createContaoFrameworkStub([Input::class => $this->inputAdapter]);
 
         $this->listener = new RewriteContainerListener(
             $this->createStub(QrCodeGenerator::class),
@@ -65,6 +66,8 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
 
     protected function tearDown(): void
     {
+        parent::tearDown();
+
         $this->fs->remove($this->cacheDir);
     }
 
@@ -103,12 +106,12 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
             ->method('__get')
             ->willReturnCallback(
                 function (...$parameters) use ($matcher) {
-                    if (1 === $matcher->getInvocationCount()) {
+                    if (1 === $matcher->numberOfInvocations()) {
                         $this->assertSame('activeRecord', $parameters[0]);
 
                         return (object) ['requestPath' => ''];
                     }
-                    if (2 === $matcher->getInvocationCount()) {
+                    if (2 === $matcher->numberOfInvocations()) {
                         $this->assertSame('field', $parameters[0]);
 
                         return 'field';
@@ -122,15 +125,19 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
     }
 
     /**
-     * @dataProvider onGenerateLabelDataProvider
+     * @param array<string, mixed> $provided
      */
-    public function testOnGenerateLabel($provided, $expected): void
+    #[DataProvider('onGenerateLabelDataProvider')]
+    public function testOnGenerateLabel(array $provided, string $expected): void
     {
         $GLOBALS['TL_LANG']['tl_url_rewrite']['priority'][0] = 'Priority';
 
         $this->assertSame($expected, $this->listener->onGenerateLabel($provided));
     }
 
+    /**
+     * @return iterable<int, array{0: array<string, mixed>, 1:string}>
+     */
     public static function onGenerateLabelDataProvider(): iterable
     {
         yield 301 => [
@@ -184,5 +191,5 @@ abstract class AbstractContainerListenerTest extends ContaoTestCase
         $this->assertSame($expected, $this->listener->getResponseCodes());
     }
 
-    abstract protected function getRouter();
+    abstract protected function getRouter(): RouterInterface;
 }

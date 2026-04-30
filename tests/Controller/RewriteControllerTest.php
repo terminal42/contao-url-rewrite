@@ -6,7 +6,8 @@ namespace Terminal42\UrlRewriteBundle\Tests\Controller;
 
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\InsertTag\ParsedSequence;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,9 +40,7 @@ final class RewriteControllerTest extends TestCase
         $controller->indexAction($request);
     }
 
-    /**
-     * @dataProvider indexActionRedirectDataProvider
-     */
+    #[DataProvider('indexActionRedirectDataProvider')]
     public function testIndexActionRedirect($provided, $expected): void
     {
         $provider = $this->mockConfigProvider($provided[0]);
@@ -114,7 +113,7 @@ final class RewriteControllerTest extends TestCase
 
     public function testIndexActionServiceUnavailable(): void
     {
-        $provider = $this->createMock(ConfigProviderInterface::class);
+        $provider = $this->createStub(ConfigProviderInterface::class);
         $provider
             ->method('find')
             ->willThrowException(new TemporarilyUnavailableConfigProviderException())
@@ -129,13 +128,7 @@ final class RewriteControllerTest extends TestCase
         $this->assertSame('Service Unavailable', $response->getContent());
     }
 
-    /**
-     * @param array $routeParams
-     * @param array $query
-     *
-     * @return MockObject|Request
-     */
-    private function mockRequest($urlRewrite = null, $routeParams = [], $query = [])
+    private function mockRequest(int|null $urlRewrite = null, array $routeParams = [], array $query = []): Request&Stub
     {
         $attributes = ['_route_params' => $routeParams];
 
@@ -144,14 +137,14 @@ final class RewriteControllerTest extends TestCase
         }
 
         $request = $this
-            ->getMockBuilder(Request::class)
+            ->getStubBuilder(Request::class)
             ->setConstructorArgs([
                 $query,
                 [],
                 $attributes,
             ])
             ->onlyMethods(['getSchemeAndHttpHost', 'getBasePath'])
-            ->getMock()
+            ->getStub()
         ;
 
         $request
@@ -167,12 +160,9 @@ final class RewriteControllerTest extends TestCase
         return $request;
     }
 
-    /**
-     * @return MockObject|ConfigProviderInterface
-     */
-    private function mockConfigProvider(RewriteConfig|null $config = null)
+    private function mockConfigProvider(RewriteConfig|null $config = null): ConfigProviderInterface&Stub
     {
-        $provider = $this->createMock(ConfigProviderInterface::class);
+        $provider = $this->createStub(ConfigProviderInterface::class);
         $provider
             ->method('find')
             ->willReturn($config)
@@ -181,12 +171,9 @@ final class RewriteControllerTest extends TestCase
         return $provider;
     }
 
-    /**
-     * @return MockObject|InsertTagParser
-     */
-    private function mockInsertTagParser()
+    private function mockInsertTagParser(): InsertTagParser&Stub
     {
-        $provider = $this->createMock(InsertTagParser::class);
+        $provider = $this->createStub(InsertTagParser::class);
         $provider
             ->method('replaceInline')
             ->willReturnCallback(static fn (ParsedSequence|string $buffer): string => str_replace('{{link_url::1|absolute}}', 'http://domain.tld/page.html', $buffer))

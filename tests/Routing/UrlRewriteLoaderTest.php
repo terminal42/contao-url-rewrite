@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Terminal42\UrlRewriteBundle\Tests\Routing;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -46,9 +47,7 @@ final class UrlRewriteLoaderTest extends TestCase
         $this->assertCount(0, $collection->getIterator());
     }
 
-    /**
-     * @dataProvider getRouteCollectionProvider
-     */
+    #[DataProvider('getRouteCollectionProvider')]
     public function testLoad($provided, $expected): void
     {
         $provider = $this->mockConfigProvider([$provided]);
@@ -164,12 +163,9 @@ final class UrlRewriteLoaderTest extends TestCase
         ];
     }
 
-    /**
-     * @return MockObject|ConfigProviderInterface
-     */
-    private function mockConfigProvider(array $configs = [])
+    private function mockConfigProvider(array $configs = []): ConfigProviderInterface&Stub
     {
-        $provider = $this->createMock(ConfigProviderInterface::class);
+        $provider = $this->createStub(ConfigProviderInterface::class);
         $provider
             ->method('findAll')
             ->willReturn($configs)

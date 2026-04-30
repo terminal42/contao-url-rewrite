@@ -6,12 +6,13 @@ namespace Terminal42\UrlRewriteBundle\Tests\EventListener;
 
 use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
-final class RewriteContainerListenerWithCMFChainRouterTest extends AbstractContainerListenerTest
+final class RewriteContainerListenerWithCMFChainRouterTest extends AbstractContainerListenerTestCase
 {
-    protected function getRouter()
+    protected function getRouter(): RouterInterface
     {
-        $router = $this->createMock(Router::class);
+        $router = $this->createStub(Router::class);
         $router
             ->method('getOption')
             ->willReturn('CacheClassOld')

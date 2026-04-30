@@ -21,7 +21,7 @@ final class QrCodeGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $loader = $this->createMock(LoaderInterface::class);
+        $loader = $this->createStub(LoaderInterface::class);
         $loader
             ->method('load')
             ->willReturn($this->getRouteCollection())

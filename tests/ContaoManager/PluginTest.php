@@ -44,13 +44,13 @@ final class PluginTest extends TestCase
 
     public function testGetRouteCollection(): void
     {
-        $loader = $this->createMock(YamlFileLoader::class);
+        $loader = $this->createStub(YamlFileLoader::class);
         $loader
             ->method('load')
             ->willReturn(new RouteCollection())
         ;
 
-        $resolver = $this->createMock(LoaderResolver::class);
+        $resolver = $this->createStub(LoaderResolver::class);
         $resolver
             ->method('resolve')
             ->willReturn($loader)
@@ -63,7 +63,7 @@ final class PluginTest extends TestCase
 
     public function testGetRouteCollectionFalse(): void
     {
-        $resolver = $this->createMock(LoaderResolver::class);
+        $resolver = $this->createStub(LoaderResolver::class);
         $resolver
             ->method('resolve')
             ->willReturn(false)

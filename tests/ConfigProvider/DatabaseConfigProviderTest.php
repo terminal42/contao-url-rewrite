@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\InvalidFieldNameException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Terminal42\UrlRewriteBundle\ConfigProvider\DatabaseConfigProvider;
 use Terminal42\UrlRewriteBundle\Exception\TemporarilyUnavailableConfigProviderException;
@@ -19,12 +20,10 @@ final class DatabaseConfigProviderTest extends TestCase
         $this->assertInstanceOf(DatabaseConfigProvider::class, new DatabaseConfigProvider($this->createStub(Connection::class)));
     }
 
-    /**
-     * @dataProvider findDataProvider
-     */
+    #[DataProvider('findDataProvider')]
     public function testFind($row, $expected): void
     {
-        $connection = $this->createMock(Connection::class);
+        $connection = $this->createStub(Connection::class);
         $connection
             ->method('fetchAssociative')
             ->willReturn($row)
@@ -122,7 +121,7 @@ final class DatabaseConfigProviderTest extends TestCase
 
     public function testFindAll(): void
     {
-        $connection = $this->createMock(Connection::class);
+        $connection = $this->createStub(Connection::class);
         $connection
             ->method('fetchAllAssociative')
             ->willReturn([
@@ -142,7 +141,7 @@ final class DatabaseConfigProviderTest extends TestCase
 
     public function testFindAllNoRecords(): void
     {
-        $connection = $this->createMock(Connection::class);
+        $connection = $this->createStub(Connection::class);
         $connection
             ->method('fetchAllAssociative')
             ->willReturn([])
@@ -154,11 +153,14 @@ final class DatabaseConfigProviderTest extends TestCase
     }
 
     /**
-     * @dataProvider connectionExceptionDataProvider
+     * @param class-string<\Throwable> $exceptionClass
      */
-    public function testConnectionException($method, $connMethod, $exception, $expected): void
+    #[DataProvider('connectionExceptionDataProvider')]
+    public function testConnectionException($method, $connMethod, $exceptionClass, $expected): void
     {
-        $connection = $this->createMock(Connection::class);
+        $exception = (new \ReflectionClass($exceptionClass))->newInstanceWithoutConstructor();
+
+        $connection = $this->createStub(Connection::class);
         $connection
             ->method($connMethod)
             ->willThrowException($exception)
@@ -173,53 +175,47 @@ final class DatabaseConfigProviderTest extends TestCase
         $this->assertSame($expected, $provider->$method('foobar'));
     }
 
-    public function connectionExceptionDataProvider(): iterable
+    public static function connectionExceptionDataProvider(): iterable
     {
-        $pdoException = $this->createMock(\PDOException::class);
-        $connectionException = $this->createMock(ConnectionException::class);
-        $invalidFieldNameException = $this->createMock(InvalidFieldNameException::class);
-        $tableNotFoundException = $this->createMock(TableNotFoundException::class);
-        $runtimeException = $this->createMock(\RuntimeException::class);
-        // find()
         yield 'Find - PDO exception' => [
-            'find', 'fetchAssociative', $pdoException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find', 'fetchAssociative', \PDOException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find - Connection exception' => [
-            'find', 'fetchAssociative', $connectionException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find', 'fetchAssociative', ConnectionException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find – Table exception' => [
-            'find', 'fetchAssociative', $tableNotFoundException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find', 'fetchAssociative', TableNotFoundException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find – Invalid field name exception' => [
-            'find', 'fetchAssociative', $invalidFieldNameException, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find', 'fetchAssociative', InvalidFieldNameException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find – Runtime exception (uncaught)' => [
-            'find', 'fetchAssociative', $runtimeException, ['exception' => \RuntimeException::class],
+            'find', 'fetchAssociative', \RuntimeException::class, ['exception' => \RuntimeException::class],
         ];
 
         // findAll()
         yield 'Find all - PDO exception' => [
-            'findAll', 'fetchAllAssociative', $pdoException, [],
+            'findAll', 'fetchAllAssociative', \PDOException::class, [],
         ];
 
         yield 'Find all - Connection exception' => [
-            'findAll', 'fetchAllAssociative', $connectionException, [],
+            'findAll', 'fetchAllAssociative', ConnectionException::class, [],
         ];
 
         yield 'Find all - Table exception' => [
-            'findAll', 'fetchAllAssociative', $tableNotFoundException, [],
+            'findAll', 'fetchAllAssociative', TableNotFoundException::class, [],
         ];
 
         yield 'Find all - Invalid field name exception' => [
-            'findAll', 'fetchAllAssociative', $invalidFieldNameException, [],
+            'findAll', 'fetchAllAssociative', InvalidFieldNameException::class, [],
         ];
 
         yield 'Find all - Runtime exception (uncaught)' => [
-            'findAll', 'fetchAllAssociative', $runtimeException, ['exception' => \RuntimeException::class],
+            'findAll', 'fetchAllAssociative', \RuntimeException::class, ['exception' => \RuntimeException::class],
         ];
     }
 }
