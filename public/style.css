@@ -1,3 +1,50 @@
 #tl_url_rewrite .tl_key_value_wizard {
     max-width: none;
 }
+
+.url-rewrite-qr-view {
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.url-rewrite-qr-explanation {
+    padding: 12px 18px;
+}
+
+.url-rewrite-qr-form .tl_formbody_submit {
+    border-top: none;
+}
+
+@media (min-width: 768px) {
+    .url-rewrite-qr-form .tl_tbox {
+        padding-bottom: 0;
+    }
+}
+
+.url-rewrite-qr-code {
+    text-align: center;
+
+    figure {
+        padding: 18px;
+
+        img {
+            padding: 18px;
+            background-color: #f6f6f6;
+        }
+
+        figcaption {
+            margin-top: 18px;
+            font-weight: bold;
+        }
+    }
+}
+
+.url-rewrite-qr-copy {
+    padding: 18px 18px 0;
+
+    input {
+        color: inherit;
+        text-align: center;
+        cursor: auto;
+    }
+}
