@@ -64,7 +64,7 @@ you have to additionally register the routing configuration in the config files:
 ```yaml
 # config/routing.yml
 imports:
-  - { resource: '@Terminal42UrlRewriteBundle/Resources/config/routing.yml' }
+  - { resource: '@Terminal42UrlRewriteBundle/config/routing.yml' }
 ```
 
 ## Examples
