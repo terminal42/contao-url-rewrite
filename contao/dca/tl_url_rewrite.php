@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_url_rewrite'] = [
             'search' => true,
             'backendSearch' => false,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'tl_class' => 'long clr'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'long clr'],
             'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
         ],
         'requestRequirements' => [
