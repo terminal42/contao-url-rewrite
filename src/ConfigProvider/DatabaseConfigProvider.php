@@ -23,7 +23,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     {
         try {
             $data = $this->connection->fetchAssociative('SELECT * FROM tl_url_rewrite WHERE id=? AND inactive=?', [$id, 0]);
-        } catch (\PDOException|ConnectionException|TableNotFoundException|InvalidFieldNameException $e) {
+        } catch (ConnectionException|InvalidFieldNameException|\PDOException|TableNotFoundException $e) {
             throw new TemporarilyUnavailableConfigProviderException($e->getMessage(), $e->getCode(), $e);
         }
 
@@ -38,7 +38,7 @@ class DatabaseConfigProvider implements ConfigProviderInterface
     {
         try {
             $records = $this->connection->fetchAllAssociative('SELECT * FROM tl_url_rewrite WHERE inactive=? ORDER BY priority DESC', [0]);
-        } catch (\PDOException|ConnectionException|TableNotFoundException|InvalidFieldNameException) {
+        } catch (ConnectionException|InvalidFieldNameException|\PDOException|TableNotFoundException) {
             return [];
         }
 

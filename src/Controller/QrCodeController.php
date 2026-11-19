@@ -97,7 +97,7 @@ class QrCodeController
             } else {
                 $template->error = $GLOBALS['TL_LANG']['tl_url_rewrite']['qrCodeRef']['routeError'];
             }
-        } catch (MissingMandatoryParametersException|InvalidParameterException $e) {
+        } catch (InvalidParameterException|MissingMandatoryParametersException $e) {
             $template->error = $e->getMessage();
         }
     }

@@ -34,6 +34,7 @@ final class DatabaseConfigProviderTest extends TestCase
         // Handle the exception
         if (\is_array($expected) && isset($expected['exception'])) {
             $this->expectException($expected['exception']);
+
             $provider->find('foobar');
 
             return;
@@ -178,44 +179,74 @@ final class DatabaseConfigProviderTest extends TestCase
     public static function connectionExceptionDataProvider(): iterable
     {
         yield 'Find - PDO exception' => [
-            'find', 'fetchAssociative', \PDOException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find',
+            'fetchAssociative',
+            \PDOException::class,
+            ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find - Connection exception' => [
-            'find', 'fetchAssociative', ConnectionException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find',
+            'fetchAssociative',
+            ConnectionException::class,
+            ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find – Table exception' => [
-            'find', 'fetchAssociative', TableNotFoundException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find',
+            'fetchAssociative',
+            TableNotFoundException::class,
+            ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find – Invalid field name exception' => [
-            'find', 'fetchAssociative', InvalidFieldNameException::class, ['exception' => TemporarilyUnavailableConfigProviderException::class],
+            'find',
+            'fetchAssociative',
+            InvalidFieldNameException::class,
+            ['exception' => TemporarilyUnavailableConfigProviderException::class],
         ];
 
         yield 'Find – Runtime exception (uncaught)' => [
-            'find', 'fetchAssociative', \RuntimeException::class, ['exception' => \RuntimeException::class],
+            'find',
+            'fetchAssociative',
+            \RuntimeException::class,
+            ['exception' => \RuntimeException::class],
         ];
 
         // findAll()
         yield 'Find all - PDO exception' => [
-            'findAll', 'fetchAllAssociative', \PDOException::class, [],
+            'findAll',
+            'fetchAllAssociative',
+            \PDOException::class,
+            [],
         ];
 
         yield 'Find all - Connection exception' => [
-            'findAll', 'fetchAllAssociative', ConnectionException::class, [],
+            'findAll',
+            'fetchAllAssociative',
+            ConnectionException::class,
+            [],
         ];
 
         yield 'Find all - Table exception' => [
-            'findAll', 'fetchAllAssociative', TableNotFoundException::class, [],
+            'findAll',
+            'fetchAllAssociative',
+            TableNotFoundException::class,
+            [],
         ];
 
         yield 'Find all - Invalid field name exception' => [
-            'findAll', 'fetchAllAssociative', InvalidFieldNameException::class, [],
+            'findAll',
+            'fetchAllAssociative',
+            InvalidFieldNameException::class,
+            [],
         ];
 
         yield 'Find all - Runtime exception (uncaught)' => [
-            'findAll', 'fetchAllAssociative', \RuntimeException::class, ['exception' => \RuntimeException::class],
+            'findAll',
+            'fetchAllAssociative',
+            \RuntimeException::class,
+            ['exception' => \RuntimeException::class],
         ];
     }
 }

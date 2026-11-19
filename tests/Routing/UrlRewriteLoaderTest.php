@@ -51,6 +51,7 @@ final class UrlRewriteLoaderTest extends TestCase
     public function testLoad($provided, $expected): void
     {
         $provider = $this->mockConfigProvider([$provided]);
+
         $loader = new UrlRewriteLoader($provider);
         $collection = $loader->load('');
         $routes = $collection->getIterator();

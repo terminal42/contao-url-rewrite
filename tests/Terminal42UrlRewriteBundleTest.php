@@ -19,6 +19,7 @@ final class Terminal42UrlRewriteBundleTest extends TestCase
     public function testBuild(): void
     {
         $container = new ContainerBuilder();
+
         $bundle = new Terminal42UrlRewriteBundle();
         $bundle->build($container);
 

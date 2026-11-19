@@ -92,6 +92,7 @@ abstract class AbstractContainerListenerTestCase extends ContaoTestCase
             ->method('post')
             ->willReturn('Baz')
         ;
+
         $this->assertSame('Baz', $this->listener->onNameSaveCallback('', $dataContainer));
     }
 
@@ -101,6 +102,7 @@ abstract class AbstractContainerListenerTestCase extends ContaoTestCase
 
         $dataContainer = $this->createMock(DataContainer::class);
         $matcher = $this->exactly(2);
+
         $dataContainer
             ->expects($matcher)
             ->method('__get')
@@ -121,6 +123,7 @@ abstract class AbstractContainerListenerTestCase extends ContaoTestCase
         ;
 
         $this->expectException(\InvalidArgumentException::class);
+
         $this->listener->onNameSaveCallback('', $dataContainer);
     }
 

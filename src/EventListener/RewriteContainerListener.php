@@ -36,9 +36,7 @@ class RewriteContainerListener
         private readonly ExpressionFunctionProviderInterface $expressionFunctionProvider,
         Filesystem|null $fs = null,
     ) {
-        if (null === $fs) {
-            $fs = new Filesystem();
-        }
+        $fs ??= new Filesystem();
         $this->fs = $fs;
         $this->expressionLanguage = new ExpressionLanguage(null, [$this->expressionFunctionProvider]);
     }

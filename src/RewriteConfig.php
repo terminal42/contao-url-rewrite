@@ -6,7 +6,7 @@ namespace Terminal42\UrlRewriteBundle;
 
 class RewriteConfig implements RewriteConfigInterface
 {
-    private string $requestPath = '';
+    private string $requestPath;
 
     private array $requestHosts = [];
 
@@ -14,7 +14,7 @@ class RewriteConfig implements RewriteConfigInterface
 
     private string|null $requestCondition = null;
 
-    private int $responseCode = 301;
+    private int $responseCode;
 
     /**
      * @var array<string, string>

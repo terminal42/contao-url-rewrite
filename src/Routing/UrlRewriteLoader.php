@@ -26,7 +26,7 @@ class UrlRewriteLoader extends Loader
 
     public function load(mixed $resource, $type = null): RouteCollection
     {
-        if (true === $this->loaded) {
+        if ($this->loaded) {
             throw new \RuntimeException('Do not add the "terminal42 url rewrite" loader twice');
         }
 

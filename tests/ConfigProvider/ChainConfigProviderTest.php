@@ -44,7 +44,6 @@ final class ChainConfigProviderTest extends TestCase
             ->method('find')
             ->willReturnCallback(static fn (string $key): RewriteConfigInterface|null => $configs[$key] ?? null)
         ;
-
         $provider
             ->method('findAll')
             ->willReturn($configs)

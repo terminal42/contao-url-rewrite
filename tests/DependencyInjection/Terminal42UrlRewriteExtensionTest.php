@@ -18,6 +18,7 @@ final class Terminal42UrlRewriteExtensionTest extends TestCase
     public function testLoadWithBackendManagement(): void
     {
         $container = new ContainerBuilder();
+
         $extension = new Terminal42UrlRewriteExtension();
         $extension->load(['terminal42_url_rewrite' => ['backend_management' => true]], $container);
 
@@ -31,6 +32,7 @@ final class Terminal42UrlRewriteExtensionTest extends TestCase
     public function testLoadWithoutBackendManagement(): void
     {
         $container = new ContainerBuilder();
+
         $extension = new Terminal42UrlRewriteExtension();
         $extension->load(['terminal42_url_rewrite' => ['backend_management' => false]], $container);
 
