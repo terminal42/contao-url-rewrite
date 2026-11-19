@@ -74,6 +74,11 @@ class RewriteController
             return null;
         }
 
+        // Contao interprets raw < as the start of HTML when processing insert tags
+        if (str_contains($uri, '{{') && str_contains($uri, '<')) {
+            return null;
+        }
+
         $uri = $this->replaceWildcards($request, $uri);
         $uri = $this->replaceInsertTags($uri);
 
@@ -129,13 +134,82 @@ class RewriteController
             $wildcards['{'.$k.'}'] = $v;
         }
 
-        foreach ($wildcards as $wildcard => $value) {
-            if (str_contains($uri, $wildcard) && \is_string($value) && $this->containsControlCharacters($value)) {
-                throw new BadRequestException('Redirect wildcard values must not contain control characters');
+        return $this->substituteWildcards($uri, $wildcards);
+    }
+
+    /**
+     * @param array<string, mixed> $wildcards
+     */
+    private function substituteWildcards(string $uri, array $wildcards): string
+    {
+        $flags = [];
+        $result = '';
+        $parts = preg_split('/(\{\{|\}\}|\{[^{}]+\})/', $uri, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+        foreach ($parts as $index => $part) {
+            if ('{{' === $part) {
+                $flags[] = false;
+            } elseif ('}}' === $part) {
+                array_pop($flags);
+            } elseif (1 === $index % 2 && $flags && !\array_key_exists($part, $wildcards)) {
+                throw new BadRequestException('Missing redirect wildcard inside an insert tag');
+            } elseif (1 === $index % 2 && \array_key_exists($part, $wildcards)) {
+                $value = $this->getWildcardValue($wildcards[$part], str_contains($uri, '{{'));
+
+                // Legacy hooks parse the rendered output of nested tags as part of the outer tag
+                if (\count($flags) > 1) {
+                    throw new BadRequestException('Redirect wildcards must not be used inside nested insert tags');
+                }
+
+                if ($flags && end($flags)) {
+                    throw new BadRequestException('Redirect wildcards must not change insert tag flags');
+                }
+
+                if ($flags) {
+                    $this->validateTagParameter($parts[$index - 1], $parts[$index + 1].($parts[$index + 2] ?? ''), $value);
+                }
+
+                $part = $value;
+            } elseif ($flags && str_contains($part, '|')) {
+                $flags[array_key_last($flags)] = true;
             }
+
+            $result .= $part;
         }
 
-        return strtr($uri, $wildcards);
+        if (substr_count($result, '{{') !== substr_count($uri, '{{') || substr_count($result, '}}') !== substr_count($uri, '}}')) {
+            throw new BadRequestException('Redirect wildcards must not create insert tag delimiters');
+        }
+
+        return $result;
+    }
+
+    private function getWildcardValue(mixed $value, bool $hasTags): string
+    {
+        if (!\is_scalar($value) && null !== $value) {
+            throw new BadRequestException('Redirect wildcards require scalar values');
+        }
+
+        $value = (string) $value;
+
+        // Contao preprocesses HTML attributes before resolving insert tags
+        if ($this->containsControlCharacters($value) || false !== strpbrk($value, $hasTags ? '{}<>' : '{}')) {
+            throw new BadRequestException('Invalid character in redirect wildcard');
+        }
+
+        return $value;
+    }
+
+    private function validateTagParameter(string $before, string $after, string $value): void
+    {
+        // Bind only complete positional or explicitly named values in the configured tag
+        if (!preg_match('/^[^|{}]*(?<!:)::(?:((?:[^:=|{}]|:(?!:))+)=)?$/D', $before, $matches) || !preg_match('/^(?:::|\||\}\})/', $after)) {
+            throw new BadRequestException('Redirect wildcards must fill an insert tag parameter value');
+        }
+
+        if (str_contains($value, '::') || str_contains($value, '|') || (str_ends_with($value, ':') && str_starts_with($after, '::')) || (!isset($matches[1]) && str_contains($value, '='))) {
+            throw new BadRequestException('Redirect wildcards must not introduce insert tag syntax');
+        }
     }
 
     /**
