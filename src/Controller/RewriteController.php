@@ -6,6 +6,7 @@ namespace Terminal42\UrlRewriteBundle\Controller;
 
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +52,13 @@ class RewriteController
             return new Response(Response::$statusTexts[$responseCode], $responseCode);
         }
 
-        if (null !== ($uri = $this->generateUri($request, $config))) {
+        try {
+            $uri = $this->generateUri($request, $config);
+        } catch (BadRequestException) {
+            return new Response(Response::$statusTexts[400], 400);
+        }
+
+        if (null !== $uri) {
             return new RedirectResponse($uri, $responseCode);
         }
 
@@ -63,7 +70,7 @@ class RewriteController
      */
     private function generateUri(Request $request, RewriteConfigInterface $config): string|null
     {
-        if (null === ($uri = $this->findBestUri($request, $config))) {
+        if (null === ($uri = $this->findBestUri($request, $config)) || $this->containsControlCharacters($uri)) {
             return null;
         }
 
@@ -82,7 +89,27 @@ class RewriteController
             $uri .= '?'.http_build_query($request->query->all());
         }
 
-        return $uri;
+        return $this->encodeUri($uri);
+    }
+
+    private function encodeUri(string $uri): string|null
+    {
+        // Reject invalid targets instead of stripping control characters from the URL
+        if ($this->containsControlCharacters($uri)) {
+            return null;
+        }
+
+        // Preserve URI delimiters and existing percent escapes when encoding unsafe bytes
+        return preg_replace_callback(
+            '~%(?![0-9a-fA-F]{2})|[^a-zA-Z0-9\-._\~:/?#\[\]@!$&\'()*+,;=%]~',
+            static fn (array $matches): string => rawurlencode($matches[0]),
+            $uri,
+        );
+    }
+
+    private function containsControlCharacters(string $value): bool
+    {
+        return 1 === preg_match('/[\x00-\x1F\x7F]/', $value);
     }
 
     /**
@@ -100,6 +127,12 @@ class RewriteController
         // Get the query wildcards
         foreach ($request->query->all() as $k => $v) {
             $wildcards['{'.$k.'}'] = $v;
+        }
+
+        foreach ($wildcards as $wildcard => $value) {
+            if (str_contains($uri, $wildcard) && \is_string($value) && $this->containsControlCharacters($value)) {
+                throw new BadRequestException('Redirect wildcard values must not contain control characters');
+            }
         }
 
         return strtr($uri, $wildcards);
